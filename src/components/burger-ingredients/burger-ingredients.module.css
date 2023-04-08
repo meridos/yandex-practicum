@@ -18,12 +18,17 @@
 }
 
 .title {
-  composes: text text_type_main-medium mb-6 from global;
+  composes: text text_type_main-medium mb-6 mt-10 from global;
+}
+
+.title:first-child {
+  margin-top: 0;
 }
 
 .productItem {
   position: relative;
   text-align: center;
+  max-width: 272px;
 }
 
 .productItemImg {
