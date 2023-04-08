@@ -18,7 +18,7 @@ export default class BurgerConstructor extends React.Component {
             </div>
             <ConstructorElement
               text="Хрустящие минеральные кольца"
-              thumbnail="thumbnail"
+              thumbnail="https://code.s3.yandex.net/react/code/meat-04-mobile.png"
               price="20"
             />
           </div>
@@ -29,7 +29,7 @@ export default class BurgerConstructor extends React.Component {
               </div>
               <ConstructorElement
                 text="text"
-                thumbnail="thumbnail"
+                thumbnail="https://code.s3.yandex.net/react/code/meat-04-mobile.png"
                 price="20"
               />
             </div>
@@ -39,7 +39,77 @@ export default class BurgerConstructor extends React.Component {
               </div>
               <ConstructorElement
                 text="text"
-                thumbnail="thumbnail"
+                thumbnail="https://code.s3.yandex.net/react/code/meat-04-mobile.png"
+                price="20"
+              />
+            </div>
+            <div className={styles.item}>
+              <div className={styles.itemDrag}>
+                <DragIcon type="primary" />
+              </div>
+              <ConstructorElement
+                text="text"
+                thumbnail="https://code.s3.yandex.net/react/code/meat-04-mobile.png"
+                price="20"
+              />
+            </div>
+            <div className={styles.item}>
+              <div className={styles.itemDrag}>
+                <DragIcon type="primary" />
+              </div>
+              <ConstructorElement
+                text="text"
+                thumbnail="https://code.s3.yandex.net/react/code/meat-04-mobile.png"
+                price="20"
+              />
+            </div>
+            <div className={styles.item}>
+              <div className={styles.itemDrag}>
+                <DragIcon type="primary" />
+              </div>
+              <ConstructorElement
+                text="text"
+                thumbnail="https://code.s3.yandex.net/react/code/meat-04-mobile.png"
+                price="20"
+              />
+            </div>
+            <div className={styles.item}>
+              <div className={styles.itemDrag}>
+                <DragIcon type="primary" />
+              </div>
+              <ConstructorElement
+                text="text"
+                thumbnail="https://code.s3.yandex.net/react/code/meat-04-mobile.png"
+                price="20"
+              />
+            </div>
+            <div className={styles.item}>
+              <div className={styles.itemDrag}>
+                <DragIcon type="primary" />
+              </div>
+              <ConstructorElement
+                text="text"
+                thumbnail="https://code.s3.yandex.net/react/code/meat-04-mobile.png"
+                price="20"
+              />
+            </div>
+            <div className={styles.item}>
+              <div className={styles.itemDrag}>
+                <DragIcon type="primary" />
+              </div>
+              <ConstructorElement
+                text="text"
+                thumbnail="https://code.s3.yandex.net/react/code/meat-04-mobile.png"
+                price="20"
+              />
+            </div>
+            <div className={styles.item}>
+              <div className={styles.itemDrag}>
+                <DragIcon type="primary" />
+              </div>
+              <ConstructorElement
+                text="text"
+                thumbnail="https://code.s3.yandex.net/react/code/meat-04-mobile.png"
                 price="20"
               />
             </div>
@@ -48,7 +118,11 @@ export default class BurgerConstructor extends React.Component {
             <div className={styles.itemDrag}>
               <DragIcon type="primary" />
             </div>
-            <ConstructorElement text="text" thumbnail="thumbnail" price="20" />
+            <ConstructorElement
+              text="text"
+              thumbnail="https://code.s3.yandex.net/react/code/meat-04-mobile.png"
+              price="20"
+            />
           </div>
         </div>
         <div className={styles.total}>

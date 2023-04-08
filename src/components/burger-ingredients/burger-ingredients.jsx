@@ -47,44 +47,86 @@ export default class BurgerIngredients extends React.Component {
           </Tab>
         </div>
 
-        <div className={styles.productList}>
+        <div className={styles.categoriesList}>
           <h2 className={styles.title}>Булки</h2>
-
-          <section className={styles.productItem}>
-            <div className={styles.productItemCount}>
+          <div className={styles.productList}>
+            <section className={styles.productItem}>
+              <div className={styles.productItemCount}>
+                <Counter count={1} size="default" />
+              </div>
+              <img
+                src="https://code.s3.yandex.net/react/code/meat-04-large.png"
+                className={styles.productItemImg}
+              />
+              <p className={styles.productItemPrice}>
+                <span className="mr-2">20</span>
+                <CurrencyIcon type="primary" />
+              </p>
+              <h4 className="text text_type_main-default">
+                Краторная булка N-200i
+              </h4>
+            </section>
+            <section className={styles.productItem}>
+              <div className={styles.productItemCount}>
+                <Counter count={1} size="default" />
+              </div>
+              <img
+                src="https://code.s3.yandex.net/react/code/meat-04-large.png"
+                className={styles.productItemImg}
+              />
+              <p className={styles.productItemPrice}>
+                <span className="mr-2">20</span>
+                <CurrencyIcon type="primary" />
+              </p>
+              <h4 className="text text_type_main-default">
+                Краторная булка N-200i
+              </h4>
+            </section>
+            <section className={styles.productItem}>
+              <div className={styles.productItemCount}>
+                <Counter count={1} size="default" />
+              </div>
+              <img
+                src="https://code.s3.yandex.net/react/code/meat-04-large.png"
+                className={styles.productItemImg}
+              />
+              <p className={styles.productItemPrice}>
+                <span className="mr-2">20</span>
+                <CurrencyIcon type="primary" />
+              </p>
+              <h4 className="text text_type_main-default">
+                Краторная булка N-200i
+              </h4>
+            </section>
+            <section className={styles.productItem}>
               <Counter count={1} size="default" />
-            </div>
-            <img src="" className={styles.productItemImg} />
-            <p className={styles.productItemPrice}>
-              <span className="mr-2">20</span>
-              <CurrencyIcon type="primary" />
-            </p>
-            <h4 className="text text_type_main-default">
-              Краторная булка N-200i
-            </h4>
-          </section>
-          <section className={styles.productItem}>
-            <Counter count={1} size="default" />
-            <img src="" className={styles.productItemImg} />
-            <p className={styles.productItemPrice}>
-              <span className="mr-2">20</span>
-              <CurrencyIcon type="primary" />
-            </p>
-            <h4 className="text text_type_main-default">
-              Краторная булка N-200i
-            </h4>
-          </section>
-          <section className={styles.productItem}>
-            <Counter count={1} size="default" />
-            <img src="" className={styles.productItemImg} />
-            <p className={styles.productItemPrice}>
-              <span className="mr-2">20</span>
-              <CurrencyIcon type="primary" />
-            </p>
-            <h4 className="text text_type_main-default">
-              Краторная булка N-200i
-            </h4>
-          </section>
+              <img
+                src="https://code.s3.yandex.net/react/code/meat-04-large.png"
+                className={styles.productItemImg}
+              />
+              <p className={styles.productItemPrice}>
+                <span className="mr-2">20</span>
+                <CurrencyIcon type="primary" />
+              </p>
+              <h4 className="text text_type_main-default">
+                Краторная булка N-200i
+              </h4>
+            </section>
+            <section className={styles.productItem}>
+              <Counter count={1} size="default" />
+              <img
+                src="https://code.s3.yandex.net/react/code/meat-04-large.png"
+                className={styles.productItemImg}
+              />
+              <p className={styles.productItemPrice}>
+                <span className="mr-2">20</span>
+                <CurrencyIcon type="primary" />
+              </p>
+              <h4 className="text text_type_main-default">
+                Краторная булка N-200i
+              </h4>
+            </section>
+          </div>
         </div>
       </>
     );

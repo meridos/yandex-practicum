@@ -11,9 +11,12 @@ export default class App extends React.Component {
 
         <main className={styles.container}>
           <div className={styles.side}>
+            <h1 className="text text_type_main-large mt-10 mb-5">
+              Соберите бургер
+            </h1>
             <BurgerIngredients />
           </div>
-          <div className={styles.side}>
+          <div className={styles.constructorContainer}>
             <BurgerConstructor />
           </div>
         </main>

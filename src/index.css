@@ -1,7 +1,7 @@
 :root {
   --header-height: 88px;
-  --scroll-ingredients-padding: calc(var(--header-height) + 96px);
-  --scroll-constructor-padding: calc(var(--header-height) + 296px);
+  --scroll-ingredients-padding: calc(var(--header-height) + 196px);
+  --scroll-constructor-padding: calc(var(--header-height) + 396px);
 }
 
 body {
