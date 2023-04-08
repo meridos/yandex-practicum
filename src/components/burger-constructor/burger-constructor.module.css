@@ -1,0 +1,49 @@
+.items {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+}
+
+.scrollItems {
+  composes: items;
+  max-height: calc(100vh - var(--scroll-constructor-padding));
+  min-height: 80px;
+  overflow-y: overlay;
+}
+
+.item {
+  composes: ml-4 mr-4 from global;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.item:last-child {
+  margin-bottom: 0;
+}
+
+.itemDrag {
+  composes: mr-2 from global;
+  display: flex;
+  align-self: center;
+  cursor: grab;
+}
+
+.itemDrag:active {
+  cursor: grabbing;
+}
+
+.total {
+  composes: mt-10 ml-4 mr-4 from global;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+
+.totalIcon {
+  display: flex;
+}
+
+.totalIcon svg {
+  width: 33px;
+  height: 33px;
+}

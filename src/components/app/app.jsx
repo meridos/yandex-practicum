@@ -2,6 +2,7 @@ import React from "react";
 import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import styles from "./app.module.css";
+import BurgerConstructor from "../burger-constructor/burger-constructor";
 export default class App extends React.Component {
   render() {
     return (
@@ -9,7 +10,12 @@ export default class App extends React.Component {
         <AppHeader />
 
         <div className={styles.container}>
-          <BurgerIngredients />
+          <div className={styles.side}>
+            <BurgerIngredients />
+          </div>
+          <div className={styles.side}>
+            <BurgerConstructor />
+          </div>
         </div>
       </>
     );

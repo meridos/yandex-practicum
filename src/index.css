@@ -1,3 +1,9 @@
+:root {
+  --header-height: 88px;
+  --scroll-ingredients-padding: calc(var(--header-height) + 96px);
+  --scroll-constructor-padding: calc(var(--header-height) + 296px);
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",

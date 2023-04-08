@@ -1,6 +1,15 @@
 .container {
-  composes: custom-scroll from global;
+  display: flex;
+  justify-content: space-between;
   max-width: 1240px;
   padding: 0 20px;
   margin: 0 auto;
+  max-height: calc(100vh - 88px);
+  /* overflow-y: auto; */
+}
+
+.side {
+  max-height: 100%;
+  max-width: 600px;
+  width: 100%;
 }

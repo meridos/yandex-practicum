@@ -22,9 +22,7 @@ export default class BurgerIngredients extends React.Component {
 
   render() {
     return (
-      <div className={styles.wrapper}>
-        <p className="text text_type_main-medium">Соусы</p>
-
+      <>
         <div className={styles.tabs}>
           <Tab
             value="one"
@@ -86,7 +84,7 @@ export default class BurgerIngredients extends React.Component {
             </p>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 }
