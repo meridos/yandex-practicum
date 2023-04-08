@@ -11,6 +11,12 @@
   overflow-y: overlay;
 }
 
+.bunItem {
+  display: flex;
+  justify-content: flex-start;
+  margin-left: 48px;
+}
+
 .item {
   composes: ml-4 mr-4 from global;
   display: flex;
