@@ -9,14 +9,14 @@ export default class App extends React.Component {
       <>
         <AppHeader />
 
-        <div className={styles.container}>
+        <main className={styles.container}>
           <div className={styles.side}>
             <BurgerIngredients />
           </div>
           <div className={styles.side}>
             <BurgerConstructor />
           </div>
-        </div>
+        </main>
       </>
     );
   }

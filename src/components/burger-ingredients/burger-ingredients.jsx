@@ -48,9 +48,9 @@ export default class BurgerIngredients extends React.Component {
         </div>
 
         <div className={styles.productList}>
-          <p className={styles.title}>Булки</p>
+          <h2 className={styles.title}>Булки</h2>
 
-          <div className={styles.productItem}>
+          <section className={styles.productItem}>
             <div className={styles.productItemCount}>
               <Counter count={1} size="default" />
             </div>
@@ -59,30 +59,32 @@ export default class BurgerIngredients extends React.Component {
               <span className="mr-2">20</span>
               <CurrencyIcon type="primary" />
             </p>
-            <p className="text text_type_main-default">
+            <h4 className="text text_type_main-default">
               Краторная булка N-200i
-            </p>
-          </div>
-          <div className={styles.productItem}>
+            </h4>
+          </section>
+          <section className={styles.productItem}>
             <Counter count={1} size="default" />
             <img src="" className={styles.productItemImg} />
-            <p className="text text_type_digits-default">
-              20 <CurrencyIcon type="primary" />
+            <p className={styles.productItemPrice}>
+              <span className="mr-2">20</span>
+              <CurrencyIcon type="primary" />
             </p>
-            <p className="text text_type_main-default">
+            <h4 className="text text_type_main-default">
               Краторная булка N-200i
-            </p>
-          </div>
-          <div className={styles.productItem}>
+            </h4>
+          </section>
+          <section className={styles.productItem}>
             <Counter count={1} size="default" />
             <img src="" className={styles.productItemImg} />
-            <p className="text text_type_digits-default">
-              20 <CurrencyIcon type="primary" />
+            <p className={styles.productItemPrice}>
+              <span className="mr-2">20</span>
+              <CurrencyIcon type="primary" />
             </p>
-            <p className="text text_type_main-default">
+            <h4 className="text text_type_main-default">
               Краторная булка N-200i
-            </p>
-          </div>
+            </h4>
+          </section>
         </div>
       </>
     );
