@@ -3,23 +3,18 @@ import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
 import styles from "./modal.module.css";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import ModalOverlay from "../modal-overlay/modal-overlay";
 
 const modalRoot = document.getElementById("react-modals");
 
-function ModalOverlay(props) {
-  function onOverlayClick(e) {
-    if (e.target === e.currentTarget) {
-      props.onClick();
-    }
-  }
-
+export default function Modal(props) {
   const onEscape = useCallback(
     (event) => {
       if (event.key === "Escape") {
-        props.onClick();
+        props.onClose();
       }
     },
-    [props.onClick]
+    [props.onClose]
   );
 
   useEffect(() => {
@@ -30,17 +25,6 @@ function ModalOverlay(props) {
     };
   }, [onEscape]);
 
-  return (
-    <div className={styles.overlay} onClick={onOverlayClick}>
-      {props.children}
-    </div>
-  );
-}
-ModalOverlay.propTypes = {
-  onClick: PropTypes.func.isRequired,
-};
-
-export default function Modal(props) {
   return ReactDOM.createPortal(
     <>
       <ModalOverlay onClick={props.onClose}>

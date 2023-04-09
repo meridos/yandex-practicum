@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
-import styles from "./modal-order-details.module.css";
+import styles from "./order-details.module.css";
 import Modal from "../modal/modal";
 import orderDoneImg from "../../images/order-done.png";
 
-export default function ModalOrderDetails(props) {
+export default function OrderDetails(props) {
   const { onClose } = props;
 
   return (
@@ -13,7 +13,7 @@ export default function ModalOrderDetails(props) {
     </Modal>
   );
 }
-ModalOrderDetails.propTypes = {
+OrderDetails.propTypes = {
   order: PropTypes.string.isRequired,
 };
 
