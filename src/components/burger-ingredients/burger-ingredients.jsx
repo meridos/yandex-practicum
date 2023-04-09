@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import styles from "./burger-ingredients.module.css";
 import {
@@ -14,15 +14,29 @@ const ingredientTypesMap = {
   bun: "Булки",
   sauce: "Соусы",
 };
+const tabs = Object.keys(ingredientTypesMap).map((type) => ({
+  type,
+  title: ingredientTypesMap[type],
+}));
 
 export default function BurgerIngredients(props) {
-  const [currentTab, setCurrentTab] = useState("one");
+  const [currentTab, setCurrentTab] = useState("bun");
   const [groupProducts, setGroupProducts] = useState([]);
   const [productDetails, setProductDetails] = useState(null);
+
+  const categoriesRefs = {
+    main: useRef(),
+    bun: useRef(),
+    sauce: useRef(),
+  };
 
   useEffect(() => {
     setGroupProducts(getProductsList(props.ingredients));
   }, [props.ingredients]);
+
+  useEffect(() => {
+    categoriesRefs[currentTab]?.current?.scrollIntoView();
+  }, [currentTab]);
 
   function onTabClick(currentTab) {
     setCurrentTab(currentTab);
@@ -34,22 +48,14 @@ export default function BurgerIngredients(props) {
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.tabs}>
-        <Tab value="one" active={currentTab === "one"} onClick={onTabClick}>
-          Булки
-        </Tab>
-        <Tab value="two" active={currentTab === "two"} onClick={onTabClick}>
-          Соусы
-        </Tab>
-        <Tab value="three" active={currentTab === "three"} onClick={onTabClick}>
-          Начинки
-        </Tab>
-      </div>
+      <Tabs currentTab={currentTab} onChange={onTabClick} />
 
       <div className={styles.categoriesList}>
-        {groupProducts.map(({ typeTitle, ingredients }) => (
-          <React.Fragment key={typeTitle}>
-            <h2 className={styles.title}>{typeTitle}</h2>
+        {groupProducts.map(({ type, title, ingredients }) => (
+          <React.Fragment key={type}>
+            <h2 className={styles.title} ref={categoriesRefs[type]}>
+              {title}
+            </h2>
             <div className={styles.productList}>
               {ingredients.map((ingredient) => (
                 <React.Fragment key={ingredient._id}>
@@ -77,7 +83,7 @@ BurgerIngredients.propTypes = {
   ingredients: PropTypes.arrayOf(ProductItemType).isRequired,
 };
 
-function ProductItem(props) {
+const ProductItem = React.memo((props) => {
   return (
     <section className={styles.productItem} onClick={props.onClick}>
       <div className={styles.productItemCount}>
@@ -95,7 +101,7 @@ function ProductItem(props) {
       <h4 className="text text_type_main-default">{props.ingredient.name}</h4>
     </section>
   );
-}
+});
 ProductItem.propTypes = {
   ingredient: ProductItemType.isRequired,
   onClick: PropTypes.func.isRequired,
@@ -119,7 +125,29 @@ function getProductsList(ingredients) {
   }
 
   return Array.from(typesGroupMap).map(([type, typeIngredients]) => ({
-    typeTitle: ingredientTypesMap[type],
+    type: type,
+    title: ingredientTypesMap[type],
     ingredients: typeIngredients,
   }));
 }
+
+function Tabs(props) {
+  return (
+    <div className={styles.tabs}>
+      {tabs.map(({ type, title }) => (
+        <Tab
+          key={type}
+          value={type}
+          active={props.currentTab === type}
+          onClick={props.onChange}
+        >
+          {title}
+        </Tab>
+      ))}
+    </div>
+  );
+}
+Tabs.propTypes = {
+  onChange: PropTypes.func.isRequired,
+  currentTab: PropTypes.oneOf(["main", "bun", "sauce"]).isRequired,
+};

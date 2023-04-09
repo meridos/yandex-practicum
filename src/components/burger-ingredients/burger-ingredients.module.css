@@ -12,6 +12,7 @@
 .categoriesList {
   min-height: 280px;
   overflow-y: overlay;
+  scroll-behavior: smooth;
 }
 
 .productList {
