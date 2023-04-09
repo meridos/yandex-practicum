@@ -1,10 +1,16 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
 .tabs {
   composes: mb-10 from global;
   display: flex;
 }
 
 .categoriesList {
-  max-height: calc(100vh - var(--scroll-ingredients-padding));
+  min-height: 280px;
   overflow-y: overlay;
 }
 

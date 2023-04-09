@@ -1,17 +1,25 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 .container {
   display: flex;
-  justify-content: space-between;
-  max-width: 1240px;
+  max-width: 1280px;
   padding: 0 20px;
   margin-left: auto;
   margin-right: auto;
-  max-height: calc(100vh - 88px);
+  column-gap: 40px;
+  min-height: 0px;
 }
 
 .side {
-  max-height: 100%;
+  display: flex;
+  flex-direction: column;
   max-width: 600px;
   width: 100%;
+  min-height: 0px;
 }
 
 .constructorContainer {
@@ -24,6 +32,10 @@
     flex-direction: column;
     align-items: center;
     max-height: 100%;
+  }
+
+  .side {
+    min-height: auto;
   }
 }
 

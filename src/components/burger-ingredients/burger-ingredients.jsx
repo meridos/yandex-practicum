@@ -27,7 +27,7 @@ export default function BurgerIngredients(props) {
   }
 
   return (
-    <>
+    <div className={styles.wrapper}>
       <div className={styles.tabs}>
         <Tab value="one" active={currentTab === "one"} onClick={onTabClick}>
           Булки
@@ -54,7 +54,7 @@ export default function BurgerIngredients(props) {
           </React.Fragment>
         ))}
       </div>
-    </>
+    </div>
   );
 }
 BurgerIngredients.propTypes = {

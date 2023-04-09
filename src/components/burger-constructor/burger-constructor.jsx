@@ -23,18 +23,16 @@ export default function BurgerConstructor(props) {
   }, [props.ingredients]);
 
   return (
-    <>
-      <div className={styles.items}>
-        <BunItem first={true} ingredient={bunIngredient} />
-        <div className={styles.scrollItems}>
-          {orderIngredients.map((item) => (
-            <React.Fragment key={item._id}>
-              <ProductItem ingredient={item} />
-            </React.Fragment>
-          ))}
-        </div>
-        <BunItem first={false} ingredient={bunIngredient} />
+    <div className={styles.items}>
+      <BunItem first={true} ingredient={bunIngredient} />
+      <div className={styles.scrollItems}>
+        {orderIngredients.map((item) => (
+          <React.Fragment key={item._id}>
+            <ProductItem ingredient={item} />
+          </React.Fragment>
+        ))}
       </div>
+      <BunItem first={false} ingredient={bunIngredient} />
       <div className={styles.total}>
         <p className="text text_type_digits-medium mr-2">610</p>
         <div className={styles.totalIcon}>
@@ -49,7 +47,7 @@ export default function BurgerConstructor(props) {
           Оформить заказ
         </Button>
       </div>
-    </>
+    </div>
   );
 }
 BurgerConstructor.propTypes = {
