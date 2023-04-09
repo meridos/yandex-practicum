@@ -1,24 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styles from "./ingredient-details.module.css";
-import Modal from "../modal/modal";
 import { ProductItemType } from "../../utils/data";
 
 export default function IngredientDetails(props) {
-  const { onClose } = props;
-
-  return (
-    <Modal header="Детали ингредиента" onClose={onClose}>
-      <DetailsList ingredient={props.ingredient} />
-    </Modal>
-  );
-}
-IngredientDetails.propTypes = {
-  ingredient: ProductItemType.isRequired,
-  onClose: PropTypes.func.isRequired,
-};
-
-function DetailsList(props) {
   const detailsList = [
     ["Калории,ккал", props.ingredient.calories],
     ["Белки, г", props.ingredient.proteins],
@@ -44,7 +29,7 @@ function DetailsList(props) {
     </div>
   );
 }
-DetailsList.propTypes = {
+IngredientDetails.propTypes = {
   ingredient: ProductItemType.isRequired,
 };
 

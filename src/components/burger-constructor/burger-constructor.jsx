@@ -9,6 +9,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { ProductItemType, createOrder } from "../../utils/data";
 import OrderDetails from "../order-details/order-details";
+import Modal from "../modal/modal";
 
 export default function BurgerConstructor(props) {
   const [bunIngredient, setBunIngredient] = useState(null);
@@ -74,7 +75,9 @@ export default function BurgerConstructor(props) {
         </Button>
       </div>
       {orderOpen && (
-        <OrderDetails order={order} onClose={onCompleteModalClose} />
+        <Modal onClose={onCompleteModalClose}>
+          <OrderDetails order={order} />
+        </Modal>
       )}
     </div>
   );

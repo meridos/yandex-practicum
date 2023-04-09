@@ -8,6 +8,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { ProductItemType } from "../../utils/data";
 import IngredientDetails from "../ingredient-details/ingredient-details";
+import Modal from "../modal/modal";
 
 const ingredientTypesMap = {
   main: "Начинки",
@@ -71,10 +72,9 @@ export default function BurgerIngredients(props) {
         ))}
       </div>
       {productDetails && (
-        <IngredientDetails
-          ingredient={productDetails}
-          onClose={() => onProductClick(null)}
-        />
+        <Modal header="Детали ингредиента" onClose={() => onProductClick(null)}>
+          <IngredientDetails ingredient={productDetails} />
+        </Modal>
       )}
     </div>
   );

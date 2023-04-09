@@ -1,23 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styles from "./order-details.module.css";
-import Modal from "../modal/modal";
 import orderDoneImg from "../../images/order-done.png";
 
 export default function OrderDetails(props) {
-  const { onClose } = props;
-
-  return (
-    <Modal onClose={onClose}>
-      <Order order={props.order} />
-    </Modal>
-  );
-}
-OrderDetails.propTypes = {
-  order: PropTypes.string.isRequired,
-};
-
-function Order(props) {
   return (
     <div className={styles.content}>
       <p className={styles.text}>{props.order}</p>
@@ -32,6 +18,6 @@ function Order(props) {
     </div>
   );
 }
-Order.propTypes = {
+OrderDetails.propTypes = {
   order: PropTypes.string.isRequired,
 };
