@@ -1,0 +1,36 @@
+.content {
+  composes: mb-5 from global;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.image {
+  max-width: 480px;
+  width: 100%;
+}
+
+.details {
+  display: flex;
+  column-gap: 20px;
+}
+
+.detailItem {
+  min-width: 112px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+@media screen and (max-width: 639px) {
+  .content {
+    margin-bottom: 0;
+  }
+
+  .details {
+    flex-direction: column;
+  }
+
+  .detailItem {
+    composes: mb-5 from global;
+  }
+}

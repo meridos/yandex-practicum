@@ -7,6 +7,7 @@ import {
   Tab,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { ProductItemType } from "../app/utils/data";
+import ModalIngredientDetails from "../modal-ingredient-details/modal-ingredient-details";
 
 const ingredientTypesMap = {
   main: "Мясо",
@@ -17,6 +18,7 @@ const ingredientTypesMap = {
 export default function BurgerIngredients(props) {
   const [currentTab, setCurrentTab] = useState("one");
   const [groupProducts, setGroupProducts] = useState([]);
+  const [productDetails, setProductDetails] = useState(null);
 
   useEffect(() => {
     setGroupProducts(getProductsList(props.ingredients));
@@ -24,6 +26,10 @@ export default function BurgerIngredients(props) {
 
   function onTabClick(currentTab) {
     setCurrentTab(currentTab);
+  }
+
+  function onProductClick(ingredient) {
+    setProductDetails(ingredient);
   }
 
   return (
@@ -47,13 +53,23 @@ export default function BurgerIngredients(props) {
             <div className={styles.productList}>
               {ingredients.map((ingredient) => (
                 <React.Fragment key={ingredient._id}>
-                  <ProductItem count={1} ingredient={ingredient} />
+                  <ProductItem
+                    count={1}
+                    ingredient={ingredient}
+                    onClick={() => onProductClick(ingredient)}
+                  />
                 </React.Fragment>
               ))}
             </div>
           </React.Fragment>
         ))}
       </div>
+      {productDetails && (
+        <ModalIngredientDetails
+          ingredient={productDetails}
+          onClose={() => onProductClick(null)}
+        />
+      )}
     </div>
   );
 }
@@ -63,7 +79,7 @@ BurgerIngredients.propTypes = {
 
 function ProductItem(props) {
   return (
-    <section className={styles.productItem}>
+    <section className={styles.productItem} onClick={props.onClick}>
       <div className={styles.productItemCount}>
         {props.count ? <Counter count={props.count} size="default" /> : null}
       </div>
@@ -81,8 +97,9 @@ function ProductItem(props) {
   );
 }
 ProductItem.propTypes = {
+  ingredient: ProductItemType.isRequired,
+  onClick: PropTypes.func.isRequired,
   count: PropTypes.number,
-  ingredient: ProductItemType,
 };
 
 function getProductsList(ingredients) {
