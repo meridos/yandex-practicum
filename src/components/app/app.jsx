@@ -4,20 +4,26 @@ import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import styles from "./app.module.css";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import { getIngredients } from "./utils/data";
+import ErrorBoundary from "../error-boundary/error-boundary";
 
 export default function App() {
   const [ingredients, setIngredients] = useState([]);
   const [cartIngredients, setCartIngredients] = useState([]);
+  const [error, setError] = useState();
 
   useEffect(() => {
-    const data = getIngredients();
-
-    setIngredients(data);
-    setCartIngredients(data.slice(-5));
+    getIngredients()
+      .then((data) => {
+        setIngredients(data);
+        setCartIngredients(data);
+      })
+      .catch((err) => {
+        setError(err);
+      });
   }, []);
 
   return (
-    <>
+    <ErrorBoundary error={error}>
       <AppHeader />
 
       <main className={styles.container}>
@@ -31,6 +37,6 @@ export default function App() {
           <BurgerConstructor ingredients={cartIngredients} />
         </div>
       </main>
-    </>
+    </ErrorBoundary>
   );
 }
