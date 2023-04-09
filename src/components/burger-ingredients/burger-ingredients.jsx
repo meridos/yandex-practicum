@@ -10,11 +10,11 @@ import { ProductItemType } from "../app/utils/data";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 
 const ingredientTypesMap = {
-  main: "Мясо",
+  main: "Начинки",
   bun: "Булки",
   sauce: "Соусы",
 };
-const tabs = Object.keys(ingredientTypesMap).map((type) => ({
+const tabs = ["bun", "sauce", "main"].map((type) => ({
   type,
   title: ingredientTypesMap[type],
 }));
@@ -124,11 +124,19 @@ function getProductsList(ingredients) {
     typesGroupMap.set(ingredient.type, typeIngredients);
   }
 
-  return Array.from(typesGroupMap).map(([type, typeIngredients]) => ({
-    type: type,
-    title: ingredientTypesMap[type],
-    ingredients: typeIngredients,
-  }));
+  const indexTabMap = tabs.reduce((res, { type }, i) => {
+    res[type] = i;
+
+    return res;
+  }, {});
+
+  return Array.from(typesGroupMap)
+    .map(([type, typeIngredients]) => ({
+      type: type,
+      title: ingredientTypesMap[type],
+      ingredients: typeIngredients,
+    }))
+    .sort((a, b) => indexTabMap[a.type] - indexTabMap[b.type]);
 }
 
 function Tabs(props) {
