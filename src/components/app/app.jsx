@@ -8,14 +8,12 @@ import ErrorBoundary from "../error-boundary/error-boundary";
 
 export default function App() {
   const [ingredients, setIngredients] = useState([]);
-  const [cartIngredients, setCartIngredients] = useState([]);
   const [error, setError] = useState();
 
   useEffect(() => {
     getIngredients()
       .then((data) => {
         setIngredients(data);
-        setCartIngredients(data);
       })
       .catch((err) => {
         setError(err);
@@ -34,7 +32,7 @@ export default function App() {
             <BurgerIngredients ingredients={ingredients} />
           </div>
           <div className={styles.constructorContainer}>
-            <BurgerConstructor ingredients={cartIngredients} />
+            <BurgerConstructor ingredients={ingredients} />
           </div>
         </main>
       </div>
