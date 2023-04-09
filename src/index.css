@@ -1,11 +1,15 @@
-:root {
-  --header-height: 88px;
-  --scroll-ingredients-padding: calc(var(--header-height) + 196px);
-  --scroll-constructor-padding: calc(var(--header-height) + 396px);
+#root,
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+#root {
+  overflow: overlay;
 }
 
 body {
-  margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
@@ -16,6 +20,7 @@ body {
 /* width */
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
 
 /* Track */
