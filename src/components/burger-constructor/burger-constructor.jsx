@@ -25,7 +25,7 @@ export default class BurgerConstructor extends React.Component {
           <div className={styles.scrollItems}>
             {this.state.orderIngredients.map((item) => (
               <React.Fragment key={item._id}>
-                <ProductItem {...item} />
+                <ProductItem ingredient={item} />
               </React.Fragment>
             ))}
           </div>
@@ -60,15 +60,15 @@ function ProductItem(props) {
         <DragIcon type="primary" />
       </div>
       <ConstructorElement
-        text={props.name}
-        thumbnail={props.image_mobile}
-        price={props.price}
+        text={props.ingredient.name}
+        thumbnail={props.ingredient.image_mobile}
+        price={props.ingredient.price}
       />
     </div>
   );
 }
 ProductItem.propTypes = {
-  ...ProductItemType,
+  ingredient: ProductItemType.isRequired,
 };
 
 function BunItem(props) {
@@ -84,7 +84,7 @@ function BunItem(props) {
     </div>
   ) : null;
 }
-ProductItem.propTypes = {
+BunItem.propTypes = {
   first: PropTypes.bool.isRequired,
-  ingredient: ProductItemType,
+  ingredient: ProductItemType.isRequired,
 };

@@ -37,7 +37,7 @@
 .total {
   composes: mt-10 ml-4 mr-4 from global;
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   align-items: center;
 }
 
