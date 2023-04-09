@@ -106,7 +106,11 @@ function ProductItem(props) {
       <div className={styles.productItemCount}>
         {props.count ? <Counter count={props.count} size="default" /> : null}
       </div>
-      <img src={props.ingredient.image} className={styles.productItemImg} />
+      <img
+        src={props.ingredient.image}
+        className={styles.productItemImg}
+        alt={props.ingredient.name}
+      />
       <p className={styles.productItemPrice}>
         <span className="mr-2">{props.ingredient.price}</span>
         <CurrencyIcon type="primary" />
