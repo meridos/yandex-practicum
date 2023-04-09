@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
 import styles from "./modal.module.css";
@@ -8,22 +8,19 @@ import ModalOverlay from "../modal-overlay/modal-overlay";
 const modalRoot = document.getElementById("react-modals");
 
 export default function Modal(props) {
-  const onEscape = useCallback(
-    (event) => {
+  useEffect(() => {
+    const onEscape = (event) => {
       if (event.key === "Escape") {
         props.onClose();
       }
-    },
-    [props.onClose]
-  );
+    };
 
-  useEffect(() => {
     document.addEventListener("keyup", onEscape, false);
 
     return () => {
       document.removeEventListener("keyup", onEscape, false);
     };
-  }, [onEscape]);
+  }, []);
 
   return ReactDOM.createPortal(
     <>
