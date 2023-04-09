@@ -220,7 +220,13 @@ const mockData = [
 export function getIngredients() {
   // return Promise.resolve(console.log("Get mock data") || mockData);
   return fetch(API_URL)
-    .then((r) => r.json())
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+
+      return Promise.reject(`Ошибка ${res.status}`);
+    })
     .then(
       (r) => (r.success && r.data) || Promise.reject("Error response data")
     );
