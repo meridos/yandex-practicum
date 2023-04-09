@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import styles from "./ingredient-details.module.css";
 import Modal from "../modal/modal";
-import { ProductItemType } from "../app/utils/data";
+import { ProductItemType } from "../../utils/data";
 
 export default function IngredientDetails(props) {
   const { onClose } = props;

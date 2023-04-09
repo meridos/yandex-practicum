@@ -6,7 +6,7 @@ import {
   CurrencyIcon,
   Tab,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { ProductItemType } from "../app/utils/data";
+import { ProductItemType } from "../../utils/data";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 
 const ingredientTypesMap = {

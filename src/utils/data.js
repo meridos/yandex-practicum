@@ -232,6 +232,10 @@ export function getIngredients() {
     );
 }
 
+export function createOrder() {
+  return Promise.resolve(String(Math.round(Math.random() * 999999)));
+}
+
 export const ProductItemType = PropTypes.shape({
   _id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,

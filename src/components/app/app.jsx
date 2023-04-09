@@ -3,7 +3,7 @@ import AppHeader from "../app-header/app-header";
 import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import styles from "./app.module.css";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
-import { getIngredients } from "./utils/data";
+import { getIngredients } from "../../utils/data";
 import ErrorBoundary from "../error-boundary/error-boundary";
 
 export default function App() {

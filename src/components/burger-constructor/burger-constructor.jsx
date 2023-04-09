@@ -7,9 +7,8 @@ import {
   CurrencyIcon,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { ProductItemType } from "../app/utils/data";
+import { ProductItemType, createOrder } from "../../utils/data";
 import OrderDetails from "../order-details/order-details";
-import { createOrder } from "./utils/data";
 
 export default function BurgerConstructor(props) {
   const [bunIngredient, setBunIngredient] = useState(null);
