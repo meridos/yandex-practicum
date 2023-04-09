@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import styles from "./burger-ingredients.module.css";
 import {
@@ -13,88 +13,49 @@ const ingredientTypesMap = {
   bun: "Булки",
   sauce: "Соусы",
 };
-export default class BurgerIngredients extends React.Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      currentTab: "one",
-      groupProducts: this.getProductsList(props.ingredients),
-    };
+export default function BurgerIngredients(props) {
+  const [currentTab, setCurrentTab] = useState("one");
+  const [groupProducts, setGroupProducts] = useState([]);
 
-    this.onTabClick = this.onTabClick.bind(this);
+  useEffect(() => {
+    setGroupProducts(getProductsList(props.ingredients));
+  }, [props.ingredients]);
+
+  function onTabClick(currentTab) {
+    setCurrentTab(currentTab);
   }
 
-  onTabClick(currentTab) {
-    this.setState({ currentTab });
-  }
+  return (
+    <>
+      <div className={styles.tabs}>
+        <Tab value="one" active={currentTab === "one"} onClick={onTabClick}>
+          Булки
+        </Tab>
+        <Tab value="two" active={currentTab === "two"} onClick={onTabClick}>
+          Соусы
+        </Tab>
+        <Tab value="three" active={currentTab === "three"} onClick={onTabClick}>
+          Начинки
+        </Tab>
+      </div>
 
-  getProductsList(ingredients) {
-    if (!ingredients) {
-      return [];
-    }
-
-    const typesGroupMap = new Map();
-
-    for (let i = 0; i < ingredients.length; i++) {
-      const ingredient = ingredients[i];
-      const typeIngredients = typesGroupMap.get(ingredient.type) || [];
-
-      typeIngredients.push(ingredient);
-
-      typesGroupMap.set(ingredient.type, typeIngredients);
-    }
-
-    return Array.from(typesGroupMap).map(([type, typeIngredients]) => ({
-      typeTitle: ingredientTypesMap[type],
-      ingredients: typeIngredients,
-    }));
-  }
-
-  render() {
-    return (
-      <>
-        <div className={styles.tabs}>
-          <Tab
-            value="one"
-            active={this.state.currentTab === "one"}
-            onClick={this.onTabClick}
-          >
-            Булки
-          </Tab>
-          <Tab
-            value="two"
-            active={this.state.currentTab === "two"}
-            onClick={this.onTabClick}
-          >
-            Соусы
-          </Tab>
-          <Tab
-            value="three"
-            active={this.state.currentTab === "three"}
-            onClick={this.onTabClick}
-          >
-            Начинки
-          </Tab>
-        </div>
-
-        <div className={styles.categoriesList}>
-          {this.state.groupProducts.map(({ typeTitle, ingredients }) => (
-            <React.Fragment key={typeTitle}>
-              <h2 className={styles.title}>{typeTitle}</h2>
-              <div className={styles.productList}>
-                {ingredients.map((ingredient) => (
-                  <React.Fragment key={ingredient._id}>
-                    <ProductItem count={1} ingredient={ingredient} />
-                  </React.Fragment>
-                ))}
-              </div>
-            </React.Fragment>
-          ))}
-        </div>
-      </>
-    );
-  }
+      <div className={styles.categoriesList}>
+        {groupProducts.map(({ typeTitle, ingredients }) => (
+          <React.Fragment key={typeTitle}>
+            <h2 className={styles.title}>{typeTitle}</h2>
+            <div className={styles.productList}>
+              {ingredients.map((ingredient) => (
+                <React.Fragment key={ingredient._id}>
+                  <ProductItem count={1} ingredient={ingredient} />
+                </React.Fragment>
+              ))}
+            </div>
+          </React.Fragment>
+        ))}
+      </div>
+    </>
+  );
 }
 BurgerIngredients.propTypes = {
   ingredients: PropTypes.arrayOf(ProductItemType).isRequired,
@@ -123,3 +84,25 @@ ProductItem.propTypes = {
   count: PropTypes.number,
   ingredient: ProductItemType,
 };
+
+function getProductsList(ingredients) {
+  if (!ingredients) {
+    return [];
+  }
+
+  const typesGroupMap = new Map();
+
+  for (let i = 0; i < ingredients.length; i++) {
+    const ingredient = ingredients[i];
+    const typeIngredients = typesGroupMap.get(ingredient.type) || [];
+
+    typeIngredients.push(ingredient);
+
+    typesGroupMap.set(ingredient.type, typeIngredients);
+  }
+
+  return Array.from(typesGroupMap).map(([type, typeIngredients]) => ({
+    typeTitle: ingredientTypesMap[type],
+    ingredients: typeIngredients,
+  }));
+}
