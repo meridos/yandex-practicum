@@ -105,10 +105,12 @@ ProductItem.propTypes = {
 };
 
 function BunItem(props) {
+  const text = `${props.ingredient?.name} (${props.first ? "верх" : "низ"})`;
+
   return props.ingredient ? (
     <div className={styles.bunItem}>
       <ConstructorElement
-        text={props.ingredient.name}
+        text={text}
         thumbnail={props.ingredient.image_mobile}
         price={props.ingredient.price}
         isLocked={true}

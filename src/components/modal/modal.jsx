@@ -20,7 +20,7 @@ export default function Modal(props) {
     return () => {
       document.removeEventListener("keyup", onEscape, false);
     };
-  }, []);
+  }, [props.onClose]);
 
   return ReactDOM.createPortal(
     <>
