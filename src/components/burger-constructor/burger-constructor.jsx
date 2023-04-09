@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import styles from "./burger-constructor.module.css";
 import {
@@ -8,10 +8,15 @@ import {
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { ProductItemType } from "../app/utils/data";
+import ModalOrderDetails from "../modal-order-details/modal-order-details";
+import { createOrder } from "./utils/data";
 
 export default function BurgerConstructor(props) {
   const [bunIngredient, setBunIngredient] = useState(null);
   const [orderIngredients, setOrderIngredients] = useState([]);
+  const [orderOpen, setOrderOpen] = useState(false);
+  const [order, setOrder] = useState();
+  const [orderLoading, setOrderLoading] = useState(false);
 
   useEffect(() => {
     setBunIngredient(
@@ -21,6 +26,27 @@ export default function BurgerConstructor(props) {
       props.ingredients?.filter(({ type }) => type !== "bun")
     );
   }, [props.ingredients]);
+
+  const onCompleteClick = useCallback(() => {
+    setOrderLoading(true);
+  });
+
+  const onCompleteModalClose = useCallback(() => {
+    setOrderOpen(false);
+  });
+
+  useEffect(() => {
+    if (orderLoading) {
+      createOrder()
+        .then((order) => {
+          setOrder(order);
+          setOrderOpen(true);
+        })
+        .finally(() => {
+          setOrderLoading(false);
+        });
+    }
+  }, [orderLoading]);
 
   return (
     <div className={styles.items}>
@@ -43,10 +69,14 @@ export default function BurgerConstructor(props) {
           type="primary"
           size="large"
           extraClass="ml-10"
+          onClick={onCompleteClick}
         >
           Оформить заказ
         </Button>
       </div>
+      {orderOpen && (
+        <ModalOrderDetails order={order} onClose={onCompleteModalClose} />
+      )}
     </div>
   );
 }
