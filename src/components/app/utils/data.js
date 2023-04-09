@@ -218,7 +218,7 @@ const mockData = [
 ];
 
 export function getIngredients() {
-  return Promise.resolve(console.log("Get mock data") || mockData);
+  // return Promise.resolve(console.log("Get mock data") || mockData);
   return fetch(API_URL)
     .then((r) => r.json())
     .then(
