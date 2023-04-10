@@ -1,0 +1,28 @@
+.modal {
+  composes: p-10 from global;
+  position: relative;
+  background: var(--background);
+  align-self: center;
+  overflow: overlay;
+  max-height: 100vh;
+  max-width: 720px;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 40px;
+}
+
+.header {
+  composes: mr-8 from global;
+  display: flex;
+  flex-wrap: nowrap;
+  min-height: 64px;
+  align-items: center;
+}
+
+.close {
+  position: absolute;
+  right: 40px;
+  top: 60px;
+  cursor: pointer;
+  display: flex;
+}

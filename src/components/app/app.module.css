@@ -1,0 +1,46 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.container {
+  display: flex;
+  max-width: 1280px;
+  padding: 0 20px;
+  margin-left: auto;
+  margin-right: auto;
+  column-gap: 40px;
+  min-height: 0px;
+}
+
+.side {
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  width: 100%;
+  min-height: 0px;
+}
+
+.constructorContainer {
+  composes: side;
+  composes: mt-25 from global;
+}
+
+@media screen and (max-width: 1279px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+    max-height: 100%;
+  }
+
+  .side {
+    min-height: auto;
+  }
+}
+
+@media screen and (max-width: 639px) {
+  .container {
+    padding: 0 10px;
+  }
+}

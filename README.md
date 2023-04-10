@@ -1,4 +1,8 @@
-# Getting Started with Create React App
+# Stellar burgers
+
+## Проектная работа курса "Яндекс практикум React-разработчик"
+
+Просмотреть приложение: [stellar-burgers.bobrovartem.ru](https://stellar-burgers.bobrovartem.ru)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
