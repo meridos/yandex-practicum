@@ -1,0 +1,21 @@
+.total {
+  composes: mt-6 ml-4 mr-4 from global;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.totalIcon {
+  display: flex;
+}
+
+.totalIcon svg {
+  width: 33px;
+  height: 33px;
+}
+
+.error {
+  composes: mt-6 text text_type_main-default text_color_error from global;
+  color: var(--colors-interface-error);
+  text-align: center;
+}

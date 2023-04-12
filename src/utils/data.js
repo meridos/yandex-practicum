@@ -232,8 +232,28 @@ export function getIngredients() {
     );
 }
 
-export function createOrder() {
-  return Promise.resolve(String(Math.round(Math.random() * 999999)));
+export function createOrder(orderListIds) {
+  // return Promise.resolve(String(Math.round(Math.random() * 999999)));
+  return fetch("https://norma.nomoreparties.space/api/orders", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      ingredients: orderListIds,
+    }),
+  })
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+
+      return Promise.reject(`Ошибка ${res.status}`);
+    })
+    .then(
+      (res) =>
+        (res.success && res.order) || Promise.reject("Error response data")
+    );
 }
 
 export const ProductItemType = PropTypes.shape({
