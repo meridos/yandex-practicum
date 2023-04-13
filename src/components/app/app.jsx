@@ -5,7 +5,7 @@ import styles from "./app.module.css";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import getIngredients from "../../api/get-ingredients";
 import ErrorBoundary from "../error-boundary/error-boundary";
-import IngredientsContext from "./ingredients-context";
+import IngredientsContext from "../../contexts/ingredients-context";
 
 export default function App() {
   const [ingredients, setIngredients] = useState([]);

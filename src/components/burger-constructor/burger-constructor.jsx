@@ -4,7 +4,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
 import React, { useContext, useEffect, useState } from "react";
-import IngredientsContext from "../app/ingredients-context";
+import IngredientsContext from "../../contexts/ingredients-context";
 import Order from "../order/order";
 import styles from "./burger-constructor.module.css";
 import { ProductItemType } from "../../utils/common-prop-types";
