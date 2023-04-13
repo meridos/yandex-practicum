@@ -6,10 +6,10 @@ import {
   CurrencyIcon,
   Tab,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { ProductItemType } from "../../utils/data";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import Modal from "../modal/modal";
 import IngredientsContext from "../app/ingredients-context";
+import { ProductItemType } from "../../utils/common-prop-types";
 
 const ingredientTypesMap = {
   main: "Начинки",

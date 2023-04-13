@@ -4,10 +4,10 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
 import React, { useContext, useEffect, useState } from "react";
-import { ProductItemType } from "../../utils/data";
 import IngredientsContext from "../app/ingredients-context";
 import Order from "../order/order";
 import styles from "./burger-constructor.module.css";
+import { ProductItemType } from "../../utils/common-prop-types";
 
 const DEFAULT_BUN_ITEM = "60d3b41abdacab0026a733c7";
 const DEFAULT_ORDER_ITEMS = [

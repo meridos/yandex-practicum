@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import styles from "./ingredient-details.module.css";
-import { ProductItemType } from "../../utils/data";
+import { ProductItemType } from "../../utils/common-prop-types";
 
 export default function IngredientDetails(props) {
   const detailsList = [

@@ -14,7 +14,7 @@ import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import styles from "./order.module.css";
 import IngredientsContext from "../app/ingredients-context";
-import { createOrder } from "../../utils/data";
+import createOrder from "../../api/create-order";
 
 const initialState = { totalPrice: 0 };
 
