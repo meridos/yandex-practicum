@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import PropTypes from "prop-types";
 import styles from "./burger-ingredients.module.css";
 import {
@@ -6,9 +6,10 @@ import {
   CurrencyIcon,
   Tab,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { ProductItemType } from "../../utils/data";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import Modal from "../modal/modal";
+import IngredientsContext from "../../contexts/ingredients-context";
+import { ProductItemType } from "../../utils/common-prop-types";
 
 const ingredientTypesMap = {
   main: "Начинки",
@@ -20,10 +21,11 @@ const tabs = ["bun", "sauce", "main"].map((type) => ({
   title: ingredientTypesMap[type],
 }));
 
-export default function BurgerIngredients(props) {
+export default function BurgerIngredients() {
   const [currentTab, setCurrentTab] = useState("bun");
   const [groupProducts, setGroupProducts] = useState([]);
   const [productDetails, setProductDetails] = useState(null);
+  const ingredients = useContext(IngredientsContext);
 
   const categoriesRefs = {
     main: useRef(),
@@ -32,8 +34,8 @@ export default function BurgerIngredients(props) {
   };
 
   useEffect(() => {
-    setGroupProducts(getProductsList(props.ingredients));
-  }, [props.ingredients]);
+    setGroupProducts(getProductsList(ingredients));
+  }, [ingredients]);
 
   useEffect(() => {
     categoriesRefs[currentTab]?.current?.scrollIntoView();
@@ -79,9 +81,6 @@ export default function BurgerIngredients(props) {
     </div>
   );
 }
-BurgerIngredients.propTypes = {
-  ingredients: PropTypes.arrayOf(ProductItemType).isRequired,
-};
 
 const ProductItem = React.memo((props) => {
   return (

@@ -12,6 +12,7 @@
 }
 
 .bunItem {
+  composes: mr-4 from global;
   display: flex;
   justify-content: flex-start;
   margin-left: 48px;
@@ -32,22 +33,6 @@
 
 .itemDrag:active {
   cursor: grabbing;
-}
-
-.total {
-  composes: mt-6 ml-4 mr-4 from global;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-}
-
-.totalIcon {
-  display: flex;
-}
-
-.totalIcon svg {
-  width: 33px;
-  height: 33px;
 }
 
 @media screen and (max-width: 1279px) {

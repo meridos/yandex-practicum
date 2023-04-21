@@ -1,90 +1,67 @@
-import React, { useState, useEffect, useCallback } from "react";
-import PropTypes from "prop-types";
-import styles from "./burger-constructor.module.css";
 import {
-  Button,
   ConstructorElement,
-  CurrencyIcon,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { ProductItemType, createOrder } from "../../utils/data";
-import OrderDetails from "../order-details/order-details";
-import Modal from "../modal/modal";
+import PropTypes from "prop-types";
+import React, { useContext, useEffect, useState } from "react";
+import IngredientsContext from "../../contexts/ingredients-context";
+import Order from "../order/order";
+import styles from "./burger-constructor.module.css";
+import { ProductItemType } from "../../utils/common-prop-types";
 
-export default function BurgerConstructor(props) {
-  const [bunIngredient, setBunIngredient] = useState(null);
-  const [orderIngredients, setOrderIngredients] = useState([]);
-  const [orderOpen, setOrderOpen] = useState(false);
-  const [order, setOrder] = useState();
-  const [orderLoading, setOrderLoading] = useState(false);
+const DEFAULT_BUN_ITEM = "60d3b41abdacab0026a733c7";
+const DEFAULT_ORDER_ITEMS = [
+  "60d3b41abdacab0026a733c8",
+  "60d3b41abdacab0026a733d0",
+];
 
-  useEffect(() => {
-    setBunIngredient(
-      props.ingredients?.find(({ type }) => type === "bun") || null
-    );
-    setOrderIngredients(
-      props.ingredients?.filter(({ type }) => type !== "bun")
-    );
-  }, [props.ingredients]);
-
-  const onCompleteClick = useCallback(() => {
-    setOrderLoading(true);
-  });
-
-  const onCompleteModalClose = useCallback(() => {
-    setOrderOpen(false);
-  });
+export default function BurgerConstructor() {
+  const [bunIngredient, setBunIngredient] = useState(DEFAULT_BUN_ITEM);
+  const [orderIngredients, setOrderIngredients] = useState(DEFAULT_ORDER_ITEMS);
+  const ingredients = useContext(IngredientsContext);
+  const [ingredientsMap, setIngredientsMap] = useState(new Map());
 
   useEffect(() => {
-    if (orderLoading) {
-      createOrder()
-        .then((order) => {
-          setOrder(order);
-          setOrderOpen(true);
-        })
-        .finally(() => {
-          setOrderLoading(false);
-        });
-    }
-  }, [orderLoading]);
+    setIngredientsMap(
+      new Map(ingredients.map((ingredient) => [ingredient._id, ingredient]))
+    );
+  }, [ingredients]);
+
+  const FirstBunItem = () => (
+    <BunItem first={true} ingredient={ingredientsMap.get(bunIngredient)} />
+  );
+  const LastBunItem = () => (
+    <BunItem first={false} ingredient={ingredientsMap.get(bunIngredient)} />
+  );
+
+  const ScrollItems = () => (
+    <div className={styles.scrollItems}>
+      {orderIngredients.map((id) => {
+        const ingredient = ingredientsMap.get(id);
+
+        return (
+          ingredient && (
+            <React.Fragment key={id}>
+              <ProductItem ingredient={ingredient} />
+            </React.Fragment>
+          )
+        );
+      })}
+    </div>
+  );
 
   return (
     <div className={styles.items}>
-      <BunItem first={true} ingredient={bunIngredient} />
-      <div className={styles.scrollItems}>
-        {orderIngredients.map((item) => (
-          <React.Fragment key={item._id}>
-            <ProductItem ingredient={item} />
-          </React.Fragment>
-        ))}
-      </div>
-      <BunItem first={false} ingredient={bunIngredient} />
-      <div className={styles.total}>
-        <p className="text text_type_digits-medium mr-2">610</p>
-        <div className={styles.totalIcon}>
-          <CurrencyIcon type="primary" />
-        </div>
-        <Button
-          htmlType="button"
-          type="primary"
-          size="large"
-          extraClass="ml-10"
-          onClick={onCompleteClick}
-        >
-          Оформить заказ
-        </Button>
-      </div>
-      {orderOpen && (
-        <Modal onClose={onCompleteModalClose}>
-          <OrderDetails order={order} />
-        </Modal>
-      )}
+      <FirstBunItem />
+      <ScrollItems />
+      <LastBunItem />
+      <Order
+        bunIngredient={bunIngredient}
+        orderIngredients={orderIngredients}
+      />
     </div>
   );
 }
-BurgerConstructor.propTypes = {
-  ingredients: PropTypes.arrayOf(ProductItemType).isRequired,
-};
 
 function ProductItem(props) {
   return (
