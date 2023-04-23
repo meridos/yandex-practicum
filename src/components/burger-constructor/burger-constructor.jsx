@@ -4,21 +4,26 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ProductItemType } from "../../utils/common-prop-types";
 import Order from "../order/order";
 import styles from "./burger-constructor.module.css";
-
-const DEFAULT_BUN_ITEM = "60d3b41abdacab0026a733c7";
-const DEFAULT_ORDER_ITEMS = [
-  "60d3b41abdacab0026a733c8",
-  "60d3b41abdacab0026a733d0",
-];
+import { useDrop } from "react-dnd";
+import {
+  APPEND_BUN_CART,
+  APPEND_INGREDIENT_CART,
+  REMOVE_CART,
+} from "../../services/actions/cart";
 
 export default function BurgerConstructor() {
-  const [bunIngredient, setBunIngredient] = useState(DEFAULT_BUN_ITEM);
-  const [orderIngredients, setOrderIngredients] = useState(DEFAULT_ORDER_ITEMS);
-  const ingredients = useSelector((state) => state.ingredients.data);
+  const dispatch = useDispatch();
+  const { ingredients, bunIngredient, orderIngredients } = useSelector(
+    (state) => ({
+      ingredients: state.ingredients.data,
+      bunIngredient: state.cart.bun,
+      orderIngredients: state.cart.ingredients,
+    })
+  );
   const [ingredientsMap, setIngredientsMap] = useState(new Map());
 
   useEffect(() => {
@@ -27,27 +32,59 @@ export default function BurgerConstructor() {
     );
   }, [ingredients]);
 
+  const onDropBun = (item) => {
+    dispatch(APPEND_BUN_CART(item._id));
+  };
+  const onDropIngredient = (item) => {
+    dispatch(APPEND_INGREDIENT_CART(item._id));
+  };
+
   const FirstBunItem = () => (
-    <BunItem first={true} ingredient={ingredientsMap.get(bunIngredient)} />
+    <BunItem
+      first={true}
+      ingredient={ingredientsMap.get(bunIngredient)}
+      onDrop={onDropBun}
+    />
   );
   const LastBunItem = () => (
-    <BunItem first={false} ingredient={ingredientsMap.get(bunIngredient)} />
+    <BunItem
+      first={false}
+      ingredient={ingredientsMap.get(bunIngredient)}
+      onDrop={onDropBun}
+    />
   );
 
-  const ScrollItems = () => (
-    <div className={styles.scrollItems}>
-      {orderIngredients.map((id) => {
-        const ingredient = ingredientsMap.get(id);
+  const onDeleteItem = (item) => {
+    dispatch(REMOVE_CART(item));
+  };
 
-        return (
-          ingredient && (
-            <React.Fragment key={id}>
-              <ProductItem ingredient={ingredient} />
-            </React.Fragment>
-          )
-        );
-      })}
-    </div>
+  const ScrollItems = () => (
+    <DropTarget accept="ingredient" onDrop={onDropIngredient}>
+      <div className={styles.scrollItems}>
+        {orderIngredients.length ? (
+          orderIngredients.map((id) => {
+            const ingredient = ingredientsMap.get(id);
+
+            return (
+              <React.Fragment key={id}>
+                <ProductItem
+                  ingredient={ingredient}
+                  onDelete={() => onDeleteItem(id)}
+                />
+              </React.Fragment>
+            );
+          })
+        ) : (
+          <div className={styles.item}>
+            <div className={`${styles.emptyElement}`}>
+              <span className={styles.emptyElementText}>
+                Перенесите сюда булку
+              </span>
+            </div>
+          </div>
+        )}
+      </div>
+    </DropTarget>
   );
 
   return (
@@ -73,6 +110,7 @@ function ProductItem(props) {
         text={props.ingredient.name}
         thumbnail={props.ingredient.image_mobile}
         price={props.ingredient.price}
+        handleClose={props.onDelete}
       />
     </div>
   );
@@ -84,19 +122,44 @@ ProductItem.propTypes = {
 function BunItem(props) {
   const text = `${props.ingredient?.name} (${props.first ? "верх" : "низ"})`;
 
-  return props.ingredient ? (
-    <div className={styles.bunItem}>
-      <ConstructorElement
-        text={text}
-        thumbnail={props.ingredient.image_mobile}
-        price={props.ingredient.price}
-        isLocked={true}
-        type={props.first ? "top" : "bottom"}
-      />
-    </div>
-  ) : null;
+  return (
+    <DropTarget onDrop={props.onDrop} accept="bun">
+      {props.ingredient ? (
+        <div className={styles.bunItem}>
+          <ConstructorElement
+            text={text}
+            thumbnail={props.ingredient.image_mobile}
+            price={props.ingredient.price}
+            isLocked={true}
+            type={props.first ? "top" : "bottom"}
+          />
+        </div>
+      ) : (
+        <div
+          className={`${styles.bunItem} ${styles.bunEmptyElement} ${
+            props.first
+              ? "constructor-element_pos_top"
+              : "constructor-element_pos_bottom"
+          }`}
+        >
+          <span className={styles.emptyElementText}>Перенесите сюда булку</span>
+        </div>
+      )}
+    </DropTarget>
+  );
 }
 BunItem.propTypes = {
   first: PropTypes.bool.isRequired,
   ingredient: ProductItemType,
 };
+
+function DropTarget({ children, onDrop, accept }) {
+  const [, dropTarget] = useDrop({
+    accept,
+    drop(item) {
+      onDrop(item);
+    },
+  });
+
+  return <div ref={dropTarget}>{children}</div>;
+}

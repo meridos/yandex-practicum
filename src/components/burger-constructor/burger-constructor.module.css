@@ -35,6 +35,27 @@
   cursor: grabbing;
 }
 
+.emptyElement {
+  composes: constructor-element from global;
+  display: flex;
+  width: 400px;
+}
+
+.bunEmptyElement {
+  composes: emptyElement;
+  margin-left: 16px;
+}
+
+.emptyElementText {
+  composes: constructor-element__text empty-element__text from global;
+  justify-content: center;
+}
+
+.drop {
+  box-sizing: content-box;
+  border: 1px solid transparent;
+}
+
 @media screen and (max-width: 1279px) {
   .bunItem {
     margin-left: 32px;

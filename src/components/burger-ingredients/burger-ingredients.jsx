@@ -10,6 +10,7 @@ import { ProductItemType } from "../../utils/common-prop-types";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import Modal from "../modal/modal";
 import styles from "./burger-ingredients.module.css";
+import { useDrag } from "react-dnd";
 
 const ingredientTypesMap = {
   main: "Начинки",
@@ -105,8 +106,13 @@ export default function BurgerIngredients() {
 }
 
 const ProductItem = React.memo((props) => {
+  const [_, drag] = useDrag({
+    type: props.ingredient.type === "bun" ? "bun" : "ingredient",
+    item: props.ingredient,
+  });
+
   return (
-    <section className={styles.productItem} onClick={props.onClick}>
+    <section className={styles.productItem} onClick={props.onClick} ref={drag}>
       <div className={styles.productItemCount}>
         {props.count ? <Counter count={props.count} size="default" /> : null}
       </div>
