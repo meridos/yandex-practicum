@@ -66,11 +66,11 @@ export default function BurgerConstructor() {
     <DropTarget accept="ingredient" onDrop={onDropIngredient}>
       <div className={styles.scrollItems}>
         {orderIngredients.length ? (
-          orderIngredients.map((id) => {
+          orderIngredients.map((id, i) => {
             const ingredient = ingredientsMap.get(id);
 
             return (
-              <React.Fragment key={id}>
+              <React.Fragment key={id + i}>
                 <ProductItem
                   ingredient={ingredient}
                   onDelete={() => onDeleteItem(id)}
