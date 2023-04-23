@@ -4,16 +4,17 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
+import { useDrag, useDrop } from "react-dnd";
 import { useDispatch, useSelector } from "react-redux";
-import { ProductItemType } from "../../utils/common-prop-types";
-import Order from "../order/order";
-import styles from "./burger-constructor.module.css";
-import { useDrop } from "react-dnd";
 import {
   APPEND_BUN_CART,
   APPEND_INGREDIENT_CART,
   REMOVE_CART,
+  SORT_CART,
 } from "../../services/actions/cart";
+import { ProductItemType } from "../../utils/common-prop-types";
+import Order from "../order/order";
+import styles from "./burger-constructor.module.css";
 
 export default function BurgerConstructor() {
   const dispatch = useDispatch();
@@ -57,6 +58,9 @@ export default function BurgerConstructor() {
   const onDeleteItem = (item) => {
     dispatch(REMOVE_CART(item));
   };
+  const onSortItem = (prev, item) => {
+    dispatch(SORT_CART({ prev, new: item._id }));
+  };
 
   const ScrollItems = () => (
     <DropTarget accept="ingredient" onDrop={onDropIngredient}>
@@ -70,6 +74,7 @@ export default function BurgerConstructor() {
                 <ProductItem
                   ingredient={ingredient}
                   onDelete={() => onDeleteItem(id)}
+                  onSortItem={(item) => onSortItem(id, item)}
                 />
               </React.Fragment>
             );
@@ -101,18 +106,25 @@ export default function BurgerConstructor() {
 }
 
 function ProductItem(props) {
+  const [_, drag] = useDrag({
+    type: "order",
+    item: props.ingredient,
+  });
+
   return (
-    <div className={styles.item}>
-      <div className={styles.itemDrag}>
-        <DragIcon type="primary" />
+    <DropTarget onDrop={props.onSortItem} accept="order">
+      <div ref={drag} className={styles.item}>
+        <div className={styles.itemDrag}>
+          <DragIcon type="primary" />
+        </div>
+        <ConstructorElement
+          text={props.ingredient.name}
+          thumbnail={props.ingredient.image_mobile}
+          price={props.ingredient.price}
+          handleClose={props.onDelete}
+        />
       </div>
-      <ConstructorElement
-        text={props.ingredient.name}
-        thumbnail={props.ingredient.image_mobile}
-        price={props.ingredient.price}
-        handleClose={props.onDelete}
-      />
-    </div>
+    </DropTarget>
   );
 }
 ProductItem.propTypes = {
@@ -154,11 +166,14 @@ BunItem.propTypes = {
 };
 
 function DropTarget({ children, onDrop, accept }) {
-  const [, dropTarget] = useDrop({
+  const [{ isHover }, dropTarget] = useDrop({
     accept,
     drop(item) {
       onDrop(item);
     },
+    collect: (monitor) => ({
+      isHover: monitor.isOver(),
+    }),
   });
 
   return <div ref={dropTarget}>{children}</div>;
