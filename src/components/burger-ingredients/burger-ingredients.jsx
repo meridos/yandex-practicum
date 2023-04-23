@@ -5,12 +5,13 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
 import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ProductItemType } from "../../utils/common-prop-types";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import Modal from "../modal/modal";
 import styles from "./burger-ingredients.module.css";
 import { useDrag } from "react-dnd";
+import { CLOSE_DETAILS, OPEN_DETAILS } from "../../services/actions/details";
 
 const ingredientTypesMap = {
   main: "Начинки",
@@ -26,9 +27,14 @@ export default function BurgerIngredients() {
   const [currentTab, setCurrentTab] = useState("bun");
   const [scrollTab, setScrollTab] = useState("bun");
   const [groupProducts, setGroupProducts] = useState([]);
-  const [productDetails, setProductDetails] = useState(null);
   const ingredients = useSelector((state) => state.ingredients.data);
   const ref = useRef();
+  const dispatch = useDispatch();
+  const productDetails = useSelector((state) =>
+    state.ingredients.data.find(
+      (ingredient) => ingredient._id === state.details.ingredient
+    )
+  );
 
   const categoriesRefs = {
     main: useRef(),
@@ -69,7 +75,11 @@ export default function BurgerIngredients() {
   }
 
   function onProductClick(ingredient) {
-    setProductDetails(ingredient);
+    if (ingredient) {
+      dispatch(OPEN_DETAILS(ingredient._id));
+    } else {
+      dispatch(CLOSE_DETAILS());
+    }
   }
 
   return (
