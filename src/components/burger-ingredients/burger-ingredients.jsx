@@ -23,9 +23,11 @@ const tabs = ["bun", "sauce", "main"].map((type) => ({
 
 export default function BurgerIngredients() {
   const [currentTab, setCurrentTab] = useState("bun");
+  const [scrollTab, setScrollTab] = useState("bun");
   const [groupProducts, setGroupProducts] = useState([]);
   const [productDetails, setProductDetails] = useState(null);
   const ingredients = useSelector((state) => state.ingredients.data);
+  const ref = useRef();
 
   const categoriesRefs = {
     main: useRef(),
@@ -39,7 +41,27 @@ export default function BurgerIngredients() {
 
   useEffect(() => {
     categoriesRefs[currentTab]?.current?.scrollIntoView();
-  }, [currentTab]);
+  }, [currentTab, scrollTab]);
+
+  useEffect(() => {
+    const scrollCallback = (e) => {
+      const res = tabs.map(({ type }) => ({
+        pos: Math.abs(
+          categoriesRefs[type].current.offsetTop - ref.current.scrollTop
+        ),
+        type,
+      }));
+      const tab = res.reduce((a, b) => (a.pos > b.pos ? b : a));
+
+      setCurrentTab(tab.type);
+    };
+
+    ref.current.addEventListener("scroll", scrollCallback);
+
+    return () => {
+      window.removeEventListener("scroll", scrollCallback);
+    };
+  }, []);
 
   function onTabClick(currentTab) {
     setCurrentTab(currentTab);
@@ -53,7 +75,7 @@ export default function BurgerIngredients() {
     <div className={styles.wrapper}>
       <Tabs currentTab={currentTab} onChange={onTabClick} />
 
-      <div className={styles.categoriesList}>
+      <div className={styles.categoriesList} ref={ref}>
         {groupProducts.map(({ type, title, ingredients }) => (
           <React.Fragment key={type}>
             <h2 className={styles.title} ref={categoriesRefs[type]}>
