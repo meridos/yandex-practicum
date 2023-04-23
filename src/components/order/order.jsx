@@ -2,19 +2,13 @@ import {
   Button,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import {
-  useCallback,
-  useContext,
-  useEffect,
-  useReducer,
-  useState,
-} from "react";
 import PropTypes from "prop-types";
+import { useCallback, useEffect, useReducer, useState } from "react";
+import { useSelector } from "react-redux";
+import createOrder from "../../api/create-order";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import styles from "./order.module.css";
-import IngredientsContext from "../../contexts/ingredients-context";
-import createOrder from "../../api/create-order";
 
 const initialState = { totalPrice: 0 };
 
@@ -30,7 +24,7 @@ function totalPriceReducer(state, action) {
 }
 
 export default function OrderTotal(props) {
-  const ingredients = useContext(IngredientsContext);
+  const ingredients = useSelector((state) => state.ingredients.data);
   const [orderOpen, setOrderOpen] = useState(false);
   const [order, setOrder] = useState();
   const [orderLoading, setOrderLoading] = useState(false);

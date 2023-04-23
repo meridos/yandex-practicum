@@ -1,15 +1,15 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
-import PropTypes from "prop-types";
-import styles from "./burger-ingredients.module.css";
 import {
   Counter,
   CurrencyIcon,
   Tab,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import PropTypes from "prop-types";
+import React, { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
+import { ProductItemType } from "../../utils/common-prop-types";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import Modal from "../modal/modal";
-import IngredientsContext from "../../contexts/ingredients-context";
-import { ProductItemType } from "../../utils/common-prop-types";
+import styles from "./burger-ingredients.module.css";
 
 const ingredientTypesMap = {
   main: "Начинки",
@@ -25,7 +25,7 @@ export default function BurgerIngredients() {
   const [currentTab, setCurrentTab] = useState("bun");
   const [groupProducts, setGroupProducts] = useState([]);
   const [productDetails, setProductDetails] = useState(null);
-  const ingredients = useContext(IngredientsContext);
+  const ingredients = useSelector((state) => state.ingredients.data);
 
   const categoriesRefs = {
     main: useRef(),
