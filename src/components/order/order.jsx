@@ -14,6 +14,8 @@ const initialState = { totalPrice: 0 };
 
 function totalPriceReducer(state, action) {
   switch (action.type) {
+    case "reset":
+      return { totalPrice: 0 };
     case "bun":
       return { totalPrice: state.totalPrice + action.payload.price * 2 };
     case "ingredient":
@@ -38,6 +40,9 @@ export default function OrderTotal(props) {
   }));
 
   useEffect(() => {
+    console.log(ingredients, props.bunItem, props.orderIngredients);
+    totalPriceDispatch({ type: "reset" });
+
     ingredients.forEach((ingredient) => {
       if (props.bunItem === ingredient._id) {
         totalPriceDispatch({ type: "bun", payload: ingredient });

@@ -35,6 +35,13 @@ export default function BurgerIngredients() {
       (ingredient) => ingredient._id === state.details.ingredient
     )
   );
+  const countsMap = useSelector((state) =>
+    state.cart.ingredients.concat(state.cart.bun).reduce((map, id) => {
+      map.set(id, (map.get(id) || 0) + 1);
+
+      return map;
+    }, new Map())
+  );
 
   const categoriesRefs = {
     main: useRef(),
@@ -96,7 +103,7 @@ export default function BurgerIngredients() {
               {ingredients.map((ingredient) => (
                 <React.Fragment key={ingredient._id}>
                   <ProductItem
-                    count={1}
+                    count={countsMap.get(ingredient._id)}
                     ingredient={ingredient}
                     onClick={() => onProductClick(ingredient)}
                   />
