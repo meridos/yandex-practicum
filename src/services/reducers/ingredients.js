@@ -1,6 +1,7 @@
 import { createReducer } from "@reduxjs/toolkit";
 import {
   GET_INGREDIENTS,
+  GET_INGREDIENTS_ERROR,
   GET_INGREDIENTS_SUCCESS,
 } from "../actions/ingredients";
 
@@ -19,5 +20,6 @@ export const ingredientsReducer = createReducer(initialState, (builder) => {
       ...state,
       data: action.payload,
       loading: false,
-    }));
+    }))
+    .addCase(GET_INGREDIENTS_ERROR, () => initialState);
 });

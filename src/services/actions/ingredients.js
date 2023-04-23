@@ -6,6 +6,7 @@ export const GET_INGREDIENTS = createAction("ingredients/request");
 export const GET_INGREDIENTS_SUCCESS = createAction(
   "ingredients/request/success"
 );
+export const GET_INGREDIENTS_ERROR = createAction("ingredients/request/error");
 
 export const getIngredients = () => (dispatch) => {
   dispatch(GET_INGREDIENTS());
@@ -14,6 +15,7 @@ export const getIngredients = () => (dispatch) => {
       dispatch(GET_INGREDIENTS_SUCCESS(items));
     })
     .catch((err) => {
+      dispatch(GET_INGREDIENTS_ERROR(err));
       dispatch(ERROR(err));
     });
 };

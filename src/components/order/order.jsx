@@ -3,9 +3,9 @@ import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
-import { useCallback, useEffect, useReducer, useState } from "react";
-import { useSelector } from "react-redux";
-import createOrder from "../../api/create-order";
+import { useCallback, useEffect, useReducer } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { CLOSE_ORDER, createOrder } from "../../services/actions/order";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import styles from "./order.module.css";
@@ -25,14 +25,17 @@ function totalPriceReducer(state, action) {
 
 export default function OrderTotal(props) {
   const ingredients = useSelector((state) => state.ingredients.data);
-  const [orderOpen, setOrderOpen] = useState(false);
-  const [order, setOrder] = useState();
-  const [orderLoading, setOrderLoading] = useState(false);
-  const [error, setError] = useState(false);
   const [totalPriceState, totalPriceDispatch] = useReducer(
     totalPriceReducer,
     initialState
   );
+  const dispatch = useDispatch();
+  const { order, orderLoading, error, orderOpen } = useSelector((state) => ({
+    order: state.order.data?.number,
+    orderLoading: state.order.loading,
+    error: state.order.error,
+    orderOpen: state.order.open,
+  }));
 
   useEffect(() => {
     ingredients.forEach((ingredient) => {
@@ -51,27 +54,13 @@ export default function OrderTotal(props) {
   }, [ingredients, props.bunItem, props.orderIngredients]);
 
   const onCompleteClick = useCallback(() => {
-    setOrderLoading(true);
+    dispatch(
+      createOrder([props.bunItem, ...props.orderIngredients].filter(Boolean))
+    );
   });
   const onCompleteModalClose = useCallback(() => {
-    setOrderOpen(false);
+    dispatch(CLOSE_ORDER());
   });
-
-  useEffect(() => {
-    if (orderLoading) {
-      createOrder([props.bunItem, ...props.orderIngredients].filter(Boolean))
-        .then((order) => {
-          setOrder(order.number);
-          setOrderOpen(true);
-        })
-        .catch((err) => {
-          setError(err);
-        })
-        .finally(() => {
-          setOrderLoading(false);
-        });
-    }
-  }, [orderLoading]);
 
   return (
     <>

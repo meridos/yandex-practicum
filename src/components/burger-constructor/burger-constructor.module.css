@@ -36,14 +36,14 @@
 }
 
 .emptyElement {
-  composes: constructor-element from global;
+  composes: ml-8 constructor-element from global;
   display: flex;
   width: 400px;
 }
 
 .bunEmptyElement {
   composes: emptyElement;
-  margin-left: 16px;
+  margin-left: 48px;
 }
 
 .emptyElementText {
