@@ -1,5 +1,6 @@
 import { createAction } from "@reduxjs/toolkit";
 import createOrderApi from "../../api/create-order";
+import { RESET_CART } from "./cart";
 
 export const CREATE_ORDER = createAction("order/create");
 export const CREATE_ORDER_SUCCESS = createAction("order/create/success");
@@ -13,6 +14,7 @@ export const createOrder = (orderListIds) => (dispatch) => {
     .then((data) => {
       dispatch(CREATE_ORDER_SUCCESS(data));
       dispatch(OPEN_ORDER());
+      dispatch(RESET_CART());
     })
     .catch((err) => {
       dispatch(CREATE_ORDER_ERROR(err));

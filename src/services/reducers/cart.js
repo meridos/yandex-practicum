@@ -4,6 +4,7 @@ import {
   APPEND_INGREDIENT_CART,
   REMOVE_CART,
   SORT_CART,
+  RESET_CART,
 } from "../actions/cart";
 
 const initialState = {
@@ -39,5 +40,6 @@ export const cartReducer = createReducer(initialState, (builder) => {
 
       state.ingredients.splice(prevIndex, 1, newItem);
       state.ingredients.splice(newIndex, 1, prevItem);
-    });
+    })
+    .addCase(RESET_CART, () => initialState);
 });
