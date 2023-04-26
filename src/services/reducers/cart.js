@@ -24,14 +24,20 @@ export const cartReducer = createReducer(initialState, (builder) => {
     .addCase(REMOVE_CART, (state, action) => ({
       ...state,
       ingredients: state.ingredients.filter(
-        (ingredient) => ingredient !== action.payload
+        (ingredient) => ingredient.uuid !== action.payload
       ),
     }))
     .addCase(SORT_CART, (state, action) => {
-      const prevIndex = state.ingredients.indexOf(action.payload.prev);
-      const newIndex = state.ingredients.indexOf(action.payload.new);
+      const prevItem = state.ingredients.find(
+        ({ uuid }) => uuid === action.payload.prevUuid
+      );
+      const newItem = state.ingredients.find(
+        ({ uuid }) => uuid === action.payload.newUuid
+      );
+      const prevIndex = state.ingredients.indexOf(prevItem);
+      const newIndex = state.ingredients.indexOf(newItem);
 
-      state.ingredients.splice(prevIndex, 1, action.payload.new);
-      state.ingredients.splice(newIndex, 1, action.payload.prev);
+      state.ingredients.splice(prevIndex, 1, newItem);
+      state.ingredients.splice(newIndex, 1, prevItem);
     });
 });

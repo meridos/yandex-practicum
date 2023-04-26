@@ -15,6 +15,7 @@ import {
 import { ProductItemType } from "../../utils/common-prop-types";
 import Order from "../order/order";
 import styles from "./burger-constructor.module.css";
+import { nanoid } from "@reduxjs/toolkit";
 
 export default function BurgerConstructor() {
   const dispatch = useDispatch();
@@ -37,7 +38,12 @@ export default function BurgerConstructor() {
     dispatch(APPEND_BUN_CART(item._id));
   };
   const onDropIngredient = (item) => {
-    dispatch(APPEND_INGREDIENT_CART(item._id));
+    dispatch(
+      APPEND_INGREDIENT_CART({
+        id: item._id,
+        uuid: nanoid(),
+      })
+    );
   };
 
   const FirstBunItem = () => (
@@ -55,26 +61,34 @@ export default function BurgerConstructor() {
     />
   );
 
-  const onDeleteItem = (item) => {
-    dispatch(REMOVE_CART(item));
+  const onDeleteItem = (uuid) => {
+    dispatch(REMOVE_CART(uuid));
   };
-  const onSortItem = (prev, item) => {
-    dispatch(SORT_CART({ prev, new: item._id }));
+  const onSortItem = (prevUuid, newUuid) => {
+    if (prevUuid === newUuid) return;
+
+    dispatch(
+      SORT_CART({
+        prevUuid,
+        newUuid,
+      })
+    );
   };
 
   const ScrollItems = () => (
     <DropTarget accept="ingredient" onDrop={onDropIngredient}>
       <div className={styles.scrollItems}>
         {orderIngredients.length ? (
-          orderIngredients.map((id, i) => {
+          orderIngredients.map(({ id, uuid }) => {
             const ingredient = ingredientsMap.get(id);
 
             return (
-              <React.Fragment key={id + i}>
+              <React.Fragment key={uuid}>
                 <ProductItem
                   ingredient={ingredient}
-                  onDelete={() => onDeleteItem(id)}
-                  onSortItem={(item) => onSortItem(id, item)}
+                  uuid={uuid}
+                  onDelete={() => onDeleteItem(uuid)}
+                  onSortItem={(dropItem) => onSortItem(uuid, dropItem.uuid)}
                 />
               </React.Fragment>
             );
@@ -108,7 +122,7 @@ export default function BurgerConstructor() {
 function ProductItem(props) {
   const [_, drag] = useDrag({
     type: "order",
-    item: props.ingredient,
+    item: { uuid: props.uuid },
   });
 
   return (
@@ -129,6 +143,9 @@ function ProductItem(props) {
 }
 ProductItem.propTypes = {
   ingredient: ProductItemType.isRequired,
+  uuid: PropTypes.string.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  onSortItem: PropTypes.func.isRequired,
 };
 
 function BunItem(props) {

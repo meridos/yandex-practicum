@@ -40,7 +40,6 @@ export default function OrderTotal(props) {
   }));
 
   useEffect(() => {
-    console.log(ingredients, props.bunItem, props.orderIngredients);
     totalPriceDispatch({ type: "reset" });
 
     ingredients.forEach((ingredient) => {
@@ -49,7 +48,7 @@ export default function OrderTotal(props) {
       }
 
       const orderIngredient = props.orderIngredients.find(
-        (id) => id === ingredient._id
+        ({ id }) => id === ingredient._id
       );
 
       if (orderIngredient) {
@@ -60,7 +59,11 @@ export default function OrderTotal(props) {
 
   const onCompleteClick = useCallback(() => {
     dispatch(
-      createOrder([props.bunItem, ...props.orderIngredients].filter(Boolean))
+      createOrder(
+        [props.bunItem, ...props.orderIngredients.map(({ id }) => id)].filter(
+          Boolean
+        )
+      )
     );
   });
   const onCompleteModalClose = useCallback(() => {
@@ -98,5 +101,10 @@ export default function OrderTotal(props) {
 }
 OrderTotal.propTypes = {
   bunItem: PropTypes.string,
-  orderIngredients: PropTypes.arrayOf(PropTypes.string).isRequired,
+  orderIngredients: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      uuid: PropTypes.string.isRequired,
+    })
+  ).isRequired,
 };

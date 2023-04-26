@@ -12,14 +12,12 @@ const initialState = {
   loading: false,
   error: false,
   open: false,
-  ingredients: null,
 };
 
 export const orderReducer = createReducer(initialState, (builder) => {
   builder
-    .addCase(CREATE_ORDER, (state, action) => ({
+    .addCase(CREATE_ORDER, (state) => ({
       ...state,
-      ingredients: action.payload,
       loading: true,
       error: false,
     }))

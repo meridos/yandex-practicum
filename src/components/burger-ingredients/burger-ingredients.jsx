@@ -36,11 +36,11 @@ export default function BurgerIngredients() {
     )
   );
   const countsMap = useSelector((state) =>
-    state.cart.ingredients.concat(state.cart.bun).reduce((map, id) => {
+    state.cart.ingredients.reduce((map, { id }) => {
       map.set(id, (map.get(id) || 0) + 1);
 
       return map;
-    }, new Map())
+    }, new Map(state.cart.bun ? [[state.cart.bun, 2]] : []))
   );
 
   const categoriesRefs = {
