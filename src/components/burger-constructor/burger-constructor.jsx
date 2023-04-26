@@ -17,14 +17,16 @@ import Order from "../order/order";
 import styles from "./burger-constructor.module.css";
 import { nanoid } from "@reduxjs/toolkit";
 
+const constructorDataSelector = (state) => ({
+  ingredients: state.ingredients.data,
+  bunIngredient: state.cart.bun,
+  orderIngredients: state.cart.ingredients,
+});
+
 export default function BurgerConstructor() {
   const dispatch = useDispatch();
   const { ingredients, bunIngredient, orderIngredients } = useSelector(
-    (state) => ({
-      ingredients: state.ingredients.data,
-      bunIngredient: state.cart.bun,
-      orderIngredients: state.cart.ingredients,
-    })
+    constructorDataSelector
   );
   const [ingredientsMap, setIngredientsMap] = useState(new Map());
 

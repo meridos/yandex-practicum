@@ -23,25 +23,27 @@ const tabs = ["bun", "sauce", "main"].map((type) => ({
   title: ingredientTypesMap[type],
 }));
 
+const ingredientsDataSelector = (state) => ({
+  ingredients: state.ingredients.data,
+  productDetails: state.ingredients.data.find(
+    (ingredient) => ingredient._id === state.details.ingredient
+  ),
+  countsMap: state.cart.ingredients.reduce((map, { id }) => {
+    map.set(id, (map.get(id) || 0) + 1);
+
+    return map;
+  }, new Map(state.cart.bun ? [[state.cart.bun, 2]] : [])),
+});
+
 export default function BurgerIngredients() {
   const [currentTab, setCurrentTab] = useState("bun");
   const [scrollTab, setScrollTab] = useState("bun");
   const [groupProducts, setGroupProducts] = useState([]);
-  const ingredients = useSelector((state) => state.ingredients.data);
+  const { ingredients, productDetails, countsMap } = useSelector(
+    ingredientsDataSelector
+  );
   const ref = useRef();
   const dispatch = useDispatch();
-  const productDetails = useSelector((state) =>
-    state.ingredients.data.find(
-      (ingredient) => ingredient._id === state.details.ingredient
-    )
-  );
-  const countsMap = useSelector((state) =>
-    state.cart.ingredients.reduce((map, { id }) => {
-      map.set(id, (map.get(id) || 0) + 1);
-
-      return map;
-    }, new Map(state.cart.bun ? [[state.cart.bun, 2]] : []))
-  );
 
   const categoriesRefs = {
     main: useRef(),

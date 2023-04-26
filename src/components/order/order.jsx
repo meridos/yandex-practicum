@@ -32,8 +32,17 @@ function totalPriceReducer(state, action) {
   }
 }
 
+const orderDataSelector = (state) => ({
+  ingredients: state.ingredients.data,
+  order: state.order.data?.number,
+  orderLoading: state.order.loading,
+  error: state.order.error,
+  orderOpen: state.order.open,
+});
+
 const OrderTotal = (props) => {
-  const ingredients = useSelector((state) => state.ingredients.data);
+  const { ingredients, order, orderLoading, error, orderOpen } =
+    useSelector(orderDataSelector);
   const ingredientsMap = useMemo(
     () =>
       new Map(ingredients.map((ingredient) => [ingredient._id, ingredient])),
@@ -46,12 +55,6 @@ const OrderTotal = (props) => {
     initialState
   );
   const dispatch = useDispatch();
-  const { order, orderLoading, error, orderOpen } = useSelector((state) => ({
-    order: state.order.data?.number,
-    orderLoading: state.order.loading,
-    error: state.order.error,
-    orderOpen: state.order.open,
-  }));
 
   useEffect(() => {
     totalPriceDispatch({ type: "reset" });
