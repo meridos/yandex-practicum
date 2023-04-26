@@ -71,10 +71,10 @@ const OrderTotal = (props) => {
         )
       )
     );
-  });
+  }, [props.bunItem, props.orderIngredients]);
   const onCompleteModalClose = useCallback(() => {
     dispatch(CLOSE_ORDER());
-  });
+  }, [dispatch]);
 
   return (
     <>
