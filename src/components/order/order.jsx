@@ -3,7 +3,7 @@ import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
-import { useCallback, useEffect, useReducer } from "react";
+import { memo, useCallback, useEffect, useMemo, useReducer } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CLOSE_ORDER, createOrder } from "../../services/actions/order";
 import Modal from "../modal/modal";
@@ -25,8 +25,14 @@ function totalPriceReducer(state, action) {
   }
 }
 
-export default function OrderTotal(props) {
+const OrderTotal = (props) => {
   const ingredients = useSelector((state) => state.ingredients.data);
+  const ingredientsMap = useMemo(
+    () =>
+      new Map(ingredients.map((ingredient) => [ingredient._id, ingredient])),
+    [ingredients]
+  );
+
   const [totalPriceState, totalPriceDispatch] = useReducer(
     totalPriceReducer,
     initialState
@@ -42,20 +48,20 @@ export default function OrderTotal(props) {
   useEffect(() => {
     totalPriceDispatch({ type: "reset" });
 
-    ingredients.forEach((ingredient) => {
-      if (props.bunItem === ingredient._id) {
-        totalPriceDispatch({ type: "bun", payload: ingredient });
-      }
+    if (props.bunItem) {
+      totalPriceDispatch({
+        type: "bun",
+        payload: ingredientsMap.get(props.bunItem),
+      });
+    }
 
-      const orderIngredient = props.orderIngredients.find(
-        ({ id }) => id === ingredient._id
-      );
-
-      if (orderIngredient) {
-        totalPriceDispatch({ type: "ingredient", payload: ingredient });
-      }
+    props.orderIngredients.forEach(({ id }) => {
+      totalPriceDispatch({
+        type: "ingredient",
+        payload: ingredientsMap.get(id),
+      });
     });
-  }, [ingredients, props.bunItem, props.orderIngredients]);
+  }, [ingredientsMap, props.bunItem, props.orderIngredients]);
 
   const onCompleteClick = useCallback(() => {
     dispatch(
@@ -98,7 +104,7 @@ export default function OrderTotal(props) {
       </div>
     </>
   );
-}
+};
 OrderTotal.propTypes = {
   bunItem: PropTypes.string,
   orderIngredients: PropTypes.arrayOf(
@@ -108,3 +114,5 @@ OrderTotal.propTypes = {
     })
   ).isRequired,
 };
+
+export default memo(OrderTotal);

@@ -111,10 +111,7 @@ export default function BurgerConstructor() {
       <FirstBunItem />
       <ScrollItems />
       <LastBunItem />
-      <Order
-        bunIngredient={bunIngredient}
-        orderIngredients={orderIngredients}
-      />
+      <Order bunItem={bunIngredient} orderIngredients={orderIngredients} />
     </div>
   );
 }
