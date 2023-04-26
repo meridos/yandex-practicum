@@ -3,7 +3,14 @@ import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
-import { memo, useCallback, useEffect, useMemo, useReducer } from "react";
+import {
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useReducer,
+  useState,
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { CLOSE_ORDER, createOrder } from "../../services/actions/order";
 import Modal from "../modal/modal";
@@ -32,6 +39,7 @@ const OrderTotal = (props) => {
       new Map(ingredients.map((ingredient) => [ingredient._id, ingredient])),
     [ingredients]
   );
+  const [valid, setValid] = useState(false);
 
   const [totalPriceState, totalPriceDispatch] = useReducer(
     totalPriceReducer,
@@ -61,6 +69,8 @@ const OrderTotal = (props) => {
         payload: ingredientsMap.get(id),
       });
     });
+
+    setValid(Boolean(props.bunItem));
   }, [ingredientsMap, props.bunItem, props.orderIngredients]);
 
   const onCompleteClick = useCallback(() => {
@@ -91,7 +101,7 @@ const OrderTotal = (props) => {
           type="primary"
           size="large"
           extraClass="ml-10"
-          disabled={orderLoading}
+          disabled={orderLoading || !valid}
           onClick={onCompleteClick}
         >
           Оформить заказ

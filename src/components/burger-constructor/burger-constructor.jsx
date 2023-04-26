@@ -97,7 +97,7 @@ export default function BurgerConstructor() {
           <div className={styles.item}>
             <div className={`${styles.emptyElement}`}>
               <span className={styles.emptyElementText}>
-                Перенесите сюда булку
+                Перенесите сюда ингредиент
               </span>
             </div>
           </div>
