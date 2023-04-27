@@ -37,12 +37,12 @@ const ingredientsDataSelector = (state) => ({
 
 export default function BurgerIngredients() {
   const [currentTab, setCurrentTab] = useState("bun");
-  const [scrollTab, setScrollTab] = useState("bun");
   const [groupProducts, setGroupProducts] = useState([]);
+  const [thresholds, setThreshholds] = useState({});
   const { ingredients, productDetails, countsMap } = useSelector(
     ingredientsDataSelector
   );
-  const ref = useRef();
+  const scrollContainerRef = useRef();
   const dispatch = useDispatch();
 
   const categoriesRefs = {
@@ -56,31 +56,52 @@ export default function BurgerIngredients() {
   }, [ingredients]);
 
   useEffect(() => {
-    categoriesRefs[currentTab]?.current?.scrollIntoView();
-  }, [currentTab, scrollTab]);
+    const keys = Object.keys(thresholds);
+    const closestTab =
+      keys.length &&
+      keys.reduce((max, key) =>
+        thresholds[key] > thresholds[max] ? key : max
+      );
+
+    if (closestTab) {
+      setCurrentTab(closestTab);
+    }
+  }, [thresholds]);
 
   useEffect(() => {
-    const scrollCallback = (e) => {
-      const res = tabs.map(({ type }) => ({
-        pos: Math.abs(
-          categoriesRefs[type].current.offsetTop - ref.current.scrollTop
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          setThreshholds((state) => ({
+            ...state,
+            [entry.target.dataset?.type]: entry.isIntersecting
+              ? entry.intersectionRatio
+              : 0,
+          }));
+        });
+      },
+      {
+        root: scrollContainerRef.current,
+        threshold: Array.from({ length: 10, value: null }).map(
+          (_, i) => (i + 1) / 10
         ),
-        type,
-      }));
-      const tab = res.reduce((a, b) => (a.pos > b.pos ? b : a));
+      }
+    );
 
-      setCurrentTab(tab.type);
-    };
-
-    ref.current.addEventListener("scroll", scrollCallback);
+    groupProducts.forEach((group) => {
+      if (categoriesRefs[group.type].current) {
+        observer.observe(categoriesRefs[group.type].current);
+      }
+    });
 
     return () => {
-      window.removeEventListener("scroll", scrollCallback);
+      observer.disconnect();
     };
-  }, []);
+  }, [groupProducts]);
 
   function onTabClick(currentTab) {
     setCurrentTab(currentTab);
+    categoriesRefs[currentTab]?.current?.scrollIntoView();
   }
 
   function onProductClick(ingredient) {
@@ -95,12 +116,10 @@ export default function BurgerIngredients() {
     <div className={styles.wrapper}>
       <Tabs currentTab={currentTab} onChange={onTabClick} />
 
-      <div className={styles.categoriesList} ref={ref}>
+      <div className={styles.categoriesList} ref={scrollContainerRef}>
         {groupProducts.map(({ type, title, ingredients }) => (
-          <React.Fragment key={type}>
-            <h2 className={styles.title} ref={categoriesRefs[type]}>
-              {title}
-            </h2>
+          <div key={type} ref={categoriesRefs[type]} data-type={type}>
+            <h2 className={styles.title}>{title}</h2>
             <div className={styles.productList}>
               {ingredients.map((ingredient) => (
                 <React.Fragment key={ingredient._id}>
@@ -112,7 +131,7 @@ export default function BurgerIngredients() {
                 </React.Fragment>
               ))}
             </div>
-          </React.Fragment>
+          </div>
         ))}
       </div>
       {productDetails && (
