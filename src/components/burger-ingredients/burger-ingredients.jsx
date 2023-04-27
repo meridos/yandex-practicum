@@ -1,15 +1,17 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
-import PropTypes from "prop-types";
-import styles from "./burger-ingredients.module.css";
 import {
   Counter,
   CurrencyIcon,
   Tab,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import PropTypes from "prop-types";
+import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { ProductItemType } from "../../utils/common-prop-types";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import Modal from "../modal/modal";
-import IngredientsContext from "../../contexts/ingredients-context";
-import { ProductItemType } from "../../utils/common-prop-types";
+import styles from "./burger-ingredients.module.css";
+import { useDrag } from "react-dnd";
+import { CLOSE_DETAILS, OPEN_DETAILS } from "../../services/actions/details";
 
 const ingredientTypesMap = {
   main: "Начинки",
@@ -21,11 +23,27 @@ const tabs = ["bun", "sauce", "main"].map((type) => ({
   title: ingredientTypesMap[type],
 }));
 
+const ingredientsDataSelector = (state) => ({
+  ingredients: state.ingredients.data,
+  productDetails: state.ingredients.data.find(
+    (ingredient) => ingredient._id === state.details.ingredient
+  ),
+  countsMap: state.cart.ingredients.reduce((map, { id }) => {
+    map.set(id, (map.get(id) || 0) + 1);
+
+    return map;
+  }, new Map(state.cart.bun ? [[state.cart.bun, 2]] : [])),
+});
+
 export default function BurgerIngredients() {
   const [currentTab, setCurrentTab] = useState("bun");
   const [groupProducts, setGroupProducts] = useState([]);
-  const [productDetails, setProductDetails] = useState(null);
-  const ingredients = useContext(IngredientsContext);
+  const [thresholds, setThreshholds] = useState({});
+  const { ingredients, productDetails, countsMap } = useSelector(
+    ingredientsDataSelector
+  );
+  const scrollContainerRef = useRef();
+  const dispatch = useDispatch();
 
   const categoriesRefs = {
     main: useRef(),
@@ -38,39 +56,82 @@ export default function BurgerIngredients() {
   }, [ingredients]);
 
   useEffect(() => {
-    categoriesRefs[currentTab]?.current?.scrollIntoView();
-  }, [currentTab]);
+    const keys = Object.keys(thresholds);
+    const closestTab =
+      keys.length &&
+      keys.reduce((max, key) =>
+        thresholds[key] > thresholds[max] ? key : max
+      );
+
+    if (closestTab) {
+      setCurrentTab(closestTab);
+    }
+  }, [thresholds]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          setThreshholds((state) => ({
+            ...state,
+            [entry.target.dataset?.type]: entry.isIntersecting
+              ? entry.intersectionRatio
+              : 0,
+          }));
+        });
+      },
+      {
+        root: scrollContainerRef.current,
+        threshold: Array.from({ length: 10, value: null }).map(
+          (_, i) => (i + 1) / 10
+        ),
+      }
+    );
+
+    groupProducts.forEach((group) => {
+      if (categoriesRefs[group.type].current) {
+        observer.observe(categoriesRefs[group.type].current);
+      }
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [groupProducts]);
 
   function onTabClick(currentTab) {
     setCurrentTab(currentTab);
+    categoriesRefs[currentTab]?.current?.scrollIntoView();
   }
 
   function onProductClick(ingredient) {
-    setProductDetails(ingredient);
+    if (ingredient) {
+      dispatch(OPEN_DETAILS(ingredient._id));
+    } else {
+      dispatch(CLOSE_DETAILS());
+    }
   }
 
   return (
     <div className={styles.wrapper}>
       <Tabs currentTab={currentTab} onChange={onTabClick} />
 
-      <div className={styles.categoriesList}>
+      <div className={styles.categoriesList} ref={scrollContainerRef}>
         {groupProducts.map(({ type, title, ingredients }) => (
-          <React.Fragment key={type}>
-            <h2 className={styles.title} ref={categoriesRefs[type]}>
-              {title}
-            </h2>
+          <div key={type} ref={categoriesRefs[type]} data-type={type}>
+            <h2 className={styles.title}>{title}</h2>
             <div className={styles.productList}>
               {ingredients.map((ingredient) => (
                 <React.Fragment key={ingredient._id}>
                   <ProductItem
-                    count={1}
+                    count={countsMap.get(ingredient._id)}
                     ingredient={ingredient}
                     onClick={() => onProductClick(ingredient)}
                   />
                 </React.Fragment>
               ))}
             </div>
-          </React.Fragment>
+          </div>
         ))}
       </div>
       {productDetails && (
@@ -83,8 +144,13 @@ export default function BurgerIngredients() {
 }
 
 const ProductItem = React.memo((props) => {
+  const [_, drag] = useDrag({
+    type: props.ingredient.type === "bun" ? "bun" : "ingredient",
+    item: props.ingredient,
+  });
+
   return (
-    <section className={styles.productItem} onClick={props.onClick}>
+    <section className={styles.productItem} onClick={props.onClick} ref={drag}>
       <div className={styles.productItemCount}>
         {props.count ? <Counter count={props.count} size="default" /> : null}
       </div>

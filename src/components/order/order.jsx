@@ -2,24 +2,27 @@ import {
   Button,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import PropTypes from "prop-types";
 import {
+  memo,
   useCallback,
-  useContext,
   useEffect,
+  useMemo,
   useReducer,
   useState,
 } from "react";
-import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
+import { CLOSE_ORDER, createOrder } from "../../services/actions/order";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import styles from "./order.module.css";
-import IngredientsContext from "../../contexts/ingredients-context";
-import createOrder from "../../api/create-order";
 
 const initialState = { totalPrice: 0 };
 
 function totalPriceReducer(state, action) {
   switch (action.type) {
+    case "reset":
+      return { totalPrice: 0 };
     case "bun":
       return { totalPrice: state.totalPrice + action.payload.price * 2 };
     case "ingredient":
@@ -29,55 +32,62 @@ function totalPriceReducer(state, action) {
   }
 }
 
-export default function OrderTotal(props) {
-  const ingredients = useContext(IngredientsContext);
-  const [orderOpen, setOrderOpen] = useState(false);
-  const [order, setOrder] = useState();
-  const [orderLoading, setOrderLoading] = useState(false);
-  const [error, setError] = useState(false);
+const orderDataSelector = (state) => ({
+  ingredients: state.ingredients.data,
+  order: state.order.data?.number,
+  orderLoading: state.order.loading,
+  error: state.order.error,
+  orderOpen: state.order.open,
+});
+
+const OrderTotal = (props) => {
+  const { ingredients, order, orderLoading, error, orderOpen } =
+    useSelector(orderDataSelector);
+  const ingredientsMap = useMemo(
+    () =>
+      new Map(ingredients.map((ingredient) => [ingredient._id, ingredient])),
+    [ingredients]
+  );
+  const [valid, setValid] = useState(false);
+
   const [totalPriceState, totalPriceDispatch] = useReducer(
     totalPriceReducer,
     initialState
   );
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    ingredients.forEach((ingredient) => {
-      if (props.bunItem === ingredient._id) {
-        totalPriceDispatch({ type: "bun", payload: ingredient });
-      }
+    totalPriceDispatch({ type: "reset" });
 
-      const orderIngredient = props.orderIngredients.find(
-        (id) => id === ingredient._id
-      );
+    if (props.bunItem) {
+      totalPriceDispatch({
+        type: "bun",
+        payload: ingredientsMap.get(props.bunItem),
+      });
+    }
 
-      if (orderIngredient) {
-        totalPriceDispatch({ type: "ingredient", payload: ingredient });
-      }
+    props.orderIngredients.forEach(({ id }) => {
+      totalPriceDispatch({
+        type: "ingredient",
+        payload: ingredientsMap.get(id),
+      });
     });
-  }, [ingredients, props.bunItem, props.orderIngredients]);
+
+    setValid(Boolean(props.bunItem));
+  }, [ingredientsMap, props.bunItem, props.orderIngredients]);
 
   const onCompleteClick = useCallback(() => {
-    setOrderLoading(true);
-  });
+    dispatch(
+      createOrder(
+        [props.bunItem, ...props.orderIngredients.map(({ id }) => id)].filter(
+          Boolean
+        )
+      )
+    );
+  }, [props.bunItem, props.orderIngredients]);
   const onCompleteModalClose = useCallback(() => {
-    setOrderOpen(false);
-  });
-
-  useEffect(() => {
-    if (orderLoading) {
-      createOrder([props.bunItem, ...props.orderIngredients].filter(Boolean))
-        .then((order) => {
-          setOrder(order.number);
-          setOrderOpen(true);
-        })
-        .catch((err) => {
-          setError(err);
-        })
-        .finally(() => {
-          setOrderLoading(false);
-        });
-    }
-  }, [orderLoading]);
+    dispatch(CLOSE_ORDER());
+  }, [dispatch]);
 
   return (
     <>
@@ -94,7 +104,7 @@ export default function OrderTotal(props) {
           type="primary"
           size="large"
           extraClass="ml-10"
-          disabled={orderLoading}
+          disabled={orderLoading || !valid}
           onClick={onCompleteClick}
         >
           Оформить заказ
@@ -107,8 +117,15 @@ export default function OrderTotal(props) {
       </div>
     </>
   );
-}
+};
 OrderTotal.propTypes = {
   bunItem: PropTypes.string,
-  orderIngredients: PropTypes.arrayOf(PropTypes.string).isRequired,
+  orderIngredients: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      uuid: PropTypes.string.isRequired,
+    })
+  ).isRequired,
 };
+
+export default memo(OrderTotal);
