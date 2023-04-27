@@ -78,33 +78,35 @@ export default function BurgerConstructor() {
   };
 
   const ScrollItems = () => (
-    <DropTarget accept="ingredient" onDrop={onDropIngredient}>
-      <div className={styles.scrollItems}>
-        {orderIngredients.length ? (
-          orderIngredients.map(({ id, uuid }) => {
-            const ingredient = ingredientsMap.get(id);
+    <DropTarget
+      accept="ingredient"
+      onDrop={onDropIngredient}
+      className={styles.scrollItems}
+    >
+      {orderIngredients.length ? (
+        orderIngredients.map(({ id, uuid }) => {
+          const ingredient = ingredientsMap.get(id);
 
-            return (
-              <React.Fragment key={uuid}>
-                <ProductItem
-                  ingredient={ingredient}
-                  uuid={uuid}
-                  onDelete={() => onDeleteItem(uuid)}
-                  onSortItem={(dropItem) => onSortItem(uuid, dropItem.uuid)}
-                />
-              </React.Fragment>
-            );
-          })
-        ) : (
-          <div className={styles.item}>
-            <div className={`${styles.emptyElement}`}>
-              <span className={styles.emptyElementText}>
-                Перенесите сюда ингредиент
-              </span>
-            </div>
+          return (
+            <React.Fragment key={uuid}>
+              <ProductItem
+                ingredient={ingredient}
+                uuid={uuid}
+                onDelete={() => onDeleteItem(uuid)}
+                onSortItem={(dropItem) => onSortItem(uuid, dropItem.uuid)}
+              />
+            </React.Fragment>
+          );
+        })
+      ) : (
+        <div className={`${styles.itemEmpty}`}>
+          <div className={`${styles.emptyElement}`}>
+            <span className={styles.emptyElementText}>
+              Перенесите сюда ингредиент
+            </span>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </DropTarget>
   );
 
@@ -163,14 +165,18 @@ function BunItem(props) {
           />
         </div>
       ) : (
-        <div
-          className={`${styles.bunItem} ${styles.bunEmptyElement} ${
-            props.first
-              ? "constructor-element_pos_top"
-              : "constructor-element_pos_bottom"
-          }`}
-        >
-          <span className={styles.emptyElementText}>Перенесите сюда булку</span>
+        <div className={styles.bunItem}>
+          <div
+            className={`${styles.bunEmptyElement} ${
+              props.first
+                ? "constructor-element_pos_top"
+                : "constructor-element_pos_bottom"
+            }`}
+          >
+            <span className={styles.emptyElementText}>
+              Перенесите сюда булку
+            </span>
+          </div>
         </div>
       )}
     </DropTarget>
@@ -181,7 +187,7 @@ BunItem.propTypes = {
   ingredient: ProductItemType,
 };
 
-function DropTarget({ children, onDrop, accept }) {
+function DropTarget({ children, onDrop, accept, className }) {
   const [{ isHover }, dropTarget] = useDrop({
     accept,
     drop(item) {
@@ -192,5 +198,9 @@ function DropTarget({ children, onDrop, accept }) {
     }),
   });
 
-  return <div ref={dropTarget}>{children}</div>;
+  return (
+    <div className={className} ref={dropTarget}>
+      {children}
+    </div>
+  );
 }
