@@ -42,6 +42,11 @@
   margin-right: 16px;
 }
 
+.emptyElementHover :global(.constructor-element) {
+  outline: 2px dashed #8ac290;
+  outline-offset: -2px;
+}
+
 .bunEmptyElement {
   composes: constructor-element from global;
   display: flex;
