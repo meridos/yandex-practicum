@@ -29,6 +29,11 @@
   cursor: pointer;
   column-gap: 8px;
   white-space: nowrap;
+  text-decoration: none;
+}
+
+.menuItemActive {
+  color: var(--text-primary-color);
 }
 
 .menuItemText {

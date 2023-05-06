@@ -1,11 +1,11 @@
-import React from "react";
-import styles from "./app-header.module.css";
 import {
-  Logo,
   BurgerIcon,
   ListIcon,
+  Logo,
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { NavLink } from "react-router-dom";
+import styles from "./app-header.module.css";
 
 export default function AppHeader() {
   return (
@@ -13,23 +13,38 @@ export default function AppHeader() {
       <div className={styles.container}>
         <nav>
           <ul className={styles.menu}>
-            <li className={styles.menuItem}>
+            <NavLink
+              to="/"
+              className={({ isActive }) =>
+                `${styles.menuItem} ${isActive ? styles.menuItemActive : ""}`
+              }
+            >
               <BurgerIcon type="primary" />
               <span className={styles.menuItemText}>Конструктор</span>
-            </li>
-            <li className={styles.menuItem}>
+            </NavLink>
+            <NavLink
+              to="/orders"
+              className={({ isActive }) =>
+                `${styles.menuItem} ${isActive ? styles.menuItemActive : ""}`
+              }
+            >
               <ListIcon type="secondary" />
               <span className={styles.menuItemText}>Лента заказов</span>
-            </li>
+            </NavLink>
           </ul>
         </nav>
         <Logo />
         <nav>
           <ul className={styles.rightMenu}>
-            <li className={styles.menuItem}>
+            <NavLink
+              to="/login"
+              className={({ isActive }) =>
+                `${styles.menuItem} ${isActive ? styles.menuItemActive : ""}`
+              }
+            >
               <ProfileIcon type="secondary" />
               <span className={styles.menuItemText}>Личный кабинет</span>
-            </li>
+            </NavLink>
           </ul>
         </nav>
       </div>
