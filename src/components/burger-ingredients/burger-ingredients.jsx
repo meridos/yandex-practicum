@@ -5,13 +5,14 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
 import React, { useEffect, useRef, useState } from "react";
+import { useDrag } from "react-dnd";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { CLOSE_DETAILS, OPEN_DETAILS } from "../../services/actions/details";
 import { ProductItemType } from "../../utils/common-prop-types";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import Modal from "../modal/modal";
 import styles from "./burger-ingredients.module.css";
-import { useDrag } from "react-dnd";
-import { CLOSE_DETAILS, OPEN_DETAILS } from "../../services/actions/details";
 
 const ingredientTypesMap = {
   main: "Начинки",
@@ -44,6 +45,20 @@ export default function BurgerIngredients() {
   );
   const scrollContainerRef = useRef();
   const dispatch = useDispatch();
+  const { productId } = useParams();
+  const prevProductId = useRef(productId);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log(productId, prevProductId);
+    if (productId) {
+      dispatch(OPEN_DETAILS(productId));
+    } else if (productId !== prevProductId.current) {
+      dispatch(CLOSE_DETAILS());
+    }
+
+    prevProductId.current = productId;
+  }, [productId]);
 
   const categoriesRefs = {
     main: useRef(),
@@ -106,9 +121,9 @@ export default function BurgerIngredients() {
 
   function onProductClick(ingredient) {
     if (ingredient) {
-      dispatch(OPEN_DETAILS(ingredient._id));
+      navigate(`/ingredient/${ingredient._id}`);
     } else {
-      dispatch(CLOSE_DETAILS());
+      navigate(-1);
     }
   }
 
