@@ -4,8 +4,9 @@ import {
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./reset-password.module.css";
+import { confirmReset } from "../../api/password-reset";
 
 const PASSWORD_ERROR = "Некорректный пароль";
 const CODE_ERROR = "Некорректный код";
@@ -20,9 +21,19 @@ export function ResetPasswordPage() {
   const codeTyped = useRef(false);
 
   const [formValid, setFormValid] = useState(false);
+  const [errorForm, setErrorForm] = useState();
+
+  const navigate = useNavigate();
 
   const onSubmit = (e) => {
     e.preventDefault();
+    confirmReset(password, code)
+      .then((e) => {
+        navigate("/login", { replace: true });
+      })
+      .catch(() => {
+        setErrorForm("Ошибка восстановления");
+      });
   };
 
   const onCodeBlur = (e) => {
@@ -76,6 +87,7 @@ export function ResetPasswordPage() {
         onBlur={onCodeBlur}
         onFocus={() => setCodeError()}
       />
+      {errorForm && <p className={styles.errorText}>{errorForm}</p>}
       <Button
         htmlType="submit"
         type="primary"

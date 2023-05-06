@@ -3,8 +3,9 @@ import {
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./forgot-password.module.css";
+import { passwordReset } from "../../api/password-reset";
 
 const EMAIL_ERROR = "Некорректный email";
 
@@ -12,10 +13,21 @@ export function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState(EMAIL_ERROR);
   const emailTyped = useRef(false);
+
   const [formValid, setFormValid] = useState(false);
+  const [errorForm, setErrorForm] = useState();
+
+  const navigate = useNavigate();
 
   const onSubmit = (e) => {
     e.preventDefault();
+    passwordReset(email)
+      .then((e) => {
+        navigate("/reset-password");
+      })
+      .catch((e) => {
+        setErrorForm(e?.message || "Ошибка восстановления");
+      });
   };
 
   const onEmailBlur = (e) => {
@@ -47,6 +59,7 @@ export function ForgotPasswordPage() {
         onBlur={onEmailBlur}
         onFocus={() => setEmailError()}
       />
+      {errorForm && <p className={styles.errorText}>{errorForm}</p>}
       <Button
         htmlType="submit"
         type="primary"
