@@ -4,7 +4,7 @@ import BurgerConstructor from "../../components/burger-constructor/burger-constr
 import BurgerIngredients from "../../components/burger-ingredients/burger-ingredients";
 import styles from "./home.module.css";
 
-export function HomePage() {
+export function Home() {
   return (
     <DndProvider backend={HTML5Backend}>
       <main className={styles.container}>
