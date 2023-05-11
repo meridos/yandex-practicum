@@ -1,0 +1,16 @@
+.container {
+  max-width: 320px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.link {
+  composes: text text_type_main-medium text_color_inactive from global;
+  text-decoration: none;
+  line-height: 64px;
+}
+
+.linkActive {
+  color: var(--text-primary-color);
+}

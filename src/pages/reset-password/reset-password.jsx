@@ -1,29 +1,36 @@
-import {
-  Button,
-  Input,
-  PasswordInput,
-} from "@ya.praktikum/react-developer-burger-ui-components";
-import { useEffect, useRef, useState } from "react";
+import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import styles from "./reset-password.module.css";
 import { confirmReset } from "../../api/password-reset";
-
-const PASSWORD_ERROR = "Некорректный пароль";
-const CODE_ERROR = "Некорректный код";
+import { useFormFieldPassword } from "../../components/form-fields/password/password";
+import { useFormFieldText } from "../../components/form-fields/text/text";
+import styles from "./reset-password.module.css";
 
 export function ResetPasswordPage() {
-  const [password, setPassword] = useState("");
-  const passwordTyped = useRef(false);
-  const [passwordError, setPasswordError] = useState(PASSWORD_ERROR);
-
-  const [code, setCode] = useState("");
-  const [codeError, setCodeError] = useState(CODE_ERROR);
-  const codeTyped = useRef(false);
-
   const [formValid, setFormValid] = useState(false);
   const [errorForm, setErrorForm] = useState();
 
   const navigate = useNavigate();
+  const {
+    field: passwordField,
+    valid: passwordValid,
+    value: password,
+  } = useFormFieldPassword({
+    placeholder: "Введите новый пароль",
+    errorText: "Некорректный пароль",
+  });
+
+  const {
+    field: codeField,
+    valid: codeValid,
+    value: code,
+  } = useFormFieldText({
+    placeholder: "Введите код из письма",
+    name: "code",
+    errorText: "Некорректный код",
+    isRequired: true,
+    regex: /.{4,}/,
+  });
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -36,57 +43,16 @@ export function ResetPasswordPage() {
       });
   };
 
-  const onCodeBlur = (e) => {
-    setCodeError(code ? "" : CODE_ERROR);
-  };
-
   useEffect(() => {
-    setFormValid(!codeError && !passwordError);
-  }, [codeError, passwordError]);
-
-  useEffect(() => {
-    if (code && !codeTyped.current) {
-      codeTyped.current = true;
-    }
-  }, [code]);
-
-  useEffect(() => {
-    if (password && !passwordTyped.current) {
-      passwordTyped.current = true;
-    }
-
-    if (!password && passwordTyped.current) {
-      setPasswordError(PASSWORD_ERROR);
-    }
-
-    if (password) {
-      setPasswordError("");
-    }
-  }, [password]);
+    console.log("codeValid, passwordValid", codeValid, passwordValid);
+    setFormValid(codeValid && passwordValid);
+  }, [codeValid, passwordValid]);
 
   return (
     <form onSubmit={onSubmit} className={styles.container}>
       <h2 className="text text_type_main-medium">Восстановление пароля</h2>
-      <PasswordInput
-        placeholder="Введите новый пароль"
-        onChange={(e) => setPassword(e.target.value)}
-        value={password}
-        name="password"
-        error={!!passwordError && passwordTyped.current}
-        errorText={passwordError}
-      />
-      <Input
-        type="text"
-        placeholder="Введите код из письма"
-        value={code}
-        name="code"
-        error={!!codeError && codeTyped.current}
-        errorText={codeError}
-        noValidate={true}
-        onChange={(e) => setCode(e.target.value)}
-        onBlur={onCodeBlur}
-        onFocus={() => setCodeError()}
-      />
+      {passwordField}
+      {codeField}
       {errorForm && <p className={styles.errorText}>{errorForm}</p>}
       <Button
         htmlType="submit"

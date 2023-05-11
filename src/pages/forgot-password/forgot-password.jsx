@@ -6,15 +6,9 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./forgot-password.module.css";
 import { passwordReset } from "../../api/password-reset";
-
-const EMAIL_ERROR = "Некорректный email";
+import { useFormFieldEmail } from "../../components/form-fields/email/email";
 
 export function ForgotPasswordPage() {
-  const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState(EMAIL_ERROR);
-  const emailTyped = useRef(false);
-
-  const [formValid, setFormValid] = useState(false);
   const [errorForm, setErrorForm] = useState();
 
   const navigate = useNavigate();
@@ -30,41 +24,22 @@ export function ForgotPasswordPage() {
       });
   };
 
-  const onEmailBlur = (e) => {
-    setEmailError(email && e.target.checkValidity() ? "" : EMAIL_ERROR);
-  };
-
-  useEffect(() => {
-    setFormValid(!emailError);
-  }, [emailError]);
-
-  useEffect(() => {
-    if (email && !emailTyped.current) {
-      emailTyped.current = true;
-    }
-  }, [email]);
+  const {
+    field: emailField,
+    valid: emailValid,
+    value: email,
+  } = useFormFieldEmail({ placeholder: "Укажите e-mail" });
 
   return (
     <form onSubmit={onSubmit} className={styles.container}>
       <h2 className="text text_type_main-medium">Восстановление пароля</h2>
-      <Input
-        type="email"
-        placeholder="Укажите e-mail"
-        value={email}
-        name="email"
-        error={!!emailError && emailTyped.current}
-        errorText={emailError}
-        noValidate={true}
-        onChange={(e) => setEmail(e.target.value)}
-        onBlur={onEmailBlur}
-        onFocus={() => setEmailError()}
-      />
+      {emailField}
       {errorForm && <p className={styles.errorText}>{errorForm}</p>}
       <Button
         htmlType="submit"
         type="primary"
         size="medium"
-        disabled={!formValid}
+        disabled={!emailValid}
       >
         Восстановить
       </Button>

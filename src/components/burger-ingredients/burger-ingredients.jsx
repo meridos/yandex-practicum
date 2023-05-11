@@ -50,7 +50,6 @@ export default function BurgerIngredients() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(productId, prevProductId);
     if (productId) {
       dispatch(OPEN_DETAILS(productId));
     } else if (productId !== prevProductId.current) {

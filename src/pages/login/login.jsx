@@ -1,80 +1,39 @@
-import {
-  Button,
-  Input,
-  PasswordInput,
-} from "@ya.praktikum/react-developer-burger-ui-components";
-import { useEffect, useRef, useState } from "react";
-import styles from "./login.module.css";
+import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
-const PASSWORD_ERROR = "Некорректный пароль";
-const EMAIL_ERROR = "Некорректный email";
+import { useFormFieldEmail } from "../../components/form-fields/email/email";
+import { useFormFieldPassword } from "../../components/form-fields/password/password";
+import styles from "./login.module.css";
 
 export function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState(EMAIL_ERROR);
-  const emailTyped = useRef(false);
-
-  const [password, setPassword] = useState("");
-  const passwordTyped = useRef(false);
-  const [passwordError, setPasswordError] = useState(PASSWORD_ERROR);
-
   const [formValid, setFormValid] = useState(false);
+
+  const {
+    field: passwordField,
+    valid: passwordValid,
+    value: password,
+  } = useFormFieldPassword();
+
+  const {
+    field: emailField,
+    valid: emailValid,
+    value: email,
+  } = useFormFieldEmail();
 
   const onSubmit = (e) => {
     e.preventDefault();
-  };
-
-  const onEmailBlur = (e) => {
-    setEmailError(email && e.target.checkValidity() ? "" : EMAIL_ERROR);
+    console.log({ email, password });
   };
 
   useEffect(() => {
-    setFormValid(!emailError && !passwordError);
-  }, [emailError, passwordError]);
-
-  useEffect(() => {
-    if (email && !emailTyped.current) {
-      emailTyped.current = true;
-    }
-  }, [email]);
-
-  useEffect(() => {
-    if (password && !passwordTyped.current) {
-      passwordTyped.current = true;
-    }
-
-    if (!password && passwordTyped.current) {
-      setPasswordError(PASSWORD_ERROR);
-    }
-
-    if (password) {
-      setPasswordError("");
-    }
-  }, [password]);
+    setFormValid(!!emailValid && !!passwordValid);
+  }, [emailValid, passwordValid]);
 
   return (
     <form onSubmit={onSubmit} className={styles.container}>
       <h2 className="text text_type_main-medium">Вход</h2>
-      <Input
-        type="email"
-        placeholder="E-mail"
-        value={email}
-        name="email"
-        error={!!emailError && emailTyped.current}
-        errorText={emailError}
-        noValidate={true}
-        onChange={(e) => setEmail(e.target.value)}
-        onBlur={onEmailBlur}
-        onFocus={() => setEmailError()}
-      />
-      <PasswordInput
-        onChange={(e) => setPassword(e.target.value)}
-        value={password}
-        name="password"
-        error={!!passwordError && passwordTyped.current}
-        errorText={passwordError}
-      />
+      {emailField}
+      {passwordField}
       <Button
         htmlType="submit"
         type="primary"
