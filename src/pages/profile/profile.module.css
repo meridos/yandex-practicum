@@ -4,3 +4,8 @@
   justify-content: center;
   column-gap: 60px;
 }
+
+.pageContainer {
+  max-width: 480px;
+  width: 100%;
+}

@@ -28,16 +28,16 @@ export function register({ email, password, name }) {
     .then(({ success, ...data }) => data);
 }
 
-export function logout() {
+export function logout({ refreshToken }) {
   return request("/auth/logout", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({}),
-  })
-    .catch(() => Promise.reject("Ошибка выхода"))
-    .then((res) => res.order ?? Promise.reject("Ошибка выхода"));
+    body: JSON.stringify({
+      token: refreshToken,
+    }),
+  }).catch(() => Promise.reject("Ошибка выхода"));
 }
 
 export function token() {

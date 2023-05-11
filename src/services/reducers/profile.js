@@ -3,6 +3,7 @@ import {
   SUCCESS_PROFILE,
   REQUEST_PROFILE,
   ERROR_PROFILE,
+  CLEAR_PROFILE,
 } from "../actions/profile";
 
 const initialState = {
@@ -26,11 +27,12 @@ export const profileReducer = createReducer(initialState, (builder) => {
   }));
   builder.addCase(
     SUCCESS_PROFILE,
-    (state, { payload: { email, name, refreshToken } }) => ({
+    (state, { payload: { email, name, refreshToken, accessToken } }) => ({
       ...state,
       email,
       name,
       refreshToken,
+      accessToken,
       request: {
         ...initialState.request,
       },
@@ -44,4 +46,5 @@ export const profileReducer = createReducer(initialState, (builder) => {
       error: payload,
     },
   }));
+  builder.addCase(CLEAR_PROFILE, () => initialState);
 });

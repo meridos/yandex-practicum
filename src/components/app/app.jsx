@@ -13,6 +13,7 @@ import { ResetPasswordPage } from "../../pages/reset-password/reset-password";
 import AppHeader from "../app-header/app-header";
 import ErrorBoundary from "../error-boundary/error-boundary";
 import styles from "./app.module.css";
+import { LogoutPage } from "../../pages/profile/logout/details";
 
 export default function App() {
   const overlayError = useSelector((state) => state.error.overlayError);
@@ -31,6 +32,7 @@ export default function App() {
             <Route path="/profile" element={<ProfilePage />}>
               <Route path="" element={<ProfileDetailsPage />} />
               <Route path="orders" element={<ProfileOrdersPage />} />
+              <Route path="logout" element={<LogoutPage />} />
             </Route>
             <Route path="/ingredient/:productId" element={<HomePage />} />
             <Route path="*" element={<NotFoundPage />} />

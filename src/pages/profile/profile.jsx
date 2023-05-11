@@ -13,7 +13,9 @@ export function ProfilePage() {
         ]}
         footerText="В этом разделе вы можете изменить свои персональные данные"
       />
-      <Outlet />
+      <div className={styles.pageContainer}>
+        <Outlet />
+      </div>
     </div>
   );
 }
