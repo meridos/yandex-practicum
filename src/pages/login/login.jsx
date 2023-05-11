@@ -1,12 +1,21 @@
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import { useFormFieldEmail } from "../../components/form-fields/email/email";
 import { useFormFieldPassword } from "../../components/form-fields/password/password";
+import { login } from "../../services/actions/profile";
 import styles from "./login.module.css";
 
 export function LoginPage() {
   const [formValid, setFormValid] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isLogin, error, loading } = useSelector((state) => ({
+    isLogin: !!state.profile.name,
+    error: state.profile.request.error,
+    loading: state.profile.request.loading,
+  }));
 
   const {
     field: passwordField,
@@ -22,8 +31,14 @@ export function LoginPage() {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log({ email, password });
+    dispatch(login({ email, password }));
   };
+
+  useEffect(() => {
+    if (isLogin) {
+      navigate("/", { replace: true });
+    }
+  }, [isLogin]);
 
   useEffect(() => {
     setFormValid(!!emailValid && !!passwordValid);
@@ -34,11 +49,12 @@ export function LoginPage() {
       <h2 className="text text_type_main-medium">Вход</h2>
       {emailField}
       {passwordField}
+      {error && <p className={styles.error}>{error}</p>}
       <Button
         htmlType="submit"
         type="primary"
         size="medium"
-        disabled={!formValid}
+        disabled={!formValid || loading}
       >
         Войти
       </Button>

@@ -1,15 +1,15 @@
 import request from "../utils/request";
 
-export function login() {
+export function login({ email, password }) {
   return request("/auth/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({}),
+    body: JSON.stringify({ email, password }),
   })
     .catch(() => Promise.reject("Ошибка входа"))
-    .then((res) => res.order ?? Promise.reject("Ошибка входа"));
+    .then(({ success, ...data }) => data);
 }
 
 export function register({ email, password, name }) {

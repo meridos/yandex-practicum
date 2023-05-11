@@ -50,7 +50,7 @@ export function RegisterPage() {
 
   useEffect(() => {
     if (isRegister) {
-      navigate("/profile");
+      navigate("/", { replace: true });
     }
   }, [isRegister]);
 
