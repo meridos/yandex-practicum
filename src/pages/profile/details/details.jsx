@@ -3,8 +3,11 @@ import { useFormFieldPassword } from "../../../components/form-fields/password/p
 import styles from "./details.module.css";
 import { useFormFieldText } from "../../../components/form-fields/text/text";
 import { useFormFieldEmail } from "../../../components/form-fields/email/email";
+import { useSelector } from "react-redux";
 
 export function ProfileDetailsPage() {
+  const profile = useSelector((state) => state.profile);
+
   const {
     field: nameField,
     valid: nameValid,
@@ -15,7 +18,7 @@ export function ProfileDetailsPage() {
     errorText: "Введите имя",
     isRequired: true,
     editable: true,
-    initialValue: "Марк",
+    initialValue: profile.name,
   });
   const {
     field: emailField,
@@ -23,7 +26,7 @@ export function ProfileDetailsPage() {
     value: email,
   } = useFormFieldEmail({
     placeholder: "Логин",
-    initialValue: "mail@stellar.burger",
+    initialValue: profile.email,
     editable: true,
   });
   const {
@@ -32,7 +35,7 @@ export function ProfileDetailsPage() {
     value: password,
   } = useFormFieldPassword({
     editable: true,
-    initialValue: "------",
+    initialValue: "******",
   });
 
   return (

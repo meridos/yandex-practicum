@@ -4,6 +4,7 @@ import { errorReducer } from "./error";
 import { cartReducer } from "./cart";
 import { detailsReducer } from "./details";
 import { orderReducer } from "./order";
+import { profileReducer } from "./profile";
 
 const rootReducer = combineReducers({
   ingredients: ingredientsReducer,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   error: errorReducer,
   details: detailsReducer,
   order: orderReducer,
+  profile: profileReducer,
 });
 
 export default rootReducer;

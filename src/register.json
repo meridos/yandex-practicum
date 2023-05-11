@@ -1,0 +1,6 @@
+{
+  "success": true,
+  "user": { "email": "aaaa@abbb.com", "name": "aaaa" },
+  "accessToken": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NWQzMmU5OGE0YjYyMDAxYzgzNjJhNyIsImlhdCI6MTY4MzgyOTQ4MSwiZXhwIjoxNjgzODMwNjgxfQ.vnTaFIT4Gurm_mdO1g2_cqd6CU6IqCaXQwhaAmwrFeM",
+  "refreshToken": "ce9298262d4a26f7940f87e37af326f79748cb8f164fd86bbd6f51ea891e3d418cc58ff7bb9d94fc"
+}

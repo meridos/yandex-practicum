@@ -18,3 +18,7 @@
   color: var(--colors-interface-accent);
   text-decoration: none;
 }
+
+.error {
+  color: var(--colors-interface-error);
+}

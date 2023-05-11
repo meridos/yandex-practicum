@@ -1,28 +1,21 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getIngredients } from "../../services/actions/ingredients";
+import { useSelector } from "react-redux";
 
-import { BrowserRouter, Route, RouterProvider, Routes } from "react-router-dom";
-import AppHeader from "../app-header/app-header";
-import ErrorBoundary from "../error-boundary/error-boundary";
-import styles from "./app.module.css";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { ForgotPasswordPage } from "../../pages/forgot-password/forgot-password";
 import { HomePage } from "../../pages/home/home";
 import { LoginPage } from "../../pages/login/login";
-import { RegisterPage } from "../../pages/register/register";
-import { ForgotPasswordPage } from "../../pages/forgot-password/forgot-password";
-import { ResetPasswordPage } from "../../pages/reset-password/reset-password";
-import { ProfilePage } from "../../pages/profile/profile";
 import { NotFoundPage } from "../../pages/not-found/not-found";
 import { ProfileDetailsPage } from "../../pages/profile/details/details";
 import { ProfileOrdersPage } from "../../pages/profile/orders/orders";
+import { ProfilePage } from "../../pages/profile/profile";
+import { RegisterPage } from "../../pages/register/register";
+import { ResetPasswordPage } from "../../pages/reset-password/reset-password";
+import AppHeader from "../app-header/app-header";
+import ErrorBoundary from "../error-boundary/error-boundary";
+import styles from "./app.module.css";
 
 export default function App() {
-  const dispatch = useDispatch();
   const overlayError = useSelector((state) => state.error.overlayError);
-
-  useEffect(() => {
-    dispatch(getIngredients());
-  }, [dispatch]);
 
   return (
     <ErrorBoundary error={overlayError}>
