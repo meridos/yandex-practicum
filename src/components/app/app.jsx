@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ForgotPasswordPage } from "../../pages/forgot-password/forgot-password";
@@ -14,9 +14,16 @@ import AppHeader from "../app-header/app-header";
 import ErrorBoundary from "../error-boundary/error-boundary";
 import styles from "./app.module.css";
 import { LogoutPage } from "../../pages/profile/logout/details";
+import { check } from "../../services/actions/profile";
+import { useEffect } from "react";
 
 export default function App() {
   const overlayError = useSelector((state) => state.error.overlayError);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(check());
+  }, [dispatch]);
 
   return (
     <ErrorBoundary error={overlayError}>

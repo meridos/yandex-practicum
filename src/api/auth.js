@@ -40,14 +40,20 @@ export function logout({ refreshToken }) {
   }).catch(() => Promise.reject("Ошибка выхода"));
 }
 
-export function token() {
+export function token({ refreshToken }) {
   return request("/auth/token", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({}),
-  })
-    .catch(() => Promise.reject("Ошибка входа"))
-    .then((res) => res.order ?? Promise.reject("Ошибка входа"));
+    body: JSON.stringify({ refreshToken }),
+  }).catch(() => Promise.reject("Ошибка входа"));
+}
+
+export function getUser({ accessToken }) {
+  return request("/auth/user", {
+    headers: {
+      authorization: accessToken,
+    },
+  }).catch(() => Promise.reject("Ошибка получения пользователя"));
 }

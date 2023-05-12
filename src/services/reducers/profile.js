@@ -9,7 +9,6 @@ import {
 const initialState = {
   email: "",
   name: "",
-  refreshToken: null,
   request: {
     error: null,
     loading: false,
@@ -25,19 +24,14 @@ export const profileReducer = createReducer(initialState, (builder) => {
       error: null,
     },
   }));
-  builder.addCase(
-    SUCCESS_PROFILE,
-    (state, { payload: { email, name, refreshToken, accessToken } }) => ({
-      ...state,
-      email,
-      name,
-      refreshToken,
-      accessToken,
-      request: {
-        ...initialState.request,
-      },
-    })
-  );
+  builder.addCase(SUCCESS_PROFILE, (state, { payload: { email, name } }) => ({
+    ...state,
+    email,
+    name,
+    request: {
+      ...initialState.request,
+    },
+  }));
   builder.addCase(ERROR_PROFILE, (state, { payload }) => ({
     ...state,
     request: {
