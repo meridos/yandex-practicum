@@ -24,10 +24,9 @@ export const profileReducer = createReducer(initialState, (builder) => {
       error: null,
     },
   }));
-  builder.addCase(SUCCESS_PROFILE, (state, { payload: { email, name } }) => ({
+  builder.addCase(SUCCESS_PROFILE, (state, { payload }) => ({
     ...state,
-    email,
-    name,
+    ...payload,
     request: {
       ...initialState.request,
     },

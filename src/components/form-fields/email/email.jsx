@@ -76,5 +76,6 @@ export function useFormFieldEmail({
     ),
     value: email,
     valid,
+    setValue: setEmail,
   };
 }

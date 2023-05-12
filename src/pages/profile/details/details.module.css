@@ -3,3 +3,7 @@
   flex-direction: column;
   row-gap: 24px;
 }
+
+.error {
+  color: var(--colors-interface-error);
+}

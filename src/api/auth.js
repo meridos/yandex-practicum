@@ -3,9 +3,6 @@ import request from "../utils/request";
 export function login({ email, password }) {
   return request("/auth/login", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
     body: JSON.stringify({ email, password }),
   })
     .catch(() => Promise.reject("Ошибка входа"))
@@ -15,9 +12,6 @@ export function login({ email, password }) {
 export function register({ email, password, name }) {
   return request("/auth/register", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
     body: JSON.stringify({
       email,
       password,
@@ -31,9 +25,6 @@ export function register({ email, password, name }) {
 export function logout({ refreshToken }) {
   return request("/auth/logout", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
     body: JSON.stringify({
       token: refreshToken,
     }),
@@ -43,10 +34,9 @@ export function logout({ refreshToken }) {
 export function token({ refreshToken }) {
   return request("/auth/token", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ refreshToken }),
+    body: JSON.stringify({
+      token: refreshToken,
+    }),
   }).catch(() => Promise.reject("Ошибка входа"));
 }
 
@@ -56,4 +46,14 @@ export function getUser({ accessToken }) {
       authorization: accessToken,
     },
   }).catch(() => Promise.reject("Ошибка получения пользователя"));
+}
+
+export function updateUser({ accessToken, ...user }) {
+  return request("/auth/user", {
+    method: "PATCH",
+    headers: {
+      authorization: accessToken,
+    },
+    body: JSON.stringify(user),
+  }).catch(() => Promise.reject("Ошибка обновления пользователя"));
 }

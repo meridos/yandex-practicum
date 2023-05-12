@@ -10,12 +10,15 @@ export function useFormFieldPassword({
   minLenght,
   name,
   icon,
+  editable,
   initialValue,
 } = {}) {
   name = name ?? NAME_DEFAULT;
   errorText = errorText ?? ERROR_DEFAULT;
   minLenght = minLenght ?? MIN_LENGTH_DEFAULT;
   initialValue = initialValue ?? "";
+  icon = icon ?? (editable ? "EditIcon" : undefined);
+  editable = editable ?? icon === "EditIcon";
 
   const [password, setPassword] = useState(initialValue);
   const passwordTyped = useRef(false);
@@ -53,5 +56,6 @@ export function useFormFieldPassword({
     ),
     value: password,
     valid,
+    setValue: setPassword,
   };
 }

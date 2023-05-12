@@ -94,5 +94,6 @@ export function useFormFieldText({
     ),
     value: value,
     valid,
+    setValue,
   };
 }
