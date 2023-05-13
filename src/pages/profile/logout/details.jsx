@@ -19,7 +19,7 @@ export function LogoutPage() {
 
   useEffect(() => {
     if (isLogout) {
-      navigate("/", { replace: true });
+      navigate("/login", { replace: true });
     }
   }, [isLogout]);
 

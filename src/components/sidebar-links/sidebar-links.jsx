@@ -1,6 +1,5 @@
-import { NavLink, useNavigation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import styles from "./sidebar-links.module.css";
-import React from "react";
 
 export function SidebarLinks({ routes, footerText }) {
   const Item = ({ route }) => (

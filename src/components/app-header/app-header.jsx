@@ -14,6 +14,7 @@ function LinkItem({ icon: Icon, to, text }) {
       className={({ isActive }) =>
         `${styles.menuItem} ${isActive ? styles.menuItemActive : ""}`
       }
+      end
     >
       {({ isActive }) => (
         <>

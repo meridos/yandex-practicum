@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ForgotPasswordPage } from "../../pages/forgot-password/forgot-password";
@@ -14,16 +14,10 @@ import AppHeader from "../app-header/app-header";
 import ErrorBoundary from "../error-boundary/error-boundary";
 import styles from "./app.module.css";
 import { LogoutPage } from "../../pages/profile/logout/details";
-import { check } from "../../services/actions/profile";
-import { useEffect } from "react";
+import { ProtectedRouteElement } from "../protected/protected-route-element";
 
 export default function App() {
   const overlayError = useSelector((state) => state.error.overlayError);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(check());
-  }, [dispatch]);
 
   return (
     <ErrorBoundary error={overlayError}>
@@ -33,10 +27,37 @@ export default function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-            <Route path="/reset-password" element={<ResetPasswordPage />} />
-            <Route path="/profile" element={<ProfilePage />}>
+            <Route
+              path="/register"
+              element={
+                <ProtectedRouteElement
+                  element={<RegisterPage />}
+                  authRestricted={true}
+                />
+              }
+            />
+            <Route
+              path="/forgot-password"
+              element={
+                <ProtectedRouteElement
+                  element={<ForgotPasswordPage />}
+                  authRestricted={true}
+                />
+              }
+            />
+            <Route
+              path="/reset-password"
+              element={
+                <ProtectedRouteElement
+                  element={<ResetPasswordPage />}
+                  authRestricted={true}
+                />
+              }
+            />
+            <Route
+              path="/profile"
+              element={<ProtectedRouteElement element={<ProfilePage />} />}
+            >
               <Route path="" element={<ProfileDetailsPage />} />
               <Route path="orders" element={<ProfileOrdersPage />} />
               <Route path="logout" element={<LogoutPage />} />

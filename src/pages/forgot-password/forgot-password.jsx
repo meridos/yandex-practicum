@@ -17,7 +17,7 @@ export function ForgotPasswordPage() {
     e.preventDefault();
     passwordReset(email)
       .then((e) => {
-        navigate("/reset-password");
+        navigate("/reset-password", { state: { fromForgotPassword: true } });
       })
       .catch((e) => {
         setErrorForm(e?.message || "Ошибка восстановления");

@@ -1,6 +1,6 @@
-import { createAction } from "@reduxjs/toolkit";
+import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import {
-  getUser,
+  getUser as getUserApi,
   login as loginApi,
   logout as logoutApi,
   register as registerApi,
@@ -83,26 +83,66 @@ export const logout = () => (dispatch) => {
     });
 };
 
-export const check = () => (dispatch) => {
-  const refreshToken = window.localStorage.getItem(REFRESH_TOKEN_KEY);
+// export const getUser = () => (dispatch, getState) => {
+//   const {
+//     profile: { request, ...profile },
+//   } = getState();
 
-  if (!refreshToken) {
-    return;
+//   if (profile.email) {
+//     return profile;
+//   }
+
+//   const refreshToken = window.localStorage.getItem(REFRESH_TOKEN_KEY);
+
+//   if (!refreshToken) {
+//     return;
+//   }
+
+//   return withUpdateToken({ refreshToken }, () =>
+//     getUserApi({ accessToken: getCookie(ACCESS_TOKEN_COOKIE) })
+//   ).then((data) => {
+//     dispatch(
+//       SUCCESS_PROFILE({
+//         email: data.user.email,
+//         name: data.user.name,
+//       })
+//     );
+
+//     return data.user;
+//   });
+// };
+
+export const getUser = createAsyncThunk(
+  "profile/get",
+  async (_, { dispatch, getState }) => {
+    const {
+      profile: { request, ...profile },
+    } = getState();
+
+    if (profile.email) {
+      return profile;
+    }
+
+    const refreshToken = window.localStorage.getItem(REFRESH_TOKEN_KEY);
+
+    if (!refreshToken) {
+      return;
+    }
+
+    return withUpdateToken({ refreshToken }, () =>
+      getUserApi({ accessToken: getCookie(ACCESS_TOKEN_COOKIE) })
+    ).then((data) => {
+      dispatch(
+        SUCCESS_PROFILE({
+          email: data.user.email,
+          name: data.user.name,
+        })
+      );
+
+      return data.user;
+    });
   }
-
-  return withUpdateToken({ refreshToken }, () =>
-    getUser({ accessToken: getCookie(ACCESS_TOKEN_COOKIE) })
-  ).then((data) => {
-    dispatch(
-      SUCCESS_PROFILE({
-        email: data.user.email,
-        name: data.user.name,
-      })
-    );
-
-    return data;
-  });
-};
+);
 
 export const updateProfile = (user) => (dispatch) => {
   const accessToken = getCookie(ACCESS_TOKEN_COOKIE);

@@ -87,6 +87,8 @@ export default function BurgerConstructor() {
         orderIngredients.map(({ id, uuid }) => {
           const ingredient = ingredientsMap.get(id);
 
+          if (!ingredient) return;
+
           return (
             <React.Fragment key={uuid}>
               <ProductItem

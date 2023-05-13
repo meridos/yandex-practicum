@@ -1,7 +1,7 @@
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useFormFieldEmail } from "../../components/form-fields/email/email";
 import { useFormFieldPassword } from "../../components/form-fields/password/password";
 import { login } from "../../services/actions/profile";
@@ -11,11 +11,13 @@ export function LoginPage() {
   const [formValid, setFormValid] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { state, pathname } = useLocation();
   const { isLogin, error, loading } = useSelector((state) => ({
     isLogin: !!state.profile.name,
     error: state.profile.request.error,
     loading: state.profile.request.loading,
   }));
+  const init = useRef();
 
   const {
     field: passwordField,
@@ -35,10 +37,14 @@ export function LoginPage() {
   };
 
   useEffect(() => {
-    if (isLogin) {
-      navigate("/", { replace: true });
+    if (isLogin && !init.current) {
+      init.current = true;
+      const route =
+        state?.protectedFrom === pathname ? -1 : state?.protectedFrom || -1;
+
+      navigate(route, { replace: true });
     }
-  }, [isLogin]);
+  }, [isLogin, state]);
 
   useEffect(() => {
     setFormValid(!!emailValid && !!passwordValid);

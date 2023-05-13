@@ -16,6 +16,8 @@ import { CLOSE_ORDER, createOrder } from "../../services/actions/order";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import styles from "./order.module.css";
+import { getUser } from "../../services/actions/profile";
+import { useNavigate } from "react-router-dom";
 
 const initialState = { totalPrice: 0 };
 
@@ -49,6 +51,7 @@ const OrderTotal = (props) => {
     [ingredients]
   );
   const [valid, setValid] = useState(false);
+  const navigate = useNavigate();
 
   const [totalPriceState, totalPriceDispatch] = useReducer(
     totalPriceReducer,
@@ -77,13 +80,22 @@ const OrderTotal = (props) => {
   }, [ingredientsMap, props.bunItem, props.orderIngredients]);
 
   const onCompleteClick = useCallback(() => {
-    dispatch(
-      createOrder(
-        [props.bunItem, ...props.orderIngredients.map(({ id }) => id)].filter(
-          Boolean
-        )
-      )
-    );
+    dispatch(getUser())
+      .unwrap()
+      .then((user) => {
+        if (!user) throw "";
+        dispatch(
+          createOrder(
+            [
+              props.bunItem,
+              ...props.orderIngredients.map(({ id }) => id),
+            ].filter(Boolean)
+          )
+        );
+      })
+      .catch(() => {
+        navigate("/login");
+      });
   }, [props.bunItem, props.orderIngredients]);
   const onCompleteModalClose = useCallback(() => {
     dispatch(CLOSE_ORDER());

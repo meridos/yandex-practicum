@@ -12,6 +12,7 @@ const initialState = {
   request: {
     error: null,
     loading: false,
+    fetched: false,
   },
 };
 
@@ -29,6 +30,7 @@ export const profileReducer = createReducer(initialState, (builder) => {
     ...payload,
     request: {
       ...initialState.request,
+      fetched: true,
     },
   }));
   builder.addCase(ERROR_PROFILE, (state, { payload }) => ({
@@ -37,6 +39,7 @@ export const profileReducer = createReducer(initialState, (builder) => {
       ...state.request,
       loading: false,
       error: payload,
+      fetched: true,
     },
   }));
   builder.addCase(CLEAR_PROFILE, () => initialState);
