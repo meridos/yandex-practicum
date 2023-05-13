@@ -55,5 +55,5 @@ export function updateUser({ accessToken, ...user }) {
       authorization: accessToken,
     },
     body: JSON.stringify(user),
-  }).catch(() => Promise.reject("Ошибка обновления пользователя"));
+  });
 }

@@ -13,11 +13,11 @@ export default function request(urlApi, options = {}) {
 }
 
 function checkResponse(res) {
-  if (res.ok) {
+  try {
     return res
       .json()
       .then((data) => (data.success ? data : Promise.reject(data)));
+  } catch (e) {
+    return Promise.reject();
   }
-
-  return Promise.reject(`Ошибка ${res.status}`);
 }

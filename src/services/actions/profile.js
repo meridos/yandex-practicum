@@ -17,6 +17,8 @@ export const CLEAR_PROFILE = createAction("profile/clear");
 export const ACCESS_TOKEN_COOKIE = "accessToken";
 export const REFRESH_TOKEN_KEY = "refreshToken";
 
+const EXPIRES_TOKEN = 365 * 24 * 60 * 60;
+
 export const register = (userData) => (dispatch) => {
   dispatch(REQUEST_PROFILE());
 
@@ -29,11 +31,10 @@ export const register = (userData) => (dispatch) => {
         })
       );
 
-      setCookie(ACCESS_TOKEN_COOKIE, data.accessToken, {
-        expires: 20 * 60,
-        path: "/",
+      updateTokens({
+        refreshToken: data.refreshToken,
+        accessToken: data.accessToken,
       });
-      window.localStorage.setItem(REFRESH_TOKEN_KEY, data.refreshToken);
 
       return data;
     })
@@ -54,11 +55,10 @@ export const login = (userData) => (dispatch) => {
         })
       );
 
-      setCookie(ACCESS_TOKEN_COOKIE, data.accessToken, {
-        expires: 20 * 60,
-        path: "/",
+      updateTokens({
+        refreshToken: data.refreshToken,
+        accessToken: data.accessToken,
       });
-      window.localStorage.setItem(REFRESH_TOKEN_KEY, data.refreshToken);
 
       return data;
     })
@@ -75,8 +75,7 @@ export const logout = () => (dispatch) => {
   return logoutApi({ refreshToken })
     .then(() => {
       dispatch(CLEAR_PROFILE());
-      setCookie(ACCESS_TOKEN_COOKIE, "", { expires: -1, path: "/" });
-      window.localStorage.removeItem(REFRESH_TOKEN_KEY);
+      removeTokens();
     })
     .catch((err) => {
       dispatch(ERROR_PROFILE(err));
@@ -94,13 +93,7 @@ export const getUser = createAsyncThunk(
       return profile;
     }
 
-    const refreshToken = window.localStorage.getItem(REFRESH_TOKEN_KEY);
-
-    if (!refreshToken) {
-      return;
-    }
-
-    return withUpdateToken({ refreshToken }, () =>
+    return withUpdateToken(() =>
       getUserApi({ accessToken: getCookie(ACCESS_TOKEN_COOKIE) })
     ).then((data) => {
       dispatch(
@@ -116,40 +109,49 @@ export const getUser = createAsyncThunk(
 );
 
 export const updateProfile = (user) => (dispatch) => {
-  const accessToken = getCookie(ACCESS_TOKEN_COOKIE);
-
   dispatch(REQUEST_PROFILE());
 
-  return updateUser({ accessToken, ...user })
+  return withUpdateToken(() =>
+    updateUser({ accessToken: getCookie(ACCESS_TOKEN_COOKIE), ...user })
+  )
     .then(({ user }) => {
       dispatch(SUCCESS_PROFILE(user));
     })
     .catch((err) => {
-      dispatch(ERROR_PROFILE(err));
+      dispatch(ERROR_PROFILE(err || "Ошибка обновления пользователя"));
     });
 };
 
-function withUpdateToken({ refreshToken }, requestFn) {
+function withUpdateToken(requestFn) {
   const accessToken = getCookie(ACCESS_TOKEN_COOKIE);
+  const refreshToken = window.localStorage.getItem(REFRESH_TOKEN_KEY);
 
-  return (accessToken ? requestFn() : Promise.reject()).catch(() =>
-    token({ refreshToken })
+  if (!refreshToken) {
+    return Promise.reject("Ошибка авторизации");
+  }
+
+  return (accessToken ? requestFn() : Promise.reject()).catch((err) => {
+    if (err?.message !== "jwt expired") {
+      return Promise.reject();
+    }
+
+    return token({ refreshToken })
       .catch(() => {
         removeTokens();
 
-        return Promise.reject("Ошибка входа");
+        return Promise.reject("Ошибка авторизации");
       })
       .then(({ refreshToken, accessToken }) => {
         updateTokens({ refreshToken, accessToken });
 
         return requestFn();
-      })
-  );
+      });
+  });
 }
 
 function updateTokens({ refreshToken, accessToken }) {
   setCookie(ACCESS_TOKEN_COOKIE, accessToken, {
-    expires: 20 * 60,
+    expires: EXPIRES_TOKEN,
     path: "/",
   });
   window.localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
