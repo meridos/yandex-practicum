@@ -43,7 +43,7 @@ export default function AppHeader() {
         <Logo />
         <nav>
           <ul className={styles.rightMenu}>
-            <LinkItem icon={ProfileIcon} to="/login" text="Личный кабинет" />
+            <LinkItem icon={ProfileIcon} to="/profile" text="Личный кабинет" />
           </ul>
         </nav>
       </div>
