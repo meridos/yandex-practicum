@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 
 import { Route, Routes, useLocation } from "react-router-dom";
-import BurgerIngredientModal from "../../pages/burger-ingredient/burger-ingredient";
+import BurgerIngredientModal from "../../pages/burger-ingredient/burger-ingredient-modal";
 import { ForgotPasswordPage } from "../../pages/forgot-password/forgot-password";
 import { HomePage } from "../../pages/home/home";
 import { LoginPage } from "../../pages/login/login";
@@ -27,6 +27,7 @@ import {
   REGISTER_ROUTE,
   RESET_PASSWORD_ROUTE,
 } from "../../const/routes";
+import BurgerIngredientPage from "../../pages/burger-ingredient/burger-ingredient-page";
 
 export default function App() {
   const overlayError = useSelector((state) => state.error.overlayError);
@@ -77,6 +78,12 @@ export default function App() {
             />
             <Route path={PROFILE_LOGOUT_ROUTE} element={<LogoutPage />} />
           </Route>
+          {!location.state?.backgroundLocation && (
+            <Route
+              path={INGREDIENT_ROUTE + "/:productId"}
+              element={<BurgerIngredientPage />}
+            />
+          )}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
         {location.state?.backgroundLocation && (
