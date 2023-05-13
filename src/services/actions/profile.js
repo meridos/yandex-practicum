@@ -83,35 +83,6 @@ export const logout = () => (dispatch) => {
     });
 };
 
-// export const getUser = () => (dispatch, getState) => {
-//   const {
-//     profile: { request, ...profile },
-//   } = getState();
-
-//   if (profile.email) {
-//     return profile;
-//   }
-
-//   const refreshToken = window.localStorage.getItem(REFRESH_TOKEN_KEY);
-
-//   if (!refreshToken) {
-//     return;
-//   }
-
-//   return withUpdateToken({ refreshToken }, () =>
-//     getUserApi({ accessToken: getCookie(ACCESS_TOKEN_COOKIE) })
-//   ).then((data) => {
-//     dispatch(
-//       SUCCESS_PROFILE({
-//         email: data.user.email,
-//         name: data.user.name,
-//       })
-//     );
-
-//     return data.user;
-//   });
-// };
-
 export const getUser = createAsyncThunk(
   "profile/get",
   async (_, { dispatch, getState }) => {
