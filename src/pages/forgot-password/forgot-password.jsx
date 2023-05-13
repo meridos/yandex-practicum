@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import styles from "./forgot-password.module.css";
 import { passwordReset } from "../../api/password-reset";
 import { useFormFieldEmail } from "../../components/form-fields/email/email";
+import { LOGIN_ROUTE, RESET_PASSWORD_ROUTE } from "../../const/routes";
 
 export function ForgotPasswordPage() {
   const [errorForm, setErrorForm] = useState();
@@ -17,7 +18,7 @@ export function ForgotPasswordPage() {
     e.preventDefault();
     passwordReset(email)
       .then((e) => {
-        navigate("/reset-password", { state: { fromForgotPassword: true } });
+        navigate(RESET_PASSWORD_ROUTE, { state: { fromForgotPassword: true } });
       })
       .catch((e) => {
         setErrorForm(e?.message || "Ошибка восстановления");
@@ -49,7 +50,7 @@ export function ForgotPasswordPage() {
           <span className="mr-2 text text_type_main-default text_color_inactive">
             Вспомнили пароль?
           </span>
-          <Link to="/login" className={styles.link}>
+          <Link to={LOGIN_ROUTE} className={styles.link}>
             Войти
           </Link>
         </div>

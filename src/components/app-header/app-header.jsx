@@ -6,6 +6,11 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { NavLink } from "react-router-dom";
 import styles from "./app-header.module.css";
+import {
+  HOME_ROUTE,
+  PROFILE_ORDERS_ROUTE,
+  PROFILE_ROUTE,
+} from "../../const/routes";
 
 function LinkItem({ icon: Icon, to, text }) {
   return (
@@ -32,10 +37,10 @@ export default function AppHeader() {
       <div className={styles.container}>
         <nav>
           <ul className={styles.menu}>
-            <LinkItem icon={BurgerIcon} to="/" text="Конструктор" />
+            <LinkItem icon={BurgerIcon} to={HOME_ROUTE} text="Конструктор" />
             <LinkItem
               icon={ListIcon}
-              to="/profile/orders"
+              to={PROFILE_ORDERS_ROUTE}
               text="Лента заказов"
             />
           </ul>
@@ -43,7 +48,11 @@ export default function AppHeader() {
         <Logo />
         <nav>
           <ul className={styles.rightMenu}>
-            <LinkItem icon={ProfileIcon} to="/profile" text="Личный кабинет" />
+            <LinkItem
+              icon={ProfileIcon}
+              to={PROFILE_ROUTE}
+              text="Личный кабинет"
+            />
           </ul>
         </nav>
       </div>

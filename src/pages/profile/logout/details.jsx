@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../../services/actions/profile";
 import { useNavigate } from "react-router-dom";
 import styles from "./details.module.css";
+import { LOGIN_ROUTE } from "../../../const/routes";
 
 export function LogoutPage() {
   const dispatch = useDispatch();
@@ -19,7 +20,7 @@ export function LogoutPage() {
 
   useEffect(() => {
     if (isLogout) {
-      navigate("/login", { replace: true });
+      navigate(LOGIN_ROUTE, { replace: true });
     }
   }, [isLogout]);
 

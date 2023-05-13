@@ -5,6 +5,7 @@ import { confirmReset } from "../../api/password-reset";
 import { useFormFieldPassword } from "../../components/form-fields/password/password";
 import { useFormFieldText } from "../../components/form-fields/text/text";
 import styles from "./reset-password.module.css";
+import { FORGOT_PASSWORD_ROUTE, LOGIN_ROUTE } from "../../const/routes";
 
 export function ResetPasswordPage() {
   const [formValid, setFormValid] = useState(false);
@@ -37,7 +38,7 @@ export function ResetPasswordPage() {
     e.preventDefault();
     confirmReset(password, code)
       .then((e) => {
-        navigate("/login", { replace: true });
+        navigate(LOGIN_ROUTE, { replace: true });
       })
       .catch(() => {
         setErrorForm("Ошибка восстановления");
@@ -46,7 +47,7 @@ export function ResetPasswordPage() {
 
   useEffect(() => {
     if (!state?.fromForgotPassword) {
-      navigate("/forgot-password", { replace: true });
+      navigate(FORGOT_PASSWORD_ROUTE, { replace: true });
     }
   }, [state]);
 
@@ -74,7 +75,7 @@ export function ResetPasswordPage() {
           <span className="mr-2 text text_type_main-default text_color_inactive">
             Вспомнили пароль?
           </span>
-          <Link to="/login" className={styles.link}>
+          <Link to={LOGIN_ROUTE} className={styles.link}>
             Войти
           </Link>
         </div>

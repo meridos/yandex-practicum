@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { getUser } from "../../services/actions/profile";
 import PropTypes from "prop-types";
+import { LOGIN_ROUTE } from "../../const/routes";
 
 export const ProtectedRouteElement = ({ element, authRestricted }) => {
   const dispatch = useDispatch();
@@ -41,7 +42,7 @@ export const ProtectedRouteElement = ({ element, authRestricted }) => {
   return user || authRestricted ? (
     element
   ) : (
-    <Navigate to="/login" state={{ protectedFrom: pathname }} />
+    <Navigate to={LOGIN_ROUTE} state={{ protectedFrom: pathname }} />
   );
 };
 ProtectedRouteElement.propTypes = {

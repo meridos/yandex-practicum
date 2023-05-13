@@ -16,6 +16,17 @@ import AppHeader from "../app-header/app-header";
 import ErrorBoundary from "../error-boundary/error-boundary";
 import { ProtectedRouteElement } from "../protected/protected-route-element";
 import styles from "./app.module.css";
+import {
+  FORGOT_PASSWORD_ROUTE,
+  HOME_ROUTE,
+  INGREDIENT_ROUTE,
+  LOGIN_ROUTE,
+  PROFILE_LOGOUT_ROUTE,
+  PROFILE_ORDERS_ROUTE,
+  PROFILE_ROUTE,
+  REGISTER_ROUTE,
+  RESET_PASSWORD_ROUTE,
+} from "../../const/routes";
 
 export default function App() {
   const overlayError = useSelector((state) => state.error.overlayError);
@@ -26,10 +37,10 @@ export default function App() {
       <div className={styles.wrapper}>
         <AppHeader />
         <Routes location={location.state?.backgroundLocation || location}>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
+          <Route path={HOME_ROUTE} element={<HomePage />} />
+          <Route path={LOGIN_ROUTE} element={<LoginPage />} />
           <Route
-            path="/register"
+            path={REGISTER_ROUTE}
             element={
               <ProtectedRouteElement
                 element={<RegisterPage />}
@@ -38,7 +49,7 @@ export default function App() {
             }
           />
           <Route
-            path="/forgot-password"
+            path={FORGOT_PASSWORD_ROUTE}
             element={
               <ProtectedRouteElement
                 element={<ForgotPasswordPage />}
@@ -47,7 +58,7 @@ export default function App() {
             }
           />
           <Route
-            path="/reset-password"
+            path={RESET_PASSWORD_ROUTE}
             element={
               <ProtectedRouteElement
                 element={<ResetPasswordPage />}
@@ -56,19 +67,22 @@ export default function App() {
             }
           />
           <Route
-            path="/profile"
+            path={PROFILE_ROUTE}
             element={<ProtectedRouteElement element={<ProfilePage />} />}
           >
             <Route path="" element={<ProfileDetailsPage />} />
-            <Route path="orders" element={<ProfileOrdersPage />} />
-            <Route path="logout" element={<LogoutPage />} />
+            <Route
+              path={PROFILE_ORDERS_ROUTE}
+              element={<ProfileOrdersPage />}
+            />
+            <Route path={PROFILE_LOGOUT_ROUTE} element={<LogoutPage />} />
           </Route>
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
         {location.state?.backgroundLocation && (
           <Routes>
             <Route
-              path="/ingredient/:productId"
+              path={INGREDIENT_ROUTE + "/:productId"}
               element={<BurgerIngredientModal />}
             />
           </Routes>

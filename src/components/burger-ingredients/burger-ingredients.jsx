@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ProductItemType } from "../../utils/common-prop-types";
 import styles from "./burger-ingredients.module.css";
+import { INGREDIENT_ROUTE } from "../../const/routes";
 
 const ingredientTypesMap = {
   main: "Начинки",
@@ -99,7 +100,7 @@ export default function BurgerIngredients() {
   }
 
   function onProductClick(ingredient) {
-    navigate(`/ingredient/${ingredient._id}`, {
+    navigate(`${INGREDIENT_ROUTE}/${ingredient._id}`, {
       state: { backgroundLocation: location },
     });
   }

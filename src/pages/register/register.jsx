@@ -7,6 +7,7 @@ import { useFormFieldPassword } from "../../components/form-fields/password/pass
 import { useFormFieldText } from "../../components/form-fields/text/text";
 import styles from "./register.module.css";
 import { register } from "../../services/actions/profile";
+import { HOME_ROUTE, LOGIN_ROUTE } from "../../const/routes";
 
 export function RegisterPage() {
   const [formValid, setFormValid] = useState(false);
@@ -50,7 +51,7 @@ export function RegisterPage() {
 
   useEffect(() => {
     if (isRegister) {
-      navigate("/", { replace: true });
+      navigate(HOME_ROUTE, { replace: true });
     }
   }, [isRegister]);
 
@@ -78,7 +79,7 @@ export function RegisterPage() {
           <span className="mr-2 text text_type_main-default text_color_inactive">
             Уже зарегистрированы?
           </span>
-          <Link to="/login" className={styles.link}>
+          <Link to={LOGIN_ROUTE} className={styles.link}>
             Войти
           </Link>
         </div>

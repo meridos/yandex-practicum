@@ -6,6 +6,7 @@ import { useFormFieldEmail } from "../../components/form-fields/email/email";
 import { useFormFieldPassword } from "../../components/form-fields/password/password";
 import { login } from "../../services/actions/profile";
 import styles from "./login.module.css";
+import { FORGOT_PASSWORD_ROUTE, REGISTER_ROUTE } from "../../const/routes";
 
 export function LoginPage() {
   const [formValid, setFormValid] = useState(false);
@@ -70,7 +71,7 @@ export function LoginPage() {
           <span className="mr-2 text text_type_main-default text_color_inactive">
             Вы — новый пользователь?
           </span>
-          <Link to="/register" className={styles.link}>
+          <Link to={REGISTER_ROUTE} className={styles.link}>
             Зарегистрироваться
           </Link>
         </div>
@@ -79,7 +80,7 @@ export function LoginPage() {
           <span className="mr-2 text text_type_main-default text_color_inactive">
             Забыли пароль?
           </span>
-          <Link to="/forgot-password" className={styles.link}>
+          <Link to={FORGOT_PASSWORD_ROUTE} className={styles.link}>
             Восстановить пароль
           </Link>
         </div>

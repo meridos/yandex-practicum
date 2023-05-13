@@ -18,6 +18,7 @@ import OrderDetails from "../order-details/order-details";
 import styles from "./order.module.css";
 import { getUser } from "../../services/actions/profile";
 import { useNavigate } from "react-router-dom";
+import { LOGIN_ROUTE } from "../../const/routes";
 
 const initialState = { totalPrice: 0 };
 
@@ -94,7 +95,7 @@ const OrderTotal = (props) => {
         );
       })
       .catch(() => {
-        navigate("/login");
+        navigate(LOGIN_ROUTE);
       });
   }, [props.bunItem, props.orderIngredients]);
   const onCompleteModalClose = useCallback(() => {
