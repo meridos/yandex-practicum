@@ -6,12 +6,9 @@ import {
 import PropTypes from "prop-types";
 import React, { useEffect, useRef, useState } from "react";
 import { useDrag } from "react-dnd";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
-import { CLOSE_DETAILS, OPEN_DETAILS } from "../../services/actions/details";
+import { useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ProductItemType } from "../../utils/common-prop-types";
-import IngredientDetails from "../ingredient-details/ingredient-details";
-import Modal from "../modal/modal";
 import styles from "./burger-ingredients.module.css";
 
 const ingredientTypesMap = {
@@ -26,9 +23,6 @@ const tabs = ["bun", "sauce", "main"].map((type) => ({
 
 const ingredientsDataSelector = (state) => ({
   ingredients: state.ingredients.data,
-  productDetails: state.ingredients.data.find(
-    (ingredient) => ingredient._id === state.details.ingredient
-  ),
   countsMap: state.cart.ingredients.reduce((map, { id }) => {
     map.set(id, (map.get(id) || 0) + 1);
 
@@ -40,24 +34,10 @@ export default function BurgerIngredients() {
   const [currentTab, setCurrentTab] = useState("bun");
   const [groupProducts, setGroupProducts] = useState([]);
   const [thresholds, setThreshholds] = useState({});
-  const { ingredients, productDetails, countsMap } = useSelector(
-    ingredientsDataSelector
-  );
+  const { ingredients, countsMap } = useSelector(ingredientsDataSelector);
   const scrollContainerRef = useRef();
-  const dispatch = useDispatch();
-  const { productId } = useParams();
-  const prevProductId = useRef(productId);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (productId) {
-      dispatch(OPEN_DETAILS(productId));
-    } else if (productId !== prevProductId.current) {
-      dispatch(CLOSE_DETAILS());
-    }
-
-    prevProductId.current = productId;
-  }, [productId]);
+  let location = useLocation();
 
   const categoriesRefs = {
     main: useRef(),
@@ -119,11 +99,9 @@ export default function BurgerIngredients() {
   }
 
   function onProductClick(ingredient) {
-    if (ingredient) {
-      navigate(`/ingredient/${ingredient._id}`);
-    } else {
-      navigate(-1);
-    }
+    navigate(`/ingredient/${ingredient._id}`, {
+      state: { backgroundLocation: location },
+    });
   }
 
   return (
@@ -148,11 +126,6 @@ export default function BurgerIngredients() {
           </div>
         ))}
       </div>
-      {productDetails && (
-        <Modal header="Детали ингредиента" onClose={() => onProductClick(null)}>
-          <IngredientDetails ingredient={productDetails} />
-        </Modal>
-      )}
     </div>
   );
 }
