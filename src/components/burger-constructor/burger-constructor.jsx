@@ -87,6 +87,8 @@ export default function BurgerConstructor() {
         orderIngredients.map(({ id, uuid }) => {
           const ingredient = ingredientsMap.get(id);
 
+          if (!ingredient) return;
+
           return (
             <React.Fragment key={uuid}>
               <ProductItem
@@ -121,7 +123,7 @@ export default function BurgerConstructor() {
 }
 
 function ProductItem(props) {
-  const [_, drag] = useDrag({
+  const [, drag] = useDrag({
     type: "order",
     item: { uuid: props.uuid },
   });
@@ -197,6 +199,10 @@ function DropTarget({ children, onDrop, accept, className }) {
       isHover: monitor.isOver(),
     }),
   });
+
+  className = [className, isHover && styles.emptyElementHover]
+    .filter(Boolean)
+    .join(" ");
 
   return (
     <div className={className} ref={dropTarget}>
