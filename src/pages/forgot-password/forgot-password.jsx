@@ -16,8 +16,8 @@ export function ForgotPasswordPage() {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    passwordReset(email)
-      .then((e) => {
+    passwordReset({ email })
+      .then(() => {
         navigate(RESET_PASSWORD_ROUTE, { state: { fromForgotPassword: true } });
       })
       .catch((e) => {

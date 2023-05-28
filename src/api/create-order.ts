@@ -1,7 +1,20 @@
-import request from "../utils/request";
+import { request } from "../utils/request";
 
-export default function createOrder(orderListIds) {
-  return request("/orders", {
+export interface ICreateOrderBody {
+  orderListIds: string[];
+}
+
+export interface ICreateOrderResponse {
+  number: number;
+}
+
+export default function createOrder({
+  orderListIds,
+}: ICreateOrderBody): Promise<ICreateOrderResponse> {
+  return request<{
+    name: string;
+    order: ICreateOrderResponse;
+  }>("/orders", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

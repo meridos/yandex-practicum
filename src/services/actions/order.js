@@ -10,7 +10,7 @@ export const CLOSE_ORDER = createAction("order/close");
 
 export const createOrder = (orderListIds) => (dispatch) => {
   dispatch(CREATE_ORDER(orderListIds));
-  createOrderApi(orderListIds)
+  createOrderApi({ orderListIds })
     .then((data) => {
       dispatch(CREATE_ORDER_SUCCESS(data));
       dispatch(OPEN_ORDER());
