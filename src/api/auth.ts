@@ -1,14 +1,12 @@
 import { IResponse, request } from "../utils/request";
 
 export interface ILoginResponse {
-  data: {
-    user: {
-      email: string;
-      name: string;
-    };
-    refreshToken: string;
-    accessToken: string;
+  user: {
+    email: string;
+    name: string;
   };
+  refreshToken: string;
+  accessToken: string;
 }
 
 export interface ILoginBody {
@@ -20,7 +18,7 @@ export function login({
   email,
   password,
 }: ILoginBody): Promise<ILoginResponse> {
-  return request<Pick<ILoginResponse, "data">>("/auth/login", {
+  return request<ILoginResponse>("/auth/login", {
     method: "POST",
     body: JSON.stringify({ email, password }),
   })

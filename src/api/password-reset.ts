@@ -2,7 +2,6 @@ import { IResponse, request } from "../utils/request";
 
 export interface IPasswordResetBody {
   email: string;
-  password: string;
 }
 
 export interface IPasswordResetResponse {
