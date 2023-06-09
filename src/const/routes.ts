@@ -7,3 +7,4 @@ export const PROFILE_ROUTE = "/profile";
 export const PROFILE_ORDERS_ROUTE = "/profile/orders";
 export const PROFILE_LOGOUT_ROUTE = "/profile/logout";
 export const INGREDIENT_ROUTE = "/ingredient";
+export const FEED_ROUTE = "/feed";

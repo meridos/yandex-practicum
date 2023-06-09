@@ -1,0 +1,28 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  max-width: 1280px;
+  width: 100%;
+  align-self: center;
+  padding: 0 20px;
+  box-sizing: border-box;
+  min-height: 0;
+}
+
+.row {
+  display: flex;
+  column-gap: 60px;
+  min-height: 0;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  width: 100%;
+  min-height: 0px;
+  row-gap: 16px;
+  overflow: overlay;
+  padding-right: 8px;
+  box-sizing: border-box;
+}

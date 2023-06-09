@@ -1,0 +1,99 @@
+.container {
+  padding: 24px;
+  border-radius: var(--common-border-radius-s);
+  background: var(--background);
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.icons {
+  display: flex;
+  overflow-x: auto;
+}
+
+.icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(var(--background-alt), var(--background-alt))
+      padding-box,
+    linear-gradient(to right, #7621bf, #5642f1) border-box;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  box-sizing: border-box;
+  object-fit: cover;
+  position: relative;
+  overflow: hidden;
+}
+
+.icon + .icon {
+  margin-left: -16px;
+}
+
+.icon:nth-child(1) {
+  z-index: 6;
+}
+
+.icon:nth-child(2) {
+  z-index: 5;
+}
+
+.icon:nth-child(3) {
+  z-index: 4;
+}
+
+.icon:nth-child(4) {
+  z-index: 3;
+}
+
+.icon:nth-child(5) {
+  z-index: 2;
+}
+
+.icon:nth-child(6) {
+  z-index: 1;
+}
+
+.iconCounter {
+  composes: icon;
+  margin-left: -16px;
+}
+
+.iconCounter img {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+}
+
+.counter {
+  position: absolute;
+  vertical-align: middle;
+  text-align: center;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  line-height: 60px;
+  background: rgba(19, 19, 22, 0.5);
+  font-family: "Jet Brains Mono";
+}
+
+.price {
+  composes: ml-6 from global;
+  display: flex;
+  align-items: center;
+}

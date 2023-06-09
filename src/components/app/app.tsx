@@ -17,6 +17,7 @@ import ErrorBoundary from "../error-boundary/error-boundary";
 import { ProtectedRouteElement } from "../protected/protected-route-element";
 import styles from "./app.module.css";
 import {
+  FEED_ROUTE,
   FORGOT_PASSWORD_ROUTE,
   HOME_ROUTE,
   INGREDIENT_ROUTE,
@@ -30,6 +31,7 @@ import {
 import BurgerIngredientPage from "../../pages/burger-ingredient/burger-ingredient-page";
 import { IState } from "../../models";
 import { FC } from "react";
+import { FeedPage } from "../../pages/feed/feed";
 
 export const App: FC = () => {
   const overlayError = useSelector<IState, IState["error"]["overlayError"]>(
@@ -82,6 +84,7 @@ export const App: FC = () => {
             />
             <Route path={PROFILE_LOGOUT_ROUTE} element={<LogoutPage />} />
           </Route>
+          <Route path={FEED_ROUTE} element={<FeedPage />} />
           {!location.state?.backgroundLocation && (
             <Route
               path={INGREDIENT_ROUTE + "/:productId"}
