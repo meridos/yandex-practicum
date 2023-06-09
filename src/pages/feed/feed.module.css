@@ -21,8 +21,27 @@
   max-width: 600px;
   width: 100%;
   min-height: 0px;
-  row-gap: 16px;
   overflow: overlay;
   padding-right: 8px;
   box-sizing: border-box;
+}
+
+.feed {
+  composes: column;
+  row-gap: 16px;
+}
+
+.summary {
+  composes: column;
+  row-gap: 60px;
+}
+
+.orderNumbers {
+  display: flex;
+  justify-content: space-between;
+  column-gap: 36px;
+}
+
+.orderNumbers > * {
+  flex: 1 100%;
 }

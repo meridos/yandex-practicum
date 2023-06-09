@@ -1,6 +1,12 @@
 import { FC } from "react";
 import styles from "./feed.module.css";
 import { OrderListItem } from "../../components/order-list-item/order-list-item";
+import {
+  OrderNumbers,
+  OrderNumbersMode,
+} from "../../components/order-numbers/order-numbers";
+import { formattedAmount } from "../../utils/formatted-amount";
+import { OrderTotal } from "../../components/order-total/order-total";
 
 export const FeedPage: FC = () => {
   return (
@@ -8,7 +14,7 @@ export const FeedPage: FC = () => {
       <div className={styles.container}>
         <p className="text text_type_main-large mt-10 mb-5">Лента заказов</p>
         <div className={styles.row}>
-          <div className={styles.column}>
+          <div className={styles.feed}>
             <OrderListItem
               date="2022-03-05T01:23:45"
               id="0123"
@@ -262,7 +268,21 @@ export const FeedPage: FC = () => {
               title="some"
             />
           </div>
-          <div className={styles.column}>2</div>
+          <div className={styles.summary}>
+            <div className={styles.orderNumbers}>
+              <OrderNumbers
+                orderIds={["034533", "034533", "034533", "034533", "034533"]}
+                title="Готовы:"
+                mode={OrderNumbersMode.Completed}
+              ></OrderNumbers>
+              <OrderNumbers
+                orderIds={["034538"]}
+                title="В работе:"
+              ></OrderNumbers>
+            </div>
+            <OrderTotal title="Выполнено за все время:" total={28752} />
+            <OrderTotal title="Выполнено за сегодня:" total={138} />
+          </div>
         </div>
       </div>
     </>
