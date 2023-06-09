@@ -4,7 +4,7 @@ import {
   CurrencyIcon,
   FormattedDate,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { IIngredient } from "../../models";
+import { IIngredient, OrderStatus } from "../../models";
 import { IngredientIcon } from "../ingredient-icon/ingredient-icon";
 
 interface IOrderListItemProps {
@@ -13,6 +13,7 @@ interface IOrderListItemProps {
   date: string;
   title: string;
   id: string;
+  status?: OrderStatus;
 }
 
 export const OrderListItem: FC<IOrderListItemProps> = (props) => {
@@ -35,9 +36,14 @@ export const OrderListItem: FC<IOrderListItemProps> = (props) => {
           <FormattedDate date={new Date()} />
         </p>
       </div>
-      <p className="text text_type_main-medium mb-6">
+      <p className="text text_type_main-medium">
         Death Star Starship Main бургер
       </p>
+      {props.status ? (
+        <p className="text text_type_main-default mt-2">
+          {getStatusText(props.status)}
+        </p>
+      ) : null}
       <div className={styles.content}>
         <div className={styles.icons}>
           {icons.map((icon) => (
@@ -59,3 +65,16 @@ export const OrderListItem: FC<IOrderListItemProps> = (props) => {
     </div>
   );
 };
+
+function getStatusText(status: OrderStatus): string {
+  switch (status) {
+    case OrderStatus.Completed:
+      return "Выполнен";
+    case OrderStatus.Pending:
+      return "Готовится";
+    case OrderStatus.Created:
+      return "Создан";
+    default:
+      return "";
+  }
+}

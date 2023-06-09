@@ -14,6 +14,7 @@ interface IItemProps {
 interface ISidebarLinksProps {
   routes: IRoute[];
   footerText?: string;
+  className?: string;
 }
 
 const Item: FC<IItemProps> = ({ route }) => (
@@ -31,8 +32,9 @@ const Item: FC<IItemProps> = ({ route }) => (
 export const SidebarLinks: FC<ISidebarLinksProps> = ({
   routes,
   footerText,
+  className,
 }) => (
-  <div className={styles.container}>
+  <div className={`${styles.container} ${className || ""}`}>
     {routes.map((route) => (
       <Item route={route} key={route.to} />
     ))}

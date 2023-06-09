@@ -7,6 +7,7 @@ export const ProfilePage: FC = () => {
   return (
     <div className={styles.container}>
       <SidebarLinks
+        className={styles.sidebar}
         routes={[
           { to: "", text: "Профиль" },
           { to: "orders", text: "История заказов" },

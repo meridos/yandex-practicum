@@ -14,6 +14,7 @@
 }
 
 .content {
+  composes: mt-6 from global;
   display: flex;
   justify-content: space-between;
   align-items: center;

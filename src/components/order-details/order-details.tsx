@@ -26,6 +26,8 @@ function getStatusText(status: OrderStatus): string {
       return "Выполнен";
     case OrderStatus.Pending:
       return "В процессе";
+    case OrderStatus.Created:
+      return "Создан";
     default:
       return "";
   }
