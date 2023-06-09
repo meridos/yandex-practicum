@@ -1,11 +1,11 @@
 import orderDoneImg from "../../images/order-done.png";
-import styles from "./order-details.module.css";
+import styles from "./order-created.module.css";
 
-interface IOrderDetailsProps {
+interface IOrderCreatedProps {
   order: number;
 }
 
-export default function OrderDetails(props: IOrderDetailsProps) {
+export default function OrderCreated(props: IOrderCreatedProps) {
   return (
     <div className={styles.content}>
       <p className={styles.text}>{props.order}</p>

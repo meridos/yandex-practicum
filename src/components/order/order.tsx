@@ -19,7 +19,7 @@ import { IIngredient, IState, TDispatch } from "../../models";
 import { CLOSE_ORDER, createOrder } from "../../services/actions/order";
 import { getUser } from "../../services/actions/profile";
 import { Modal } from "../modal/modal";
-import OrderDetails from "../order-details/order-details";
+import OrderCreated from "../order-created/order-created";
 import styles from "./order.module.css";
 
 interface ITotalPriceState {
@@ -148,7 +148,7 @@ const OrderTotal: FC<IOrderTotalProps> = (props) => {
         </Button>
         {orderOpen && order && (
           <Modal onClose={onCompleteModalClose}>
-            <OrderDetails order={order} />
+            <OrderCreated order={order} />
           </Modal>
         )}
       </div>
