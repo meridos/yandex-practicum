@@ -5,7 +5,6 @@ import {
   OrderNumbers,
   OrderNumbersMode,
 } from "../../components/order-numbers/order-numbers";
-import { formattedAmount } from "../../utils/formatted-amount";
 import { OrderTotal } from "../../components/order-total/order-total";
 
 export const FeedPage: FC = () => {
@@ -20,6 +19,10 @@ export const FeedPage: FC = () => {
               id="0123"
               ingredients={
                 [
+                  {
+                    image_mobile:
+                      "https://code.s3.yandex.net/react/code/cheese-mobile.png",
+                  },
                   {
                     image_mobile:
                       "https://code.s3.yandex.net/react/code/cheese-mobile.png",

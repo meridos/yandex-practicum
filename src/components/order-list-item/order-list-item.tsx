@@ -5,6 +5,7 @@ import {
   FormattedDate,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { IIngredient } from "../../models";
+import { IngredientIcon } from "../ingredient-icon/ingredient-icon";
 
 interface IOrderListItemProps {
   ingredients: IIngredient[];
@@ -19,7 +20,7 @@ export const OrderListItem: FC<IOrderListItemProps> = (props) => {
     props.ingredients.length > 6
       ? {
           icon: props.ingredients[5].image_mobile,
-          text: `+${props.ingredients.length - 6}`,
+          count: props.ingredients.length - 6,
         }
       : null;
   const icons = props.ingredients
@@ -40,13 +41,14 @@ export const OrderListItem: FC<IOrderListItemProps> = (props) => {
       <div className={styles.content}>
         <div className={styles.icons}>
           {icons.map((icon) => (
-            <img className={styles.icon} src={icon} />
+            <IngredientIcon className={styles.icon} image={icon} />
           ))}
           {counter && (
-            <div className={styles.iconCounter}>
-              <img src={counter.icon} />
-              <span className={styles.counter}>{counter.text}</span>
-            </div>
+            <IngredientIcon
+              className={styles.icon}
+              image={counter.icon}
+              count={counter.count}
+            />
           )}
         </div>
         <div className={styles.price}>

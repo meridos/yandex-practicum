@@ -1,0 +1,47 @@
+.container {
+  max-width: 640px;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.completed {
+  color: var(--colors-interface-success);
+}
+
+.orderNumber {
+  text-align: center;
+}
+
+.ingredients {
+  composes: mb-10 from global;
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+  padding-right: 24px;
+  overflow-y: overlay;
+  min-height: 0;
+  max-height: 312px;
+}
+
+.ingredient {
+  display: flex;
+  align-items: center;
+  column-gap: 16px;
+}
+
+.ingredientTitle {
+  flex: 1;
+}
+
+.price {
+  white-space: nowrap;
+  display: flex;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+}

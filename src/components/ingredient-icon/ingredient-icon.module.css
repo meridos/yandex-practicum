@@ -1,0 +1,33 @@
+.container {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(var(--background-alt), var(--background-alt))
+      padding-box,
+    linear-gradient(to right, #7621bf, #5642f1) border-box;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  box-sizing: border-box;
+  object-fit: cover;
+  position: relative;
+  overflow: hidden;
+}
+
+.container img {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+}
+
+.counter {
+  position: absolute;
+  vertical-align: middle;
+  text-align: center;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  line-height: 60px;
+  background: rgba(19, 19, 22, 0.5);
+  font-family: "Jet Brains Mono";
+}
