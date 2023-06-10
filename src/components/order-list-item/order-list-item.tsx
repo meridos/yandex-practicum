@@ -14,6 +14,8 @@ interface IOrderListItemProps {
   title: string;
   id: string;
   status?: OrderStatus;
+  onClick?: () => void;
+  className?: string;
 }
 
 export const OrderListItem: FC<IOrderListItemProps> = (props) => {
@@ -29,7 +31,10 @@ export const OrderListItem: FC<IOrderListItemProps> = (props) => {
     .slice(0, counter ? 5 : 6);
 
   return (
-    <div className={styles.container}>
+    <div
+      className={`${styles.container} ${props.className || ""}`}
+      onClick={props.onClick}
+    >
       <div className={styles.header}>
         <p className="text text_type_digits-default mb-6">#034535</p>
         <p className="text text_type_main-default text_color_inactive mb-6">
@@ -74,6 +79,8 @@ function getStatusText(status: OrderStatus): string {
       return "Готовится";
     case OrderStatus.Created:
       return "Создан";
+    case OrderStatus.Cancelled:
+      return "Отменен";
     default:
       return "";
   }

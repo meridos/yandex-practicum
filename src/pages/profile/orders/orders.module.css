@@ -8,3 +8,7 @@
   flex: 1;
   padding-right: 8px;
 }
+
+.order {
+  cursor: pointer;
+}

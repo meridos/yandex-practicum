@@ -31,6 +31,10 @@
   row-gap: 16px;
 }
 
+.order {
+  cursor: pointer;
+}
+
 .summary {
   composes: column;
   row-gap: 60px;

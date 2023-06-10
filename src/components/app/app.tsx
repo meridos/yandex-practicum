@@ -21,6 +21,7 @@ import {
   FEED_ROUTE,
   FORGOT_PASSWORD_ROUTE,
   HOME_ROUTE,
+  INGREDIENT_ITEM_ROUTE,
   INGREDIENT_ROUTE,
   LOGIN_ROUTE,
   PROFILE_LOGOUT_ROUTE,
@@ -34,7 +35,8 @@ import BurgerIngredientPage from "../../pages/burger-ingredient/burger-ingredien
 import { IState } from "../../models";
 import { FC } from "react";
 import { FeedPage } from "../../pages/feed/feed";
-import { OrderDetails } from "../../pages/order-details/order-details";
+import { OrderDetailsPage } from "../../pages/order-details/order-details";
+import { OrderDetailsModal } from "../../pages/order-details/order-details-modal";
 
 export const App: FC = () => {
   const overlayError = useSelector<IState, IState["error"]["overlayError"]>(
@@ -88,24 +90,30 @@ export const App: FC = () => {
             <Route path={PROFILE_LOGOUT_ROUTE} element={<LogoutPage />} />
           </Route>
           <Route path={FEED_ROUTE} element={<FeedPage />} />
-          <Route path={FEED_ITEM_ROUTE} element={<OrderDetails />}></Route>
-          <Route
-            path={PROFILE_ORDERS_ITEM_ROUTE}
-            element={<OrderDetails />}
-          ></Route>
+          <Route path={FEED_ITEM_ROUTE} element={<OrderDetailsPage />} />
           {!location.state?.backgroundLocation && (
-            <Route
-              path={INGREDIENT_ROUTE + "/:productId"}
-              element={<BurgerIngredientPage />}
-            />
+            <>
+              <Route
+                path={INGREDIENT_ITEM_ROUTE}
+                element={<BurgerIngredientPage />}
+              />
+              <Route
+                path={PROFILE_ORDERS_ITEM_ROUTE}
+                element={<OrderDetailsPage />}
+              />
+            </>
           )}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
         {location.state?.backgroundLocation && (
           <Routes>
             <Route
-              path={INGREDIENT_ROUTE + "/:productId"}
+              path={INGREDIENT_ITEM_ROUTE}
               element={<BurgerIngredientModal />}
+            />
+            <Route
+              path={PROFILE_ORDERS_ITEM_ROUTE}
+              element={<OrderDetailsModal />}
             />
           </Routes>
         )}

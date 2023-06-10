@@ -9,6 +9,7 @@
   width: 100%;
   box-sizing: border-box;
   border-radius: 40px;
+  z-index: 101;
 }
 
 .header {

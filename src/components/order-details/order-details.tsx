@@ -1,11 +1,11 @@
-import { FC } from "react";
-import { IIngredient, OrderStatus } from "../../models";
-import styles from "./order-details.module.css";
-import { IngredientIcon } from "../ingredient-icon/ingredient-icon";
 import {
   CurrencyIcon,
   FormattedDate,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { FC } from "react";
+import { IIngredient, OrderStatus } from "../../models";
+import { IngredientIcon } from "../ingredient-icon/ingredient-icon";
+import styles from "./order-details.module.css";
 
 export interface IOrderDetailsIngredient extends IIngredient {
   count: number;
@@ -28,6 +28,8 @@ function getStatusText(status: OrderStatus): string {
       return "В процессе";
     case OrderStatus.Created:
       return "Создан";
+    case OrderStatus.Cancelled:
+      return "Отменен";
     default:
       return "";
   }

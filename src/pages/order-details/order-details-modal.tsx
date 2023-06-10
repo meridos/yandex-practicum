@@ -1,11 +1,19 @@
-import { FC } from "react";
+import { FC, useCallback } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Modal } from "../../components/modal/modal";
 import { OrderDetails } from "../../components/order-details/order-details";
 import { OrderStatus } from "../../models";
-import styles from "./order-details.module.css";
 
-export const OrderDetailsPage: FC = () => {
+export const OrderDetailsModal: FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const onCloseModal = useCallback(() => {
+    navigate(location.state?.backgroundLocation);
+  }, [navigate, location]);
+
   return (
-    <div className={styles.container}>
+    <Modal header="Детали ингредиента" onClose={onCloseModal}>
       <OrderDetails
         date="2023-06-08T13:50:02"
         id="034533"
@@ -73,6 +81,6 @@ export const OrderDetailsPage: FC = () => {
         status={OrderStatus.Completed}
         title="Black Hole"
       />
-    </div>
+    </Modal>
   );
 };
