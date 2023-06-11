@@ -1,11 +1,11 @@
 import { ThunkDispatch } from "redux-thunk";
-import { ICreateOrderResponse } from "../api/create-order";
+import { ICreateOrderResponse as ICreatedOrderResponse } from "../api/create-order";
 import { ICartIngredient } from "./cart-ingredient";
 import { IIngredient } from "./ingredient";
 import { TCartActions } from "../services/actions/cart";
 import { TErrorActions } from "../services/actions/error";
 import { TIngredientsActions } from "../services/actions/ingredients";
-import { TOrderActions } from "../services/actions/order";
+import { TOrderActions } from "../services/actions/create-order";
 import { TProfileActions } from "../services/actions/profile";
 
 export type TActions =
@@ -18,7 +18,7 @@ export type TActions =
 export interface IState {
   error: IStateError;
   ingredients: IStateIngredients;
-  order: IStateOrder;
+  createOrder: IStateCreateOrder;
   profile: IStateProfile;
   cart: IStateCart;
 }
@@ -37,8 +37,8 @@ export interface IStateCart {
   ingredients: ICartIngredient[];
 }
 
-export interface IStateOrder {
-  data: ICreateOrderResponse | null;
+export interface IStateCreateOrder {
+  data: ICreatedOrderResponse | null;
   loading: boolean;
   error: string | boolean;
   open: boolean;

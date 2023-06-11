@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { LOGIN_ROUTE } from "../../const/routes";
 import { IIngredient, IState, TDispatch } from "../../models";
-import { CLOSE_ORDER, createOrder } from "../../services/actions/order";
+import { CLOSE_ORDER, createOrder } from "../../services/actions/create-order";
 import { getUser } from "../../services/actions/profile";
 import { Modal } from "../modal/modal";
 import OrderCreated from "../order-created/order-created";
@@ -60,10 +60,10 @@ interface IOrderTotalProps {
 
 const orderDataSelector = (state: IState) => ({
   ingredients: state.ingredients.data,
-  order: state.order?.data?.number,
-  orderLoading: state.order.loading,
-  error: state.order.error,
-  orderOpen: state.order.open,
+  order: state.createOrder?.data?.number,
+  orderLoading: state.createOrder.loading,
+  error: state.createOrder.error,
+  orderOpen: state.createOrder.open,
 });
 
 const OrderTotal: FC<IOrderTotalProps> = (props) => {
