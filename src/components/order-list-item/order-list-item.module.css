@@ -62,3 +62,7 @@
 .done {
   color: var(--colors-interface-success);
 }
+
+.cancelled {
+  color: var(--colors-interface-error);
+}

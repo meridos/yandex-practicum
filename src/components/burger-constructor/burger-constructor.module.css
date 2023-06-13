@@ -74,10 +74,13 @@
 
   .item {
     margin-left: 0;
-    margin-right: 0;
   }
 
   .scrollItems {
     max-height: 100%;
+  }
+
+  .emptyElement {
+    margin-left: 32px;
   }
 }

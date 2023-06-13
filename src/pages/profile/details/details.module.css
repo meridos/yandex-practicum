@@ -1,4 +1,5 @@
 .container {
+  composes: mt-30 from global;
   display: flex;
   flex-direction: column;
   row-gap: 24px;

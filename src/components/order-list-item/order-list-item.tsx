@@ -26,6 +26,16 @@ export const OrderListItem: FC<IOrderListItemProps> = (props) => {
   const icons = props.images
     .slice(0, counter ? 5 : 6)
     .map((image, i) => ({ image, key: `${props.order.ingredients[i]}-${i}` }));
+  const getStatusClass = (status: TOrderStatus): string => {
+    switch (status) {
+      case TOrderStatus.Done:
+        return styles.done;
+      case TOrderStatus.Cancelled:
+        return styles.cancelled;
+      default:
+        return "";
+    }
+  };
 
   return (
     <div
@@ -43,9 +53,9 @@ export const OrderListItem: FC<IOrderListItemProps> = (props) => {
       <p className="text text_type_main-medium">{props.order.name}</p>
       {props.order.status ? (
         <p
-          className={`text text_type_main-default mt-2 ${
-            props.order.status === TOrderStatus.Done ? styles.done : ""
-          }`}
+          className={`text text_type_main-default mt-2 ${getStatusClass(
+            props.order.status
+          )}`}
         >
           {getStatusText(props.order.status)}
         </p>

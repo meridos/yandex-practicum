@@ -19,3 +19,17 @@
   min-height: 0;
   flex: 1;
 }
+
+@media screen and (max-width: 639px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    margin-top: 16px;
+  }
+
+  .pageContainer {
+    min-height: auto;
+  }
+}

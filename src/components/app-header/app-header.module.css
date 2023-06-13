@@ -48,4 +48,16 @@
   .container {
     flex-direction: column;
   }
+
+  .menu {
+    flex-direction: column;
+  }
+
+  .menuItem {
+    margin: 0;
+  }
+
+  .container > *:nth-child(1) {
+    order: 1;
+  }
 }

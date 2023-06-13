@@ -28,5 +28,9 @@ export const LogoutPage: FC = () => {
     }
   }, [isLogout, navigate]);
 
-  return loading ? <>Выход...</> : <p className={styles.error}>{error}</p>;
+  return (
+    <div className="mt-30">
+      {loading ? <>Выход...</> : <p className={styles.error}>{error}</p>}
+    </div>
+  );
 };
