@@ -64,7 +64,7 @@ export interface IStateOrders {
   total: number;
   totalToday: number;
   timestamp?: number;
-  error?: Event;
+  error?: string;
 }
 
 export type TDispatch = ThunkDispatch<IState, never, TActions>;

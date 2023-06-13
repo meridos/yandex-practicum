@@ -32,19 +32,20 @@ export const ordersReducer = createReducer(initialState, (builder) => {
         wsConnected: false,
       })
     )
-    .addCase(ORDERS_CONNECTION_CLOSED, (state) => ({
-      ...state,
-      error: undefined,
-      wsConnected: false,
-    }))
+    .addCase(ORDERS_CONNECTION_CLOSED, () => initialState)
     .addCase(ORDERS_GET_DATA, (state, action: IOrdersGetDataAction) => {
-      return {
-        ...state,
-        error: undefined,
-        orders: action.payload.orders,
-        timestamp: getCurrentTimestamp(),
-        total: action.payload.total,
-        totalToday: action.payload.totalToday,
-      };
+      return action.payload.success
+        ? {
+            ...state,
+            error: undefined,
+            orders: action.payload.orders,
+            timestamp: getCurrentTimestamp(),
+            total: action.payload.total,
+            totalToday: action.payload.totalToday,
+          }
+        : {
+            ...state,
+            error: action.payload.message,
+          };
     });
 });

@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { OrderListItem } from "../../components/order-list-item/order-list-item";
@@ -15,6 +15,7 @@ import {
   getAllOrders,
 } from "../../services/actions/orders";
 import styles from "./feed.module.css";
+import { OrderList } from "../../components/order-list/order-list";
 
 export const FeedPage: FC = () => {
   const navigate = useNavigate();
@@ -32,7 +33,7 @@ export const FeedPage: FC = () => {
       totalTodayCount: state.orders.totalToday,
     }));
   const [columns, setColumns] = useState<
-    { type: OrderNumbersMode; ids: number[] }[]
+    { type: OrderNumbersMode; ids: number[]; key: number }[]
   >([]);
 
   const onOrderClick = (id: string) => {
@@ -77,11 +78,12 @@ export const FeedPage: FC = () => {
 
     setColumns(
       split(completed, 10)
-        .map((ids) => ({ type: OrderNumbersMode.Completed, ids }))
+        .map((ids) => ({ type: OrderNumbersMode.Completed, ids, key: ids[0] }))
         .concat(
           split(pending, 10).map((ids) => ({
             type: OrderNumbersMode.Pending,
             ids,
+            key: ids[0],
           }))
         )
     );
@@ -92,22 +94,8 @@ export const FeedPage: FC = () => {
       <div className={styles.container}>
         <p className="text text_type_main-large mt-10 mb-5">Лента заказов</p>
         <div className={styles.row}>
-          <div className={styles.feed}>
-            {orders.map((order) => (
-              <OrderListItem
-                className={styles.order}
-                key={order._id}
-                order={order}
-                images={order.ingredients
-                  .map((id) => ingredientsMap.get(id)?.image_mobile!)
-                  .filter(Boolean)}
-                price={order.ingredients.reduce(
-                  (sum, id) => sum + (ingredientsMap.get(id)?.price || 0),
-                  0
-                )}
-                onClick={() => onOrderClick(order._id)}
-              />
-            ))}
+          <div className={styles.column}>
+            <OrderList onClick={onOrderClick} />
           </div>
           <div className={styles.summary}>
             <div className={styles.orderNumbers}>
@@ -120,6 +108,7 @@ export const FeedPage: FC = () => {
                       : "В работе:"
                   }
                   mode={column.type}
+                  key={column.key}
                 ></OrderNumbers>
               ))}
             </div>

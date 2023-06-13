@@ -1,10 +1,7 @@
 import type { Middleware, MiddlewareAPI } from "redux";
 
 import { IGetOrdersResponse, IState, TActions, TDispatch } from "../../models";
-import { getCurrentTimestamp } from "../../utils/timestamp";
 import { TWSStoreActions } from "../actions/orders";
-import { ACCESS_TOKEN_COOKIE, getUser } from "../actions/profile";
-import { getCookie } from "../../utils/cookie";
 
 export const webSocketMiddleware = (
   wsBaseUrl: string,
@@ -14,21 +11,25 @@ export const webSocketMiddleware = (
     let socket: WebSocket | null = null;
 
     return (next) => (action: TActions) => {
-      const { dispatch, getState } = store;
-      const token = getCookie(ACCESS_TOKEN_COOKIE);
+      const { dispatch } = store;
+
       const { wsInit, onOpen, onClose, onError, onOrders } = wsActions;
 
-      if (action.type === wsInit && token) {
-        socket = new WebSocket(`${wsBaseUrl}${action.payload}?token=${token}`);
+      if (action.type === wsInit) {
+        socket = new WebSocket(`${wsBaseUrl}${action.payload}`);
+      }
+
+      if (action.type === onClose && socket?.readyState !== socket?.CLOSED) {
+        socket?.close(1000, "MANUAL_CLOSE");
       }
 
       if (socket) {
-        socket.onopen = (event) => {
-          dispatch({ type: onOpen, payload: event });
+        socket.onopen = () => {
+          dispatch({ type: onOpen });
         };
 
         socket.onerror = (event) => {
-          dispatch({ type: onError, payload: event });
+          dispatch({ type: onError, payload: "Ошибка загрузки заказов" });
         };
 
         socket.onmessage = (event) => {
@@ -43,7 +44,9 @@ export const webSocketMiddleware = (
         };
 
         socket.onclose = (event) => {
-          dispatch({ type: onClose, payload: event });
+          if (event.reason !== "MANUAL_CLOSE") {
+            dispatch({ type: onClose });
+          }
         };
       }
 

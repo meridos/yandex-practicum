@@ -1,3 +1,6 @@
+import { ACCESS_TOKEN_COOKIE } from "../services/actions/profile";
+import { getCookie } from "./cookie";
+
 const BASE_URL_API = "https://norma.nomoreparties.space/api";
 
 interface IFetch<T> {
@@ -34,6 +37,19 @@ export function request<O>(
       ...(options.headers || {}),
     },
   }).then((res) => checkResponse<O>(res));
+}
+
+export function requestWithAuth<O>(
+  urlApi: string,
+  options: IRequestOptions = {}
+): Promise<IResponse<O>> {
+  return request<O>(urlApi, {
+    ...options,
+    headers: {
+      ...(options.headers || {}),
+      Authorization: getCookie(ACCESS_TOKEN_COOKIE) || "",
+    },
+  });
 }
 
 function checkResponse<D>(res: IFetch<IResponse<D>>): Promise<IResponse<D>> {

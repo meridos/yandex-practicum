@@ -21,6 +21,7 @@ export const OrderNumbers: FC<IOrderNumbersProps> = (props) => {
           className={`text text_type_digits-default ${
             props.mode === OrderNumbersMode.Completed ? styles.completed : ""
           }${index === props.orderIds.length - 1 ? "" : " mb-2"}`}
+          key={orderId}
         >
           {orderId}
         </p>

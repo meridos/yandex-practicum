@@ -53,6 +53,10 @@ export const ProtectedRouteElement: FC<ProtectedRouteElementProps> = ({
   return user || authRestricted ? (
     element
   ) : (
-    <Navigate to={LOGIN_ROUTE} state={{ protectedFrom: pathname }} />
+    <Navigate
+      to={LOGIN_ROUTE}
+      state={{ protectedFrom: pathname }}
+      replace={true}
+    />
   );
 };

@@ -15,9 +15,17 @@ export interface IOrder {
   readonly updatedAt: string;
 }
 
-export interface IGetOrdersResponse {
-  readonly success: boolean;
+export type IGetOrdersResponse =
+  | IGetOrdersResponseSuccess
+  | IGetOrdersResponseError;
+
+export interface IGetOrdersResponseSuccess {
+  readonly success: true;
   readonly orders: ReadonlyArray<IOrder>;
   readonly total: number;
   readonly totalToday: number;
+}
+export interface IGetOrdersResponseError {
+  readonly success: false;
+  readonly message: string;
 }

@@ -23,7 +23,9 @@ export const OrderListItem: FC<IOrderListItemProps> = (props) => {
           count: props.order.ingredients.length - 6,
         }
       : null;
-  const icons = props.images.slice(0, counter ? 5 : 6);
+  const icons = props.images
+    .slice(0, counter ? 5 : 6)
+    .map((image, i) => ({ image, key: `${props.order.ingredients[i]}-${i}` }));
 
   return (
     <div
@@ -50,8 +52,8 @@ export const OrderListItem: FC<IOrderListItemProps> = (props) => {
       ) : null}
       <div className={styles.content}>
         <div className={styles.icons}>
-          {icons.map((icon) => (
-            <IngredientIcon className={styles.icon} image={icon} />
+          {icons.map(({ image, key }) => (
+            <IngredientIcon className={styles.icon} image={image} key={key} />
           ))}
           {counter && (
             <IngredientIcon

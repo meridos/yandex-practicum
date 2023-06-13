@@ -1,44 +1,19 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { OrderListItem } from "../../../components/order-list-item/order-list-item";
 import { PROFILE_ORDERS_ROUTE } from "../../../const/routes";
+import { TDispatch } from "../../../models";
+import {
+  ORDERS_CONNECTION_CLOSED,
+  getProfileOrders,
+} from "../../../services/actions/orders";
 import styles from "./orders.module.css";
+import { OrderList } from "../../../components/order-list/order-list";
 
 export const ProfileOrdersPage: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const orders = new Array(10).fill({
-    date: "2022-03-05T01:23:45",
-    id: "0123",
-    ingredients: [
-      {
-        image_mobile: "https://code.s3.yandex.net/react/code/cheese-mobile.png",
-      },
-      {
-        image_mobile: "https://code.s3.yandex.net/react/code/cheese-mobile.png",
-      },
-      {
-        image_mobile: "https://code.s3.yandex.net/react/code/cheese-mobile.png",
-      },
-      {
-        image_mobile: "https://code.s3.yandex.net/react/code/cheese-mobile.png",
-      },
-      {
-        image_mobile: "https://code.s3.yandex.net/react/code/cheese-mobile.png",
-      },
-      {
-        image_mobile: "https://code.s3.yandex.net/react/code/cheese-mobile.png",
-      },
-      {
-        image_mobile: "https://code.s3.yandex.net/react/code/cheese-mobile.png",
-      },
-      {
-        image_mobile: "https://code.s3.yandex.net/react/code/cheese-mobile.png",
-      },
-    ] as any,
-    price: 456,
-    title: "some",
-  });
+  const dispatch = useDispatch<TDispatch>();
 
   const onOrderClick = (id: string) => {
     navigate(`${PROFILE_ORDERS_ROUTE}/${id}`, {
@@ -46,18 +21,17 @@ export const ProfileOrdersPage: FC = () => {
     });
   };
 
+  useEffect(() => {
+    dispatch(getProfileOrders());
+
+    return () => {
+      dispatch({ type: ORDERS_CONNECTION_CLOSED });
+    };
+  }, []);
+
   return (
     <div className={styles.container}>
-      {orders.map((order) => (
-        <OrderListItem
-          className={styles.order}
-          key={order.id}
-          order={order}
-          images={[]}
-          price={0}
-          onClick={() => onOrderClick(order.id)}
-        />
-      ))}
+      <OrderList onClick={onOrderClick} />
     </div>
   );
 };
