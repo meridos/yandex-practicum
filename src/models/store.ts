@@ -7,13 +7,16 @@ import { TErrorActions } from "../services/actions/error";
 import { TIngredientsActions } from "../services/actions/ingredients";
 import { TOrderActions } from "../services/actions/create-order";
 import { TProfileActions } from "../services/actions/profile";
+import { TWSActions } from "../services/actions/orders";
+import { IOrder } from "./order";
 
 export type TActions =
   | TCartActions
   | TErrorActions
   | TIngredientsActions
   | TOrderActions
-  | TProfileActions;
+  | TProfileActions
+  | TWSActions;
 
 export interface IState {
   error: IStateError;
@@ -21,6 +24,7 @@ export interface IState {
   createOrder: IStateCreateOrder;
   profile: IStateProfile;
   cart: IStateCart;
+  orders: IStateOrders;
 }
 
 export interface IStateError {
@@ -52,6 +56,15 @@ export interface IStateProfile {
     loading: boolean;
     fetched: boolean;
   };
+}
+
+export interface IStateOrders {
+  wsConnected: boolean;
+  orders: ReadonlyArray<IOrder>;
+  total: number;
+  totalToday: number;
+  timestamp?: number;
+  error?: Event;
 }
 
 export type TDispatch = ThunkDispatch<IState, never, TActions>;

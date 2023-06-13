@@ -58,3 +58,7 @@
   display: flex;
   align-items: center;
 }
+
+.done {
+  color: var(--colors-interface-success);
+}

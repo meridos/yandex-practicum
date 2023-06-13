@@ -7,6 +7,7 @@ import {
 import { NavLink } from "react-router-dom";
 import styles from "./app-header.module.css";
 import {
+  FEED_ROUTE,
   HOME_ROUTE,
   PROFILE_ORDERS_ROUTE,
   PROFILE_ROUTE,

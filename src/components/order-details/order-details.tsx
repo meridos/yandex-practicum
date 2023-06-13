@@ -3,7 +3,7 @@ import {
   FormattedDate,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { FC } from "react";
-import { IIngredient, OrderStatus } from "../../models";
+import { IIngredient, TOrderStatus } from "../../models";
 import { IngredientIcon } from "../ingredient-icon/ingredient-icon";
 import styles from "./order-details.module.css";
 
@@ -17,19 +17,19 @@ export interface IOrderDetailsProps {
   date: string;
   title: string;
   id: string;
-  status: OrderStatus;
+  status: TOrderStatus;
 }
 
-function getStatusText(status: OrderStatus): string {
+function getStatusText(status: TOrderStatus): string {
   switch (status) {
-    case OrderStatus.Completed:
+    case TOrderStatus.Done:
       return "Выполнен";
-    case OrderStatus.Pending:
+    case TOrderStatus.Pending:
       return "В процессе";
-    case OrderStatus.Created:
+    case TOrderStatus.Created:
       return "Создан";
-    case OrderStatus.Cancelled:
-      return "Отменен";
+    case TOrderStatus.Cancelled:
+      return "Отменён";
     default:
       return "";
   }
@@ -46,7 +46,7 @@ export const OrderDetails: FC<IOrderDetailsProps> = (props) => {
       <p className="text text_type_main-medium mb-3">{props.title}</p>
       <p
         className={`text text_type_main-default mb-15 ${
-          props.status === OrderStatus.Completed ? styles.completed : ""
+          props.status === TOrderStatus.Done ? styles.completed : ""
         }`}
       >
         {getStatusText(props.status)}

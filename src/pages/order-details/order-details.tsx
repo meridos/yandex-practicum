@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { OrderDetails } from "../../components/order-details/order-details";
-import { OrderStatus } from "../../models";
+import { TOrderStatus } from "../../models";
 import styles from "./order-details.module.css";
 
 export const OrderDetailsPage: FC = () => {
@@ -70,7 +70,7 @@ export const OrderDetailsPage: FC = () => {
           ] as any
         }
         price={510}
-        status={OrderStatus.Completed}
+        status={TOrderStatus.Done}
         title="Black Hole"
       />
     </div>

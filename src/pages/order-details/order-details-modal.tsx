@@ -2,7 +2,7 @@ import { FC, useCallback } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Modal } from "../../components/modal/modal";
 import { OrderDetails } from "../../components/order-details/order-details";
-import { OrderStatus } from "../../models";
+import { TOrderStatus } from "../../models";
 
 export const OrderDetailsModal: FC = () => {
   const navigate = useNavigate();
@@ -78,7 +78,7 @@ export const OrderDetailsModal: FC = () => {
           ] as any
         }
         price={510}
-        status={OrderStatus.Completed}
+        status={TOrderStatus.Done}
         title="Black Hole"
       />
     </Modal>

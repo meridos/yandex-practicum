@@ -52,11 +52,9 @@ export const ProfileOrdersPage: FC = () => {
         <OrderListItem
           className={styles.order}
           key={order.id}
-          date={order.date}
-          id={order.id}
-          ingredients={order.ingredients}
-          price={order.price}
-          title={order.title}
+          order={order}
+          images={[]}
+          price={0}
           onClick={() => onOrderClick(order.id)}
         />
       ))}

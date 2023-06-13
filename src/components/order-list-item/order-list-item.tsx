@@ -1,34 +1,29 @@
-import { FC } from "react";
-import styles from "./order-list-item.module.css";
 import {
   CurrencyIcon,
   FormattedDate,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { IIngredient, OrderStatus } from "../../models";
+import { FC } from "react";
+import { IOrder, TOrderStatus } from "../../models";
 import { IngredientIcon } from "../ingredient-icon/ingredient-icon";
+import styles from "./order-list-item.module.css";
 
 interface IOrderListItemProps {
-  ingredients: IIngredient[];
+  order: IOrder;
+  images: string[];
   price: number;
-  date: string;
-  title: string;
-  id: string;
-  status?: OrderStatus;
   onClick?: () => void;
   className?: string;
 }
 
 export const OrderListItem: FC<IOrderListItemProps> = (props) => {
   const counter =
-    props.ingredients.length > 6
+    props.order.ingredients.length > 6
       ? {
-          icon: props.ingredients[5].image_mobile,
-          count: props.ingredients.length - 6,
+          icon: props.images[5],
+          count: props.order.ingredients.length - 6,
         }
       : null;
-  const icons = props.ingredients
-    .map((ingredient) => ingredient.image_mobile)
-    .slice(0, counter ? 5 : 6);
+  const icons = props.images.slice(0, counter ? 5 : 6);
 
   return (
     <div
@@ -36,17 +31,21 @@ export const OrderListItem: FC<IOrderListItemProps> = (props) => {
       onClick={props.onClick}
     >
       <div className={styles.header}>
-        <p className="text text_type_digits-default mb-6">#034535</p>
+        <p className="text text_type_digits-default mb-6">
+          #{props.order.number}
+        </p>
         <p className="text text_type_main-default text_color_inactive mb-6">
-          <FormattedDate date={new Date()} />
+          <FormattedDate date={new Date(props.order.updatedAt)} />
         </p>
       </div>
-      <p className="text text_type_main-medium">
-        Death Star Starship Main бургер
-      </p>
-      {props.status ? (
-        <p className="text text_type_main-default mt-2">
-          {getStatusText(props.status)}
+      <p className="text text_type_main-medium">{props.order.name}</p>
+      {props.order.status ? (
+        <p
+          className={`text text_type_main-default mt-2 ${
+            props.order.status === TOrderStatus.Done ? styles.done : ""
+          }`}
+        >
+          {getStatusText(props.order.status)}
         </p>
       ) : null}
       <div className={styles.content}>
@@ -63,7 +62,7 @@ export const OrderListItem: FC<IOrderListItemProps> = (props) => {
           )}
         </div>
         <div className={styles.price}>
-          <p className="text text_type_digits-default mr-2">480</p>
+          <p className="text text_type_digits-default mr-2">{props.price}</p>
           <CurrencyIcon type="primary" />
         </div>
       </div>
@@ -71,16 +70,16 @@ export const OrderListItem: FC<IOrderListItemProps> = (props) => {
   );
 };
 
-function getStatusText(status: OrderStatus): string {
+function getStatusText(status: TOrderStatus): string {
   switch (status) {
-    case OrderStatus.Completed:
+    case TOrderStatus.Done:
       return "Выполнен";
-    case OrderStatus.Pending:
+    case TOrderStatus.Pending:
       return "Готовится";
-    case OrderStatus.Created:
+    case TOrderStatus.Created:
       return "Создан";
-    case OrderStatus.Cancelled:
-      return "Отменен";
+    case TOrderStatus.Cancelled:
+      return "Отменён";
     default:
       return "";
   }

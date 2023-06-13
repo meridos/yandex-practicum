@@ -43,9 +43,10 @@
 .orderNumbers {
   display: flex;
   justify-content: space-between;
-  column-gap: 36px;
+  gap: 36px;
+  flex-wrap: wrap;
 }
 
 .orderNumbers > * {
-  flex: 1 100%;
+  flex-basis: calc(50% - 18px);
 }
