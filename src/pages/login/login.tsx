@@ -1,23 +1,19 @@
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { FC, FormEvent, useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useFormFieldEmail } from "../../components/form-fields/email/email";
 import { useFormFieldPassword } from "../../components/form-fields/password/password";
 import { FORGOT_PASSWORD_ROUTE, REGISTER_ROUTE } from "../../const/routes";
-import { IState, TDispatch } from "../../models";
+import { useAppDispatch, useAppSelector } from "../../hooks/store";
 import { login } from "../../services/actions/profile";
 import styles from "./login.module.css";
 
 export const LoginPage: FC = () => {
   const [formValid, setFormValid] = useState(false);
-  const dispatch = useDispatch<TDispatch>();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { state, pathname } = useLocation();
-  const { isLogin, error, loading } = useSelector<
-    IState,
-    { isLogin: boolean; error: string | null; loading: boolean }
-  >((state) => ({
+  const { isLogin, error, loading } = useAppSelector((state) => ({
     isLogin: !!state.profile.name,
     error: state.profile.request.error,
     loading: state.profile.request.loading,

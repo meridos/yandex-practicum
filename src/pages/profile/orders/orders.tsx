@@ -1,5 +1,4 @@
 import { FC, useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { PROFILE_ORDERS_ROUTE } from "../../../const/routes";
 import { TDispatch } from "../../../models";
@@ -9,11 +8,12 @@ import {
 } from "../../../services/actions/orders";
 import styles from "./orders.module.css";
 import { OrderList } from "../../../components/order-list/order-list";
+import { useAppDispatch } from "../../../hooks/store";
 
 export const ProfileOrdersPage: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const dispatch = useDispatch<TDispatch>();
+  const dispatch = useAppDispatch();
 
   const onOrderClick = (id: string) => {
     navigate(`${PROFILE_ORDERS_ROUTE}/${id}`, {

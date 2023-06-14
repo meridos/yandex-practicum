@@ -2,17 +2,15 @@ import {
   CurrencyIcon,
   FormattedDate,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { FC, useEffect, useMemo, useState } from "react";
-import { IIngredient, IState, TDispatch, TOrderStatus } from "../../models";
-import { IngredientIcon } from "../ingredient-icon/ingredient-icon";
-import styles from "./order-details.module.css";
-import { useDispatch, useSelector } from "react-redux";
-import { memo } from "react";
-import { getIngredients } from "../../services/actions/ingredients";
+import { FC, useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../hooks/store";
+import { IIngredient, IState, TOrderStatus } from "../../models";
 import {
   ORDERS_CONNECTION_CLOSED,
   getAllOrders,
 } from "../../services/actions/orders";
+import { IngredientIcon } from "../ingredient-icon/ingredient-icon";
+import styles from "./order-details.module.css";
 
 export interface IOrderDetailsIngredient extends IIngredient {
   count: number;
@@ -38,7 +36,7 @@ function getStatusText(status: TOrderStatus): string {
 }
 
 export const OrderDetails: FC<IOrderDetailsProps> = (props) => {
-  const { order, allIngredients, ordersLoaded } = useSelector(
+  const { order, allIngredients, ordersLoaded } = useAppSelector(
     (state: IState) => ({
       order: state.orders.orders.find(({ _id }) => _id === props.id),
       allIngredients: state.ingredients.data,
@@ -49,7 +47,7 @@ export const OrderDetails: FC<IOrderDetailsProps> = (props) => {
     IOrderDetailsIngredient[]
   >([]);
   const [price, setPrice] = useState(0);
-  const dispatch = useDispatch<TDispatch>();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const ingredientsMap = allIngredients.reduce((res, ingredient) => {

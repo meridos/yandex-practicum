@@ -1,6 +1,6 @@
 import { FC } from "react";
-import { IIngredient, IOrder, IState } from "../../models";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "../../hooks/store";
+import { IIngredient, IState } from "../../models";
 import { OrderListItem } from "../order-list-item/order-list-item";
 import styles from "./order-list.module.css";
 
@@ -9,7 +9,7 @@ interface IOrderListProps {
 }
 
 export const OrderList: FC<IOrderListProps> = (props) => {
-  const { ingredientsMap, orders, ordersError } = useSelector(
+  const { ingredientsMap, orders, ordersError } = useAppSelector(
     (state: IState) => ({
       orders: state.orders.orders,
       ingredientsMap: state.ingredients.data.reduce((map, ingredient) => {

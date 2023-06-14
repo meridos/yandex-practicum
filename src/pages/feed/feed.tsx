@@ -1,37 +1,33 @@
-import { FC, useEffect, useMemo, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { FC, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { OrderListItem } from "../../components/order-list-item/order-list-item";
+import { OrderList } from "../../components/order-list/order-list";
 import {
   OrderNumbers,
   OrderNumbersMode,
 } from "../../components/order-numbers/order-numbers";
 import { OrderTotal } from "../../components/order-total/order-total";
 import { PROFILE_ORDERS_ROUTE } from "../../const/routes";
-import { IIngredient, IState, TDispatch, TOrderStatus } from "../../models";
+import { useAppDispatch, useAppSelector } from "../../hooks/store";
+import { TOrderStatus } from "../../models";
 import { ERROR } from "../../services/actions/error";
 import {
   ORDERS_CONNECTION_CLOSED,
   getAllOrders,
 } from "../../services/actions/orders";
 import styles from "./feed.module.css";
-import { OrderList } from "../../components/order-list/order-list";
 
 export const FeedPage: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const dispatch = useDispatch<TDispatch>();
-  const { ingredientsMap, orders, error, totalCount, totalTodayCount } =
-    useSelector((state: IState) => ({
+  const dispatch = useAppDispatch();
+  const { orders, error, totalCount, totalTodayCount } = useAppSelector(
+    (state) => ({
       orders: state.orders.orders,
       error: state.orders.error,
-      ingredientsMap: state.ingredients.data.reduce((map, ingredient) => {
-        map.set(ingredient._id, ingredient);
-        return map;
-      }, new Map<string, IIngredient>()),
       totalCount: state.orders.total,
       totalTodayCount: state.orders.totalToday,
-    }));
+    })
+  );
   const [columns, setColumns] = useState<
     { type: OrderNumbersMode; ids: number[]; key: number }[]
   >([]);

@@ -12,7 +12,6 @@ import {
   useReducer,
   useState,
 } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { LOGIN_ROUTE } from "../../const/routes";
 import { IIngredient, IState, TDispatch } from "../../models";
@@ -21,6 +20,7 @@ import { getUser } from "../../services/actions/profile";
 import { Modal } from "../modal/modal";
 import OrderCreated from "../order-created/order-created";
 import styles from "./order.module.css";
+import { useAppDispatch, useAppSelector } from "../../hooks/store";
 
 interface ITotalPriceState {
   totalPrice: number;
@@ -68,7 +68,7 @@ const orderDataSelector = (state: IState) => ({
 
 const OrderTotal: FC<IOrderTotalProps> = (props) => {
   const { ingredients, order, orderLoading, error, orderOpen } =
-    useSelector(orderDataSelector);
+    useAppSelector(orderDataSelector);
   const ingredientsMap = useMemo(
     () =>
       new Map(ingredients.map((ingredient) => [ingredient._id, ingredient])),
@@ -76,7 +76,7 @@ const OrderTotal: FC<IOrderTotalProps> = (props) => {
   );
   const [valid, setValid] = useState(false);
   const navigate = useNavigate();
-  const dispatch = useDispatch<TDispatch>();
+  const dispatch = useAppDispatch();
 
   const [totalPriceState, totalPriceDispatch] = useReducer<
     Reducer<ITotalPriceState, TTotalPriceAction>
