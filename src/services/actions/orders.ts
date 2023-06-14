@@ -1,9 +1,6 @@
-import { Dispatch } from "react";
-import { IGetOrdersResponse, IState, TDispatch } from "../../models";
-import { ThunkAction } from "redux-thunk";
-import { Action } from "redux";
-import { getIngredients } from "./ingredients";
+import { AppThunk, IGetOrdersResponse } from "../../models";
 import { getCookie } from "../../utils/cookie";
+import { getIngredients } from "./ingredients";
 import { ACCESS_TOKEN_COOKIE } from "./profile";
 
 export const ORDERS_CONNECTION_START: "ORDERS_CONNECTION_START" =
@@ -54,30 +51,26 @@ export type TWSStoreActions = {
   onOrders: typeof ORDERS_GET_DATA;
 };
 
-export const getProfileOrders =
-  (): ThunkAction<void, IState, unknown, Action<unknown>> =>
-  (dispatch, getState) => {
-    const { ingredients } = getState();
-    const token = getCookie(ACCESS_TOKEN_COOKIE)?.replace("Bearer ", "");
+export const getProfileOrders = (): AppThunk => (dispatch, getState) => {
+  const { ingredients } = getState();
+  const token = getCookie(ACCESS_TOKEN_COOKIE)?.replace("Bearer ", "");
 
-    if (ingredients.data.length === 0 && !ingredients.loading) {
-      dispatch(getIngredients());
-    }
+  if (ingredients.data.length === 0 && !ingredients.loading) {
+    dispatch(getIngredients());
+  }
 
-    dispatch({
-      type: ORDERS_CONNECTION_START,
-      payload: `orders?token=${token}`,
-    });
-  };
+  dispatch({
+    type: ORDERS_CONNECTION_START,
+    payload: `orders?token=${token}`,
+  });
+};
 
-export const getAllOrders =
-  (): ThunkAction<void, IState, unknown, Action<unknown>> =>
-  (dispatch, getState) => {
-    const { ingredients } = getState();
+export const getAllOrders = (): AppThunk => (dispatch, getState) => {
+  const { ingredients } = getState();
 
-    if (ingredients.data.length === 0 && !ingredients.loading) {
-      dispatch(getIngredients());
-    }
+  if (ingredients.data.length === 0 && !ingredients.loading) {
+    dispatch(getIngredients());
+  }
 
-    dispatch({ type: ORDERS_CONNECTION_START, payload: "orders/all" });
-  };
+  dispatch({ type: ORDERS_CONNECTION_START, payload: "orders/all" });
+};

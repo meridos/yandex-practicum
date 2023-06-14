@@ -1,4 +1,4 @@
-import { ThunkDispatch } from "redux-thunk";
+import { ThunkAction, ThunkDispatch } from "redux-thunk";
 import { ICreateOrderResponse as ICreatedOrderResponse } from "../api/create-order";
 import { ICartIngredient } from "./cart-ingredient";
 import { IIngredient } from "./ingredient";
@@ -68,3 +68,10 @@ export interface IStateOrders {
 }
 
 export type TDispatch = ThunkDispatch<IState, never, TActions>;
+
+export type AppThunk<ReturnType = void> = ThunkAction<
+  ReturnType,
+  IState,
+  never,
+  TActions
+>;
