@@ -6,7 +6,7 @@ import {
   OrderNumbersMode,
 } from "../../components/order-numbers/order-numbers";
 import { OrderTotal } from "../../components/order-total/order-total";
-import { PROFILE_ORDERS_ROUTE } from "../../const/routes";
+import { FEED_ROUTE } from "../../const/routes";
 import { useAppDispatch, useAppSelector } from "../../hooks/store";
 import { TOrderStatus } from "../../models";
 import { ERROR } from "../../services/actions/error";
@@ -33,7 +33,7 @@ export const FeedPage: FC = () => {
   >([]);
 
   const onOrderClick = (id: string) => {
-    navigate(`${PROFILE_ORDERS_ROUTE}/${id}`, {
+    navigate(`${FEED_ROUTE}/${id}`, {
       state: { backgroundLocation: location },
     });
   };
@@ -56,7 +56,7 @@ export const FeedPage: FC = () => {
     const completed: number[] = [];
     const pending: number[] = [];
 
-    orders.forEach((order) => {
+    orders?.forEach((order) => {
       if (order.status === TOrderStatus.Done) {
         completed.push(order.number);
       } else {
@@ -91,7 +91,11 @@ export const FeedPage: FC = () => {
         <p className="text text_type_main-large mt-10 mb-5">Лента заказов</p>
         <div className={styles.row}>
           <div className={styles.column}>
-            <OrderList onClick={onOrderClick} />
+            {orders ? (
+              <OrderList onClick={onOrderClick} />
+            ) : (
+              <p className="text text_type_main-medium">Загрузка...</p>
+            )}
           </div>
           <div className={styles.summary}>
             <div className={styles.orderNumbers}>

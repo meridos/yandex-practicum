@@ -8,6 +8,7 @@ import { IIngredient, IState, TOrderStatus } from "../../models";
 import {
   ORDERS_CONNECTION_CLOSED,
   getAllOrders,
+  getProfileOrders,
 } from "../../services/actions/orders";
 import { IngredientIcon } from "../ingredient-icon/ingredient-icon";
 import styles from "./order-details.module.css";
@@ -17,6 +18,7 @@ export interface IOrderDetailsIngredient extends IIngredient {
 }
 
 export interface IOrderDetailsProps {
+  fromAllOrders: boolean;
   id?: string;
 }
 
@@ -36,17 +38,19 @@ function getStatusText(status: TOrderStatus): string {
 }
 
 export const OrderDetails: FC<IOrderDetailsProps> = (props) => {
-  const { order, allIngredients, ordersLoaded } = useAppSelector(
+  const { order, allIngredients, ordersLoaded, error } = useAppSelector(
     (state: IState) => ({
-      order: state.orders.orders.find(({ _id }) => _id === props.id),
+      order: state.orders.orders?.find(({ _id }) => _id === props.id),
       allIngredients: state.ingredients.data,
-      ordersLoaded: state.orders.wsConnected || state.orders.orders.length > 0,
+      ordersLoaded: !!state.orders.orders,
+      error: state.orders.error,
     })
   );
   const [orderIngredients, setOrderIngredients] = useState<
     IOrderDetailsIngredient[]
   >([]);
   const [price, setPrice] = useState(0);
+  const [loading, setLoading] = useState(true);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -80,13 +84,24 @@ export const OrderDetails: FC<IOrderDetailsProps> = (props) => {
 
   useEffect(() => {
     if (!ordersLoaded) {
-      dispatch(getAllOrders());
+      dispatch(props.fromAllOrders ? getAllOrders() : getProfileOrders());
+      setLoading(true);
 
       return () => {
         dispatch({ type: ORDERS_CONNECTION_CLOSED });
       };
     }
   }, []);
+
+  useEffect(() => {
+    if (error || ordersLoaded) {
+      setLoading(false);
+    }
+  }, [error, ordersLoaded]);
+
+  if (loading) {
+    return <p className="text text_type_main-medium">Загрузка...</p>;
+  }
 
   return order ? (
     <div className={styles.container}>

@@ -60,11 +60,12 @@ export interface IStateProfile {
 
 export interface IStateOrders {
   wsConnected: boolean;
-  orders: ReadonlyArray<IOrder>;
+  orders: ReadonlyArray<IOrder> | null;
   total: number;
   totalToday: number;
   timestamp?: number;
   error?: string;
+  listeners: number;
 }
 
 export type TDispatch = ThunkDispatch<IState, never, TActions>;

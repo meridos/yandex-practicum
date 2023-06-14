@@ -85,7 +85,6 @@ export const App: FC = () => {
             <Route path={PROFILE_LOGOUT_ROUTE} element={<LogoutPage />} />
           </Route>
           <Route path={FEED_ROUTE} element={<FeedPage />} />
-          <Route path={FEED_ITEM_ROUTE} element={<OrderDetailsPage />} />
           {!location.state?.backgroundLocation && (
             <>
               <Route
@@ -94,7 +93,15 @@ export const App: FC = () => {
               />
               <Route
                 path={PROFILE_ORDERS_ITEM_ROUTE}
-                element={<OrderDetailsPage />}
+                element={
+                  <ProtectedRouteElement
+                    element={<OrderDetailsPage fromAllOrders={false} />}
+                  />
+                }
+              />
+              <Route
+                path={FEED_ITEM_ROUTE}
+                element={<OrderDetailsPage fromAllOrders={true} />}
               />
             </>
           )}
@@ -108,7 +115,15 @@ export const App: FC = () => {
             />
             <Route
               path={PROFILE_ORDERS_ITEM_ROUTE}
-              element={<OrderDetailsModal />}
+              element={
+                <ProtectedRouteElement
+                  element={<OrderDetailsModal fromAllOrders={false} />}
+                />
+              }
+            />
+            <Route
+              path={FEED_ITEM_ROUTE}
+              element={<OrderDetailsModal fromAllOrders={true} />}
             />
           </Routes>
         )}

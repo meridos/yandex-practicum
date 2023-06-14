@@ -6,19 +6,25 @@ import {
   IOrdersGetDataAction,
   ORDERS_CONNECTION_CLOSED,
   ORDERS_CONNECTION_ERROR,
+  ORDERS_CONNECTION_START,
   ORDERS_CONNECTION_SUCCESS,
   ORDERS_GET_DATA,
 } from "../actions/orders";
 
 const initialState: IStateOrders = {
   wsConnected: false,
-  orders: [],
+  orders: null,
   total: 0,
   totalToday: 0,
+  listeners: 0,
 };
 
 export const ordersReducer = createReducer(initialState, (builder) => {
   builder
+    .addCase(ORDERS_CONNECTION_START, (state) => ({
+      ...state,
+      listeners: state.listeners + 1,
+    }))
     .addCase(ORDERS_CONNECTION_SUCCESS, (state) => ({
       ...state,
       error: undefined,
@@ -32,7 +38,18 @@ export const ordersReducer = createReducer(initialState, (builder) => {
         wsConnected: false,
       })
     )
-    .addCase(ORDERS_CONNECTION_CLOSED, () => initialState)
+    .addCase(ORDERS_CONNECTION_CLOSED, (state) => {
+      const listeners = Math.max(state.listeners - 1, 0);
+
+      if (listeners === 0) {
+        return initialState;
+      }
+
+      return {
+        ...state,
+        listeners,
+      };
+    })
     .addCase(ORDERS_GET_DATA, (state, action: IOrdersGetDataAction) => {
       return action.payload.success
         ? {

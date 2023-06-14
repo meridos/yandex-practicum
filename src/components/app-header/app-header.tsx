@@ -46,11 +46,7 @@ export const AppHeader: FC = () => {
         <nav>
           <ul className={styles.menu}>
             <LinkItem icon={BurgerIcon} to={HOME_ROUTE} text="Конструктор" />
-            <LinkItem
-              icon={ListIcon}
-              to={PROFILE_ORDERS_ROUTE}
-              text="Лента заказов"
-            />
+            <LinkItem icon={ListIcon} to={FEED_ROUTE} text="Лента заказов" />
           </ul>
         </nav>
         <Logo />

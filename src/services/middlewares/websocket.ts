@@ -11,15 +11,20 @@ export const webSocketMiddleware = (
     let socket: WebSocket | null = null;
 
     return (next) => (action: TActions) => {
-      const { dispatch } = store;
+      const { dispatch, getState } = store;
+      const state = getState();
 
       const { wsInit, onOpen, onClose, onError, onOrders } = wsActions;
 
-      if (action.type === wsInit) {
+      if (action.type === wsInit && !socket) {
         socket = new WebSocket(`${wsBaseUrl}${action.payload}`);
       }
 
-      if (action.type === onClose && socket?.readyState !== socket?.CLOSED) {
+      if (
+        action.type === onClose &&
+        socket?.readyState !== socket?.CLOSED &&
+        state.orders.listeners <= 1
+      ) {
         socket?.close(1000, "MANUAL_CLOSE");
       }
 
@@ -47,6 +52,7 @@ export const webSocketMiddleware = (
           if (event.reason !== "MANUAL_CLOSE") {
             dispatch({ type: onClose });
           }
+          socket = null;
         };
       }
 
