@@ -14,13 +14,13 @@ import {
 } from "react";
 import { useNavigate } from "react-router-dom";
 import { LOGIN_ROUTE } from "../../const/routes";
-import { IIngredient, IState, TDispatch } from "../../models";
+import { useAppDispatch, useAppSelector } from "../../hooks/store";
+import { IIngredient, IState } from "../../models";
 import { CLOSE_ORDER, createOrder } from "../../services/actions/create-order";
 import { getUser } from "../../services/actions/profile";
 import { Modal } from "../modal/modal";
 import OrderCreated from "../order-created/order-created";
 import styles from "./order.module.css";
-import { useAppDispatch, useAppSelector } from "../../hooks/store";
 
 interface ITotalPriceState {
   totalPrice: number;

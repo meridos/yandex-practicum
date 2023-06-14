@@ -1,14 +1,13 @@
 import { FC, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { OrderList } from "../../../components/order-list/order-list";
 import { PROFILE_ORDERS_ROUTE } from "../../../const/routes";
-import { TDispatch } from "../../../models";
+import { useAppDispatch } from "../../../hooks/store";
 import {
   ORDERS_CONNECTION_CLOSED,
   getProfileOrders,
 } from "../../../services/actions/orders";
 import styles from "./orders.module.css";
-import { OrderList } from "../../../components/order-list/order-list";
-import { useAppDispatch } from "../../../hooks/store";
 
 export const ProfileOrdersPage: FC = () => {
   const navigate = useNavigate();
