@@ -26,6 +26,7 @@ export const webSocketMiddleware = (
         state.orders.listeners <= 1
       ) {
         socket?.close(1000, "MANUAL_CLOSE");
+        socket = null;
       }
 
       if (socket) {
