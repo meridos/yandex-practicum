@@ -146,7 +146,7 @@ const OrderTotal: FC<IOrderTotalProps> = (props) => {
         >
           Оформить заказ
         </Button>
-        {orderOpen && order && (
+        {orderOpen && (
           <Modal onClose={onCompleteModalClose}>
             <OrderCreated order={order} />
           </Modal>

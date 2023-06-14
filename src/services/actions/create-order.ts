@@ -15,10 +15,10 @@ export const createOrder =
   (orderListIds: string[]): AppThunk =>
   (dispatch) => {
     dispatch(CREATE_ORDER());
+    dispatch(OPEN_ORDER());
     createOrderApi({ orderListIds })
       .then((data) => {
         dispatch(CREATE_ORDER_SUCCESS(data));
-        dispatch(OPEN_ORDER());
         dispatch(RESET_CART());
       })
       .catch((err) => {
