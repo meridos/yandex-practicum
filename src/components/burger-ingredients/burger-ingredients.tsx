@@ -11,9 +11,9 @@ import React, {
   useState,
 } from "react";
 import { useDrag } from "react-dnd";
-import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { INGREDIENT_ROUTE } from "../../const/routes";
+import { useAppSelector } from "../../hooks/store";
 import { IIngredient, IState, TIngredientType } from "../../models";
 import styles from "./burger-ingredients.module.css";
 
@@ -50,7 +50,7 @@ export const BurgerIngredients: FC = () => {
   const [thresholds, setThreshholds] = useState<{
     [tab: string]: number;
   }>({});
-  const { ingredients, countsMap } = useSelector(ingredientsDataSelector);
+  const { ingredients, countsMap } = useAppSelector(ingredientsDataSelector);
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
   let location = useLocation();

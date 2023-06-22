@@ -12,14 +12,14 @@ import {
   useReducer,
   useState,
 } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { LOGIN_ROUTE } from "../../const/routes";
-import { IIngredient, IState, TDispatch } from "../../models";
-import { CLOSE_ORDER, createOrder } from "../../services/actions/order";
+import { useAppDispatch, useAppSelector } from "../../hooks/store";
+import { IIngredient, IState } from "../../models";
+import { CLOSE_ORDER, createOrder } from "../../services/actions/create-order";
 import { getUser } from "../../services/actions/profile";
 import { Modal } from "../modal/modal";
-import OrderDetails from "../order-details/order-details";
+import OrderCreated from "../order-created/order-created";
 import styles from "./order.module.css";
 
 interface ITotalPriceState {
@@ -60,15 +60,15 @@ interface IOrderTotalProps {
 
 const orderDataSelector = (state: IState) => ({
   ingredients: state.ingredients.data,
-  order: state.order?.data?.number,
-  orderLoading: state.order.loading,
-  error: state.order.error,
-  orderOpen: state.order.open,
+  order: state.createOrder?.data?.number,
+  orderLoading: state.createOrder.loading,
+  error: state.createOrder.error,
+  orderOpen: state.createOrder.open,
 });
 
 const OrderTotal: FC<IOrderTotalProps> = (props) => {
   const { ingredients, order, orderLoading, error, orderOpen } =
-    useSelector(orderDataSelector);
+    useAppSelector(orderDataSelector);
   const ingredientsMap = useMemo(
     () =>
       new Map(ingredients.map((ingredient) => [ingredient._id, ingredient])),
@@ -76,7 +76,7 @@ const OrderTotal: FC<IOrderTotalProps> = (props) => {
   );
   const [valid, setValid] = useState(false);
   const navigate = useNavigate();
-  const dispatch = useDispatch<TDispatch>();
+  const dispatch = useAppDispatch();
 
   const [totalPriceState, totalPriceDispatch] = useReducer<
     Reducer<ITotalPriceState, TTotalPriceAction>
@@ -146,9 +146,9 @@ const OrderTotal: FC<IOrderTotalProps> = (props) => {
         >
           Оформить заказ
         </Button>
-        {orderOpen && order && (
+        {orderOpen && (
           <Modal onClose={onCompleteModalClose}>
-            <OrderDetails order={order} />
+            <OrderCreated order={order} />
           </Modal>
         )}
       </div>

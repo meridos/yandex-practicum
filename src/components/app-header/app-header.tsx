@@ -4,14 +4,10 @@ import {
   Logo,
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { NavLink } from "react-router-dom";
-import styles from "./app-header.module.css";
-import {
-  HOME_ROUTE,
-  PROFILE_ORDERS_ROUTE,
-  PROFILE_ROUTE,
-} from "../../const/routes";
 import { FC } from "react";
+import { NavLink } from "react-router-dom";
+import { FEED_ROUTE, HOME_ROUTE, PROFILE_ROUTE } from "../../const/routes";
+import styles from "./app-header.module.css";
 
 interface ILinkItemProps {
   icon?: FC<Parameters<typeof ProfileIcon>[0]>;
@@ -45,11 +41,7 @@ export const AppHeader: FC = () => {
         <nav>
           <ul className={styles.menu}>
             <LinkItem icon={BurgerIcon} to={HOME_ROUTE} text="Конструктор" />
-            <LinkItem
-              icon={ListIcon}
-              to={PROFILE_ORDERS_ROUTE}
-              text="Лента заказов"
-            />
+            <LinkItem icon={ListIcon} to={FEED_ROUTE} text="Лента заказов" />
           </ul>
         </nav>
         <Logo />

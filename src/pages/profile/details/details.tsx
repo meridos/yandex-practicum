@@ -1,10 +1,9 @@
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { FC, useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useFormFieldEmail } from "../../../components/form-fields/email/email";
 import { useFormFieldPassword } from "../../../components/form-fields/password/password";
 import { useFormFieldText } from "../../../components/form-fields/text/text";
-import { IState, TDispatch } from "../../../models";
+import { useAppDispatch, useAppSelector } from "../../../hooks/store";
 import { updateProfile } from "../../../services/actions/profile";
 import styles from "./details.module.css";
 
@@ -14,8 +13,8 @@ export const ProfileDetailsPage: FC = () => {
   const {
     request: { error, loading },
     ...profile
-  } = useSelector<IState, IState["profile"]>((state) => state.profile);
-  const dispatch = useDispatch<TDispatch>();
+  } = useAppSelector((state) => state.profile);
+  const dispatch = useAppDispatch();
   const [changedForm, setChangedForm] = useState<boolean>();
   const [valid, setValid] = useState<boolean>();
 

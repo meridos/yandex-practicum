@@ -1,0 +1,7 @@
+.container {
+  margin-top: 40px;
+  min-height: 0;
+  overflow: overlay;
+  flex: 1;
+  padding-right: 8px;
+}

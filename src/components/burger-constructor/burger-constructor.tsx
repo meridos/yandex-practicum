@@ -4,7 +4,6 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import React, { useEffect, useState, FC } from "react";
 import { useDrag, useDrop } from "react-dnd";
-import { useDispatch, useSelector } from "react-redux";
 import {
   APPEND_BUN_CART,
   APPEND_INGREDIENT_CART,
@@ -17,6 +16,7 @@ import { nanoid } from "@reduxjs/toolkit";
 import { IIngredient, IState } from "../../models";
 import { PropsWithChildren } from "react";
 import { ICartIngredient } from "../../models/cart-ingredient";
+import { useAppDispatch, useAppSelector } from "../../hooks/store";
 
 interface IDataFromState {
   ingredients: IIngredient[];
@@ -31,11 +31,10 @@ const constructorDataSelector = (state: IState): IDataFromState => ({
 });
 
 export const BurgerConstructor: FC = () => {
-  const dispatch = useDispatch();
-  const { ingredients, bunIngredient, orderIngredients } = useSelector<
-    IState,
-    IDataFromState
-  >(constructorDataSelector);
+  const dispatch = useAppDispatch();
+  const { ingredients, bunIngredient, orderIngredients } = useAppSelector(
+    constructorDataSelector
+  );
   const [ingredientsMap, setIngredientsMap] = useState(new Map());
 
   useEffect(() => {

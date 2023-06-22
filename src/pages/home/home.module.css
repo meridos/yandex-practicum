@@ -1,11 +1,13 @@
 .container {
   display: flex;
   max-width: 1280px;
+  width: 100%;
   padding: 0 20px;
   margin-left: auto;
   margin-right: auto;
   column-gap: 40px;
   min-height: 0px;
+  box-sizing: border-box;
 }
 
 .side {

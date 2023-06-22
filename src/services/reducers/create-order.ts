@@ -5,17 +5,17 @@ import {
   CREATE_ORDER_ERROR,
   CREATE_ORDER_SUCCESS,
   OPEN_ORDER,
-} from "../actions/order";
-import { IStateOrder } from "../../models";
+} from "../actions/create-order";
+import { IStateCreateOrder } from "../../models";
 
-const initialState: IStateOrder = {
+const initialState: IStateCreateOrder = {
   data: null,
   loading: false,
   error: false,
   open: false,
 };
 
-export const orderReducer = createReducer(initialState, (builder) => {
+export const createOrderReducer = createReducer(initialState, (builder) => {
   builder
     .addCase(CREATE_ORDER, (state) => ({
       ...state,

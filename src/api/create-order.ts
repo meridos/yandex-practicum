@@ -1,4 +1,4 @@
-import { request } from "../utils/request";
+import { requestWithAuth } from "../utils/request";
 
 export interface ICreateOrderBody {
   orderListIds: string[];
@@ -11,7 +11,7 @@ export interface ICreateOrderResponse {
 export default function createOrder({
   orderListIds,
 }: ICreateOrderBody): Promise<ICreateOrderResponse> {
-  return request<{
+  return requestWithAuth<{
     name: string;
     order: ICreateOrderResponse;
   }>("/orders", {

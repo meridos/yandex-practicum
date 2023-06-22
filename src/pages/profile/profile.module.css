@@ -1,11 +1,35 @@
 .container {
   display: flex;
-  padding-top: 120px;
-  justify-content: center;
+  align-self: center;
   column-gap: 60px;
+  max-width: 1280px;
+  width: 100%;
+  padding-left: 20px;
+  padding-right: 20px;
+  box-sizing: border-box;
+  min-height: 0;
+}
+
+.sidebar {
+  margin-top: 120px;
 }
 
 .pageContainer {
-  max-width: 480px;
-  width: 100%;
+  display: flex;
+  min-height: 0;
+  flex: 1;
+}
+
+@media screen and (max-width: 639px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    margin-top: 16px;
+  }
+
+  .pageContainer {
+    min-height: auto;
+  }
 }

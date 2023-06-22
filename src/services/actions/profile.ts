@@ -1,4 +1,4 @@
-import { Dispatch, createAction, createAsyncThunk } from "@reduxjs/toolkit";
+import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   IGetUserResponse,
   ILoginBody,
@@ -12,7 +12,7 @@ import {
   token,
   updateUser,
 } from "../../api/auth";
-import { IState } from "../../models";
+import { AppThunk, IState } from "../../models";
 import { getCookie, setCookie } from "../../utils/cookie";
 
 export const REQUEST_PROFILE = createAction("profile/request");
@@ -34,55 +34,59 @@ export type TProfileActions = ReturnType<
 
 const EXPIRES_TOKEN = 365 * 24 * 60 * 60;
 
-export const register = (userData: IRegisterBody) => (dispatch: Dispatch) => {
-  dispatch(REQUEST_PROFILE());
+export const register =
+  (userData: IRegisterBody): AppThunk =>
+  (dispatch) => {
+    dispatch(REQUEST_PROFILE());
 
-  return registerApi(userData)
-    .then((data) => {
-      dispatch(
-        SUCCESS_PROFILE({
-          email: data.user.email,
-          name: data.user.name,
-        })
-      );
+    return registerApi(userData)
+      .then((data) => {
+        dispatch(
+          SUCCESS_PROFILE({
+            email: data.user.email,
+            name: data.user.name,
+          })
+        );
 
-      updateTokens({
-        refreshToken: data.refreshToken,
-        accessToken: data.accessToken,
+        updateTokens({
+          refreshToken: data.refreshToken,
+          accessToken: data.accessToken,
+        });
+
+        return data;
+      })
+      .catch((err) => {
+        dispatch(ERROR_PROFILE(err));
       });
+  };
 
-      return data;
-    })
-    .catch((err) => {
-      dispatch(ERROR_PROFILE(err));
-    });
-};
+export const login =
+  (userData: ILoginBody): AppThunk =>
+  (dispatch) => {
+    dispatch(REQUEST_PROFILE());
 
-export const login = (userData: ILoginBody) => (dispatch: Dispatch) => {
-  dispatch(REQUEST_PROFILE());
+    return loginApi(userData)
+      .then((data) => {
+        dispatch(
+          SUCCESS_PROFILE({
+            email: data.user.email,
+            name: data.user.name,
+          })
+        );
 
-  return loginApi(userData)
-    .then((data) => {
-      dispatch(
-        SUCCESS_PROFILE({
-          email: data.user.email,
-          name: data.user.name,
-        })
-      );
+        updateTokens({
+          refreshToken: data.refreshToken,
+          accessToken: data.accessToken,
+        });
 
-      updateTokens({
-        refreshToken: data.refreshToken,
-        accessToken: data.accessToken,
+        return data;
+      })
+      .catch((err) => {
+        dispatch(ERROR_PROFILE(err));
       });
+  };
 
-      return data;
-    })
-    .catch((err) => {
-      dispatch(ERROR_PROFILE(err));
-    });
-};
-
-export const logout = () => (dispatch: Dispatch) => {
+export const logout = (): AppThunk => (dispatch) => {
   const refreshToken = window.localStorage.getItem(REFRESH_TOKEN_KEY)!;
 
   dispatch(REQUEST_PROFILE());
@@ -125,7 +129,8 @@ export const getUser = createAsyncThunk<
 });
 
 export const updateProfile =
-  (user: Omit<IUpdateUserBody, "accessToken">) => (dispatch: Dispatch) => {
+  (user: Omit<IUpdateUserBody, "accessToken">): AppThunk =>
+  (dispatch) => {
     dispatch(REQUEST_PROFILE());
 
     return withUpdateToken(() =>

@@ -1,26 +1,30 @@
-import { ThunkDispatch } from "redux-thunk";
-import { ICreateOrderResponse } from "../api/create-order";
+import { ThunkAction, ThunkDispatch } from "redux-thunk";
+import { ICreateOrderResponse as ICreatedOrderResponse } from "../api/create-order";
 import { ICartIngredient } from "./cart-ingredient";
 import { IIngredient } from "./ingredient";
 import { TCartActions } from "../services/actions/cart";
 import { TErrorActions } from "../services/actions/error";
 import { TIngredientsActions } from "../services/actions/ingredients";
-import { TOrderActions } from "../services/actions/order";
+import { TOrderActions } from "../services/actions/create-order";
 import { TProfileActions } from "../services/actions/profile";
+import { TWSActions } from "../services/actions/orders";
+import { IOrder } from "./order";
 
 export type TActions =
   | TCartActions
   | TErrorActions
   | TIngredientsActions
   | TOrderActions
-  | TProfileActions;
+  | TProfileActions
+  | TWSActions;
 
 export interface IState {
   error: IStateError;
   ingredients: IStateIngredients;
-  order: IStateOrder;
+  createOrder: IStateCreateOrder;
   profile: IStateProfile;
   cart: IStateCart;
+  orders: IStateOrders;
 }
 
 export interface IStateError {
@@ -37,8 +41,8 @@ export interface IStateCart {
   ingredients: ICartIngredient[];
 }
 
-export interface IStateOrder {
-  data: ICreateOrderResponse | null;
+export interface IStateCreateOrder {
+  data: ICreatedOrderResponse | null;
   loading: boolean;
   error: string | boolean;
   open: boolean;
@@ -54,4 +58,21 @@ export interface IStateProfile {
   };
 }
 
+export interface IStateOrders {
+  wsConnected: boolean;
+  orders: ReadonlyArray<IOrder> | null;
+  total: number;
+  totalToday: number;
+  timestamp?: number;
+  error?: string;
+  listeners: number;
+}
+
 export type TDispatch = ThunkDispatch<IState, never, TActions>;
+
+export type AppThunk<ReturnType = void> = ThunkAction<
+  ReturnType,
+  IState,
+  never,
+  TActions
+>;
