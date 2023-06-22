@@ -29,7 +29,6 @@ export const createOrderReducer = createReducer(initialState, (builder) => {
     }))
     .addCase(CREATE_ORDER_ERROR, (state, action) => ({
       ...initialState,
-      ...initialState,
       error: action.payload,
     }))
     .addCase(OPEN_ORDER, (state) => ({
