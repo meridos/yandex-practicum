@@ -29,7 +29,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "cypress:open": "./node_modules/.bin/cypress open --config-file cypress/cypress.config.ts"
+    "cypress:open": "./node_modules/.bin/cypress open --config-file cypress/cypress.config.ts",
+    "deploy": "npm run build && scp -r ./build/* praktikum@bobrovartem.ru:/home/praktikum/stellar-burgers"
   },
   "eslintConfig": {
     "extends": [
