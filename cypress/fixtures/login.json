@@ -1,0 +1,9 @@
+{
+  "success": true,
+  "accessToken": "Bearer testAccessToken",
+  "refreshToken": "testRefreshToken",
+  "user": {
+    "email": "test@login.cy",
+    "name": "Test Name"
+  }
+}
